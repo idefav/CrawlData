@@ -1,0 +1,13 @@
+C:\Sources\电商抓取平台\电商抓取平台\CrawlServices\obj\Debug\CrawlServices.csprojResolveAssemblyReference.cache
+C:\Sources\电商抓取平台\电商抓取平台\CrawlServices\bin\Debug\CrawlServices.exe.config
+C:\Sources\电商抓取平台\电商抓取平台\CrawlServices\bin\Debug\CrawlServices.exe
+C:\Sources\电商抓取平台\电商抓取平台\CrawlServices\bin\Debug\CrawlServices.pdb
+C:\Sources\电商抓取平台\电商抓取平台\CrawlServices\bin\Debug\Ebend.DataSplider.dll
+C:\Sources\电商抓取平台\电商抓取平台\CrawlServices\bin\Debug\Newtonsoft.Json.dll
+C:\Sources\电商抓取平台\电商抓取平台\CrawlServices\bin\Debug\ParallelExtensionsExtras.dll
+C:\Sources\电商抓取平台\电商抓取平台\CrawlServices\bin\Debug\HttpHelper.dll
+C:\Sources\电商抓取平台\电商抓取平台\CrawlServices\bin\Debug\Ebend.DataSplider.pdb
+C:\Sources\电商抓取平台\电商抓取平台\CrawlServices\bin\Debug\HttpHelper.pdb
+C:\Sources\电商抓取平台\电商抓取平台\CrawlServices\bin\Debug\HttpHelper.xml
+C:\Sources\电商抓取平台\电商抓取平台\CrawlServices\obj\Debug\CrawlServices.exe
+C:\Sources\电商抓取平台\电商抓取平台\CrawlServices\obj\Debug\CrawlServices.pdb

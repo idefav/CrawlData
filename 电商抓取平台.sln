@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "天猫", "电商抓取平台\天猫.csproj", "{FFBF00BA-97D4-4439-B637-4568478A810B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ebend.DataSplider", "Ebend.DataSplider\Ebend.DataSplider.csproj", "{B6EF604D-A8D5-4143-9CEB-9B9F46489529}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrawlServices", "CrawlServices\CrawlServices.csproj", "{C5863923-B7E3-4FCF-82DE-744BC292399B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Reference", "Reference", "{C746043B-86A4-4EE6-AEB2-D2D24835DC9C}"
+	ProjectSection(SolutionItems) = preProject
+		Reference\Newtonsoft.Json.dll = Reference\Newtonsoft.Json.dll
+		Reference\ParallelExtensionsExtras.dll = Reference\ParallelExtensionsExtras.dll
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrawlServicesTests", "CrawlServicesTests\CrawlServicesTests.csproj", "{699582D5-8431-4F4C-BA92-9BEE2B4DD771}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FFBF00BA-97D4-4439-B637-4568478A810B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFBF00BA-97D4-4439-B637-4568478A810B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFBF00BA-97D4-4439-B637-4568478A810B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFBF00BA-97D4-4439-B637-4568478A810B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6EF604D-A8D5-4143-9CEB-9B9F46489529}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6EF604D-A8D5-4143-9CEB-9B9F46489529}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6EF604D-A8D5-4143-9CEB-9B9F46489529}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6EF604D-A8D5-4143-9CEB-9B9F46489529}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5863923-B7E3-4FCF-82DE-744BC292399B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5863923-B7E3-4FCF-82DE-744BC292399B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5863923-B7E3-4FCF-82DE-744BC292399B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5863923-B7E3-4FCF-82DE-744BC292399B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{699582D5-8431-4F4C-BA92-9BEE2B4DD771}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{699582D5-8431-4F4C-BA92-9BEE2B4DD771}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{699582D5-8431-4F4C-BA92-9BEE2B4DD771}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{699582D5-8431-4F4C-BA92-9BEE2B4DD771}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
