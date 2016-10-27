@@ -152,15 +152,7 @@ namespace CrawlServices
     /// </summary>
     public class CommonSettings
     {
-        /// <summary>
-        /// Oracle 正式库
-        /// </summary>
-        public string FundWeb { get; set; }
-
-        /// <summary>
-        /// Oracle 测试库
-        /// </summary>
-        public string FundTest2 { get; set; }
+        public string DbConn { get; set; }
         public string LogPath { get; set; }
 
         public int TaskCount { get; set; }

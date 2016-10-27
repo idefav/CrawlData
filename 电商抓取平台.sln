@@ -11,8 +11,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrawlServices", "CrawlServi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Reference", "Reference", "{C746043B-86A4-4EE6-AEB2-D2D24835DC9C}"
 	ProjectSection(SolutionItems) = preProject
+		Reference\Idefav.DbFactory.dll = Reference\Idefav.DbFactory.dll
+		Reference\Idefav.DbObjects.dll = Reference\Idefav.DbObjects.dll
+		Reference\Idefav.IDAL.dll = Reference\Idefav.IDAL.dll
+		Reference\Idefav.Utility.dll = Reference\Idefav.Utility.dll
+		Reference\MySql.Data.dll = Reference\MySql.Data.dll
 		Reference\Newtonsoft.Json.dll = Reference\Newtonsoft.Json.dll
+		Reference\Oracle.DataAccess.dll = Reference\Oracle.DataAccess.dll
 		Reference\ParallelExtensionsExtras.dll = Reference\ParallelExtensionsExtras.dll
+		Reference\System.Data.SQLite.dll = Reference\System.Data.SQLite.dll
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrawlServicesTests", "CrawlServicesTests\CrawlServicesTests.csproj", "{699582D5-8431-4F4C-BA92-9BEE2B4DD771}"

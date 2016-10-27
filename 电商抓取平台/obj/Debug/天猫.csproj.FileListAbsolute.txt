@@ -27,3 +27,17 @@ C:\Sources\电商抓取平台\电商抓取平台\电商抓取平台\obj\Debug\�
 C:\Sources\电商抓取平台\电商抓取平台\电商抓取平台\obj\Debug\电商抓取平台.FormMain.resources
 C:\Sources\电商抓取平台\电商抓取平台\电商抓取平台\obj\Debug\电商抓取平台.Properties.Resources.resources
 C:\Sources\电商抓取平台\电商抓取平台\电商抓取平台\obj\Debug\天猫.csproj.GenerateResource.Cache
+C:\Users\Administrator\Documents\GitHub\CrawlData\电商抓取平台\bin\Debug\电商抓取平台.exe.config
+C:\Users\Administrator\Documents\GitHub\CrawlData\电商抓取平台\obj\Debug\电商抓取平台.exe
+C:\Users\Administrator\Documents\GitHub\CrawlData\电商抓取平台\obj\Debug\电商抓取平台.pdb
+C:\Users\Administrator\Documents\GitHub\CrawlData\电商抓取平台\bin\Debug\电商抓取平台.exe
+C:\Users\Administrator\Documents\GitHub\CrawlData\电商抓取平台\bin\Debug\电商抓取平台.pdb
+C:\Users\Administrator\Documents\GitHub\CrawlData\电商抓取平台\bin\Debug\Ebend.DataSplider.dll
+C:\Users\Administrator\Documents\GitHub\CrawlData\电商抓取平台\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Administrator\Documents\GitHub\CrawlData\电商抓取平台\bin\Debug\Ebend.DataSplider.pdb
+C:\Users\Administrator\Documents\GitHub\CrawlData\电商抓取平台\bin\Debug\HttpHelper.pdb
+C:\Users\Administrator\Documents\GitHub\CrawlData\电商抓取平台\bin\Debug\HttpHelper.xml
+C:\Users\Administrator\Documents\GitHub\CrawlData\电商抓取平台\obj\Debug\天猫.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Documents\GitHub\CrawlData\电商抓取平台\obj\Debug\电商抓取平台.FormMain.resources
+C:\Users\Administrator\Documents\GitHub\CrawlData\电商抓取平台\obj\Debug\电商抓取平台.Properties.Resources.resources
+C:\Users\Administrator\Documents\GitHub\CrawlData\电商抓取平台\obj\Debug\天猫.csproj.GenerateResource.Cache

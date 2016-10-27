@@ -35,6 +35,18 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Idefav.DbFactory">
+      <HintPath>..\Reference\Idefav.DbFactory.dll</HintPath>
+    </Reference>
+    <Reference Include="Idefav.DbObjects">
+      <HintPath>..\Reference\Idefav.DbObjects.dll</HintPath>
+    </Reference>
+    <Reference Include="Idefav.IDAL">
+      <HintPath>..\Reference\Idefav.IDAL.dll</HintPath>
+    </Reference>
+    <Reference Include="Idefav.Utility">
+      <HintPath>..\Reference\Idefav.Utility.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\Reference\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -55,6 +67,7 @@
     <Compile Include="BusinessTask\TmallTask.cs" />
     <Compile Include="Common.cs" />
     <Compile Include="ILog.cs" />
+    <Compile Include="InstallService.cs" />
     <Compile Include="Interface\ITask.cs" />
     <Compile Include="Interface\ITaskItemModel.cs" />
     <Compile Include="Interface\ITaskModel.cs" />
@@ -72,6 +85,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="install.cmd" />
+    <None Include="run.cmd" />
+    <None Include="unInstall.cmd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
