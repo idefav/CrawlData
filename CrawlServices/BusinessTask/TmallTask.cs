@@ -96,7 +96,7 @@ namespace CrawlServices.BusinessTask
                                        ,{5}
                                        ,{6}
                                        ,{7}
-                                       ,{8},{9},{10}";
+                                       ,{8},{9})";
                 sql = string.Format(sql
                     , Db.GetParameterName("Guid")
                     , Db.GetParameterName("ItemId")
@@ -113,9 +113,9 @@ namespace CrawlServices.BusinessTask
                     new KeyValuePair<string, object>(Db.GetParameterName("Guid"),Guid.NewGuid().ToString())
                     ,new KeyValuePair<string, object>(Db.GetParameterName("ItemId"),typeProduct.sItemID)
                     ,new KeyValuePair<string, object>(Db.GetParameterName("Title"),typeProduct.sTitle)
-                    ,new KeyValuePair<string, object>(Db.GetParameterName("Price"),typeProduct.sPrice)
-                    ,new KeyValuePair<string, object>(Db.GetParameterName("PriceAVG"),typeProduct.sPriceAVG)
-                    ,new KeyValuePair<string, object>(Db.GetParameterName("SellCount"),typeProduct.sSellCount)
+                    ,new KeyValuePair<string, object>(Db.GetParameterName("Price"),decimal.Parse(typeProduct.sPrice))
+                    ,new KeyValuePair<string, object>(Db.GetParameterName("PriceAVG"),decimal.Parse(typeProduct.sPriceAVG))
+                    ,new KeyValuePair<string, object>(Db.GetParameterName("SellCount"),int.Parse(typeProduct.sSellCount))
                     ,new KeyValuePair<string, object>(Db.GetParameterName("PriceUnit"),typeProduct.sPriceUnit)
                     ,new KeyValuePair<string, object>(Db.GetParameterName("CountUnit"),typeProduct.sCountUnit)
                     ,new KeyValuePair<string, object>(Db.GetParameterName("CountAVG"),typeProduct.sCountAVG)

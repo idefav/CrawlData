@@ -41,3 +41,6 @@ C:\Users\Administrator\Documents\GitHub\CrawlData\电商抓取平台\obj\Debug\�
 C:\Users\Administrator\Documents\GitHub\CrawlData\电商抓取平台\obj\Debug\电商抓取平台.FormMain.resources
 C:\Users\Administrator\Documents\GitHub\CrawlData\电商抓取平台\obj\Debug\电商抓取平台.Properties.Resources.resources
 C:\Users\Administrator\Documents\GitHub\CrawlData\电商抓取平台\obj\Debug\天猫.csproj.GenerateResource.Cache
+C:\Sources\电商抓取平台\CrawlData\电商抓取平台\bin\Debug\电商抓取平台.exe.config
+C:\Sources\电商抓取平台\CrawlData\电商抓取平台\obj\Debug\电商抓取平台.exe
+C:\Sources\电商抓取平台\CrawlData\电商抓取平台\obj\Debug\电商抓取平台.pdb
