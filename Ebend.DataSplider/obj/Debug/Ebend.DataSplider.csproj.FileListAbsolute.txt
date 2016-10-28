@@ -15,8 +15,5 @@ C:\Sources\电商抓取平台\电商抓取平台\Ebend.DataSplider\obj\Debug\Ebe
 C:\Sources\电商抓取平台\电商抓取平台\Ebend.DataSplider\obj\Debug\Ebend.DataSplider.pdb
 C:\Users\Administrator\Documents\GitHub\CrawlData\Ebend.DataSplider\bin\Debug\Ebend.DataSplider.dll
 C:\Users\Administrator\Documents\GitHub\CrawlData\Ebend.DataSplider\bin\Debug\Ebend.DataSplider.pdb
-C:\Users\Administrator\Documents\GitHub\CrawlData\Ebend.DataSplider\bin\Debug\HttpHelper.pdb
-C:\Users\Administrator\Documents\GitHub\CrawlData\Ebend.DataSplider\bin\Debug\HttpHelper.xml
-C:\Users\Administrator\Documents\GitHub\CrawlData\Ebend.DataSplider\obj\Debug\Ebend.DataSplider.csprojResolveAssemblyReference.cache
 C:\Users\Administrator\Documents\GitHub\CrawlData\Ebend.DataSplider\obj\Debug\Ebend.DataSplider.dll
 C:\Users\Administrator\Documents\GitHub\CrawlData\Ebend.DataSplider\obj\Debug\Ebend.DataSplider.pdb

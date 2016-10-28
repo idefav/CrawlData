@@ -23,6 +23,8 @@ namespace Ebend.DataSplider
             }
         }
 
+        public static Random rd=new Random();
+
         /// <summary>
         /// 搜索天猫店铺
         /// </summary>
@@ -53,19 +55,56 @@ namespace Ebend.DataSplider
             return (DataSplider.SpliderType.TypeProduct[])ALTypeProduct.ToArray(typeof(DataSplider.SpliderType.TypeProduct));
         }
 
+        private string GetUserAgent()
+        {
+            string[] ualist=new []
+            {
+                "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_8; en-us) AppleWebKit/534.50 (KHTML, like Gecko) Version/5.1 Safari/534.50",
+                "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-us) AppleWebKit/534.50 (KHTML, like Gecko) Version/5.1 Safari/534.50",
+                "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0",
+                "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0)",
+                "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0)",
+                "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)",
+                "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:2.0.1) Gecko/20100101 Firefox/4.0.1",
+                "Mozilla/5.0 (Windows NT 6.1; rv:2.0.1) Gecko/20100101 Firefox/4.0.1",
+                "Opera/9.80 (Macintosh; Intel Mac OS X 10.6.8; U; en) Presto/2.8.131 Version/11.11",
+                "Opera/9.80 (Windows NT 6.1; U; en) Presto/2.8.131 Version/11.11",
+                "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_0) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.56 Safari/535.11",
+                "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; Maxthon 2.0)",
+                "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; TencentTraveler 4.0)",
+                "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)",
+                "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; The World)",
+                "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; Trident/4.0; SE 2.X MetaSr 1.0; SE 2.X MetaSr 1.0; .NET CLR 2.0.50727; SE 2.X MetaSr 1.0)",
+                "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; 360SE)",
+                "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; Avant Browser)",
+                "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)"
+            };
+            int d = rd.Next(ualist.Length);
+            return ualist[d];
+        }
+
         public SpliderType.TypeProduct[] SearchProduct2(string sKeyWord, int iPage, out int iTotalPage)
         {
-            HtmlHttpHelper HHH = new HtmlHttpHelper();
-            HHH.sCookies = sTCookies;
-            HHH.Referer = "https://www.tmall.com/";
-            string sUrl = "https://list.tmall.com/search_product.htm?spm=" + DateTime.Now.ToFileTime().ToString() + "&s=" + Convert.ToString(60 * iPage) + "&q=" + sKeyWord + "&sort=s&style=w&from=mallfp..pc_1_searchbutton&tmhkmain=0&type=pc#J_Filter";
-            sUrl =
-                "https://list.tmall.com/search_product.htm?spm="+ DateTime.Now.ToFileTime().ToString() + "&s=" + Convert.ToString(60 * iPage) + "&q="+sKeyWord+"&sort=s&style=g&from=.list.pc_1_searchbutton&smAreaId=310100&type=pc#J_Filter";
-            string sHtmlCode = HHH.Get(sUrl, "");
-            sHtmlCode = sHtmlCode.Replace("\n", "");
-            iTotalPage = Convert.ToInt32(ClassRegExp.GetExpString(sHtmlCode, "<b class=\"ui-page-s-len\">\\d+/(\\d+)</b>"));//获取页码
-            ArrayList ALTypeProduct = DecodeProduct(sHtmlCode);
-            return (SpliderType.TypeProduct[]) ALTypeProduct.ToArray(typeof(SpliderType.TypeProduct));
+            try
+            {
+                HtmlHttpHelper HHH = new HtmlHttpHelper();
+                HHH.sCookies = sTCookies;
+                HHH.UserAgent = GetUserAgent();
+                HHH.Referer = "https://www.tmall.com/";
+                string sUrl = "https://list.tmall.com/search_product.htm?spm=" + DateTime.Now.ToFileTime().ToString() + "&s=" + Convert.ToString(60 * iPage) + "&q=" + sKeyWord + "&sort=s&style=w&from=mallfp..pc_1_searchbutton&tmhkmain=0&type=pc#J_Filter";
+                sUrl =
+                    "https://list.tmall.com/search_product.htm?spm="+ DateTime.Now.ToFileTime().ToString() + "&s=" + Convert.ToString(60 * iPage) + "&q="+sKeyWord+"&sort=s&style=g&from=.list.pc_1_searchbutton&smAreaId=310100&type=pc#J_Filter";
+                string sHtmlCode = HHH.Get(sUrl, "");
+                sHtmlCode = sHtmlCode.Replace("\n", "");
+                iTotalPage = Convert.ToInt32(ClassRegExp.GetExpString(sHtmlCode, "<b class=\"ui-page-s-len\">\\d+/(\\d+)</b>"));//获取页码
+                ArrayList ALTypeProduct = DecodeProduct(sHtmlCode);
+                return (SpliderType.TypeProduct[]) ALTypeProduct.ToArray(typeof(SpliderType.TypeProduct));
+            }
+            catch (Exception e)
+            {
+                iTotalPage = 0;
+                return (SpliderType.TypeProduct[])new ArrayList().ToArray(typeof(SpliderType.TypeProduct));
+            }
         }
 
         private ArrayList DecodeStore(string sHtmlCode)
@@ -120,60 +159,75 @@ namespace Ebend.DataSplider
         private ArrayList DecodeProduct(string sHtmlCode)
         {
             ArrayList ALTypeProduct = new ArrayList();
-            string sExpStr = "<div class=\"product  \" data-id=\"\\d+\"data-atp=\".+?\">(.+?)</div>\\s*</div>";
-            DataSplider.SpliderType.TypeProduct TS;
-            MatchCollection mc;
-            Match m;
-            Regex r;
-            r = new Regex(sExpStr, RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.IgnoreCase);
-            mc = r.Matches(sHtmlCode);
-            string sResult = "";
-            for (int i = 0; i < mc.Count; i++)
+            try
             {
-                TS = new DataSplider.SpliderType.TypeProduct();
-                sResult = mc[i].Groups[1].Value;
-                ////detail.tmall.com/item.htm?id=35464629066&amp;is_b=1&amp;cat_id=2&amp;q=&amp;rn=4d5659c1ab3f48f75871f0d0f2a998f8
-                sExpStr = "<a href=\"//detail.tmall.com/item.htm\\?id=(\\d+)";
+                
+                string sExpStr = "<div class=\"product  \" data-id=\"\\d+\"data-atp=\".+?\">(.+?)</div>\\s*</div>";
+                SpliderType.TypeProduct TS;
+                MatchCollection mc;
+                Match m;
+                Regex r;
                 r = new Regex(sExpStr, RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.IgnoreCase);
-                m = r.Match(sResult);
-                if (m.Success)
+                mc = r.Matches(sHtmlCode);
+                string sResult = "";
+                for (int i = 0; i < mc.Count; i++)
                 {
-                    TS.sItemID = m.Groups[1].Value;
-                }
-                sExpStr = "<em title=\"[\\d\\.]+\"><b>&yen;</b>([\\d\\.]+)</em>";
-                r = new Regex(sExpStr, RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.IgnoreCase);
-                m = r.Match(sResult);
-                if (m.Success)
-                {
-                    TS.sPrice = m.Groups[1].Value;
-                }
-                sExpStr = "<span class=\"productPrice-ave\">([\\d\\.]+)(.+?)/([\\d\\.]+)(.+?)</span>";
-                r = new Regex(sExpStr, RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.IgnoreCase);
-                m = r.Match(sResult);
-                if (m.Success)
-                {
-                    TS.sPriceAVG = m.Groups[1].Value;
-                    TS.sPriceUnit = m.Groups[2].Value;
-                    TS.sCountAVG = m.Groups[3].Value;
-                    TS.sCountUnit = m.Groups[4].Value;
-                }
-                sExpStr = "<span>月成交 <em>(\\d+?)笔</em></span>";
-                r = new Regex(sExpStr, RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.IgnoreCase);
-                m = r.Match(sResult);
-                if (m.Success)
-                {
-                    TS.sSellCount = m.Groups[1].Value;
-                }
-                sExpStr = "target=\"_blank\" title=\"(.+?)\" data-p=\".*?\"\\s*>";
-                r = new Regex(sExpStr, RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.IgnoreCase);
-                m = r.Match(sResult);
-                if (m.Success)
-                {
-                    TS.sTitle = m.Groups[1].Value;
-                }
-                TS.PDate = DateTime.Now.Date;
-                ALTypeProduct.Add(TS);
+                    try
+                    {
+                        TS = new SpliderType.TypeProduct();
+                        sResult = mc[i].Groups[1].Value;
+                        ////detail.tmall.com/item.htm?id=35464629066&amp;is_b=1&amp;cat_id=2&amp;q=&amp;rn=4d5659c1ab3f48f75871f0d0f2a998f8
+                        sExpStr = "<a href=\"//detail.tmall.com/item.htm\\?id=(\\d+)";
+                        r = new Regex(sExpStr, RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.IgnoreCase);
+                        m = r.Match(sResult);
+                        if (m.Success)
+                        {
+                            TS.sItemID = m.Groups[1].Value;
+                        }
+                        sExpStr = "<em title=\"[\\d\\.]+\"><b>&yen;</b>([\\d\\.]+)</em>";
+                        r = new Regex(sExpStr, RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.IgnoreCase);
+                        m = r.Match(sResult);
+                        if (m.Success)
+                        {
+                            TS.sPrice = m.Groups[1].Value;
+                        }
+                        sExpStr = "<span class=\"productPrice-ave\">([\\d\\.]+)(.+?)/([\\d\\.]+)(.+?)</span>";
+                        r = new Regex(sExpStr, RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.IgnoreCase);
+                        m = r.Match(sResult);
+                        if (m.Success)
+                        {
+                            TS.sPriceAVG = m.Groups[1].Value;
+                            TS.sPriceUnit = m.Groups[2].Value;
+                            TS.sCountAVG = m.Groups[3].Value;
+                            TS.sCountUnit = m.Groups[4].Value;
+                        }
+                        sExpStr = "<span>月成交 <em>(\\d+?)笔</em></span>";
+                        r = new Regex(sExpStr, RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.IgnoreCase);
+                        m = r.Match(sResult);
+                        if (m.Success)
+                        {
+                            TS.sSellCount = m.Groups[1].Value;
+                        }
+                        sExpStr = "target=\"_blank\" title=\"(.+?)\" data-p=\".*?\"\\s*>";
+                        r = new Regex(sExpStr, RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.IgnoreCase);
+                        m = r.Match(sResult);
+                        if (m.Success)
+                        {
+                            TS.sTitle = m.Groups[1].Value;
+                        }
+                        TS.PDate = DateTime.Now.Date;
+                        ALTypeProduct.Add(TS);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
 
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
             return ALTypeProduct;
         }
