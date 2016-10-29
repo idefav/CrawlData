@@ -4,6 +4,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -27,7 +28,7 @@ namespace CrawlServices.Interface
         T Model { get; set; }
 
         Task<object> Task { get; set; }
-
+        DateTime NextStartTime { get; set; }
         void Run();
 
         void Run(TaskScheduler taskScheduler);

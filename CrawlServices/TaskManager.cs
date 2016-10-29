@@ -76,10 +76,45 @@ namespace CrawlServices
 
         public void Run(CancellationToken cancellationToken)
         {
-            foreach (KeyValuePair<string, ITask<ITaskModel>> keyValuePair in Tasks)
+            Task.Factory.StartNew(() =>
             {
-                keyValuePair.Value.Run(taskScheduler,cancellationToken);
-            }
+                while (!cancellationToken.IsCancellationRequested)
+                {
+                    try
+                    {
+                        foreach (KeyValuePair<string, ITask<ITaskModel>> keyValuePair in Tasks)
+                        {
+                            var task = keyValuePair.Value;
+                            if (task.Task != null)
+                            {
+                                if (task.Task.IsCompleted &&
+                                    task.NextStartTime != DateTime.MinValue &&
+                                    DateTime.Now > task.NextStartTime)
+                                {
+                                    task.NextStartTime = DateTime.MinValue;
+                                    task.Run(taskScheduler, cancellationToken);
+                                }
+                            }
+                            else
+                            {
+                                
+                                task.NextStartTime = DateTime.MinValue;
+                                task.Run(taskScheduler, cancellationToken);
+                            }
+                            
+                            
+
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Common.CommonLog.LogError(e.ToString());
+                    }
+                    Thread.Sleep(2000);
+                }
+
+            }, cancellationToken);
+
         }
 
         public void Run(string taskname,CancellationToken token)

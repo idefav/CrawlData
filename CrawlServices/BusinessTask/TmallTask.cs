@@ -34,17 +34,17 @@ namespace CrawlServices.BusinessTask
             Task = new Task<object>(() =>
             {
                 Business();
+                NextStartTime = DateTime.Now.AddSeconds(TmallTaskModel.Interval);
                 return null;
             }, token);
             Task.Start(taskScheduler);
 
-            System.Threading.Tasks.Task.WaitAll(Task);
+            //System.Threading.Tasks.Task.WaitAll(Task);
         }
 
         private void Business()
         {
-            int totalPage = 0;
-            int iPage = 0;
+            Common.CommonLog.LogInfo(string.Format("{0}_{1}",TmallTaskModel.TaskName,"开始"));
             foreach (string keyWord in TmallTaskModel.KeyWords)
             {
                 //TMallSplider tMallSplider = new TMallSplider();
@@ -52,8 +52,11 @@ namespace CrawlServices.BusinessTask
                     
 
                 //var productlist = tMallSplider.SearchProduct2(keyWord, iPage++, out totalPage);
+                Common.CommonLog.LogInfo(string.Format("{0}-正在解析关键字:{1}",TmallTaskModel.TaskName,keyWord));
                 ResolveKeyWord(keyWord);
+                Common.CommonLog.LogInfo(string.Format("{0}-解析关键字:{1} 完成", TmallTaskModel.TaskName, keyWord));
             }
+            Common.CommonLog.LogInfo(string.Format("{0}_{1}", TmallTaskModel.TaskName, "结束"));
         }
 
         private void ResolveKeyWord(string keyword)
@@ -65,9 +68,10 @@ namespace CrawlServices.BusinessTask
 
 
             SaveDataToDb( tMallSplider.SearchProduct2(keyword, iPage++, out totalPage));
-            while (iPage<totalPage&&iPage<10)
+            while (iPage<totalPage)
             {
                 SaveDataToDb(tMallSplider.SearchProduct2(keyword, iPage++, out totalPage));
+                Thread.Sleep(10000);
             }
         }
 
@@ -76,7 +80,9 @@ namespace CrawlServices.BusinessTask
             //var db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConn);
             foreach (SpliderType.TypeProduct typeProduct in typeProducts)
             {
-                string sql = @"INSERT INTO [DB_Tmall].[dbo].[td_data]
+                try
+                {
+                    string sql = @"INSERT INTO [DB_Tmall].[dbo].[td_data]
                                        ([Guid]
                                        ,[ItemId]
                                        ,[Title]
@@ -88,39 +94,37 @@ namespace CrawlServices.BusinessTask
                                        ,[CountAVG]
                                        ,[PDate])
                                  VALUES
-                                       ({0}
-                                       ,{1}
-                                       ,{2}
-                                       ,{3}
-                                       ,{4}
-                                       ,{5}
-                                       ,{6}
-                                       ,{7}
-                                       ,{8},{9})";
-                sql = string.Format(sql
-                    , Db.GetParameterName("Guid")
-                    , Db.GetParameterName("ItemId")
-                    , Db.GetParameterName("Title")
-                    , Db.GetParameterName("Price")
-                    , Db.GetParameterName("PriceAVG")
-                    , Db.GetParameterName("SellCount")
-                    , Db.GetParameterName("PriceUnit")
-                    , Db.GetParameterName("CountUnit")
-                    , Db.GetParameterName("CountAVG")
-                    , Db.GetParameterName("PDate"));
-                Db.ExceuteSql(sql,parameters:new List<KeyValuePair<string,object>>()
+                                       ({0} ,{1},{2} ,{3},{4},{5},{6},{7},{8},{9})";
+                    sql = string.Format(sql
+                        , Db.GetParameterName("Guid")
+                        , Db.GetParameterName("ItemId")
+                        , Db.GetParameterName("Title")
+                        , Db.GetParameterName("Price")
+                        , Db.GetParameterName("PriceAVG")
+                        , Db.GetParameterName("SellCount")
+                        , Db.GetParameterName("PriceUnit")
+                        , Db.GetParameterName("CountUnit")
+                        , Db.GetParameterName("CountAVG")
+                        , Db.GetParameterName("PDate"));
+                    
+                    Db.ExecuteSql(sql, parameters: new
+                    {
+                        Guid= Guid.NewGuid().ToString(),
+                        ItemId= typeProduct.sItemID,
+                        Title= typeProduct.sTitle,
+                        Price=string.IsNullOrEmpty(typeProduct.sPrice)?0: decimal.Parse(typeProduct.sPrice),
+                        PriceAVG=string.IsNullOrEmpty(typeProduct.sPriceAVG)?0: decimal.Parse(typeProduct.sPriceAVG),
+                        SellCount= string.IsNullOrEmpty(typeProduct.sSellCount)?0:int.Parse(typeProduct.sSellCount),
+                        PriceUnit= typeProduct.sPriceUnit,
+                        CountUnit= typeProduct.sCountUnit,
+                        CountAVG= typeProduct.sCountAVG,
+                        PDate= typeProduct.PDate
+                    });
+                }
+                catch (Exception e)
                 {
-                    new KeyValuePair<string, object>(Db.GetParameterName("Guid"),Guid.NewGuid().ToString())
-                    ,new KeyValuePair<string, object>(Db.GetParameterName("ItemId"),typeProduct.sItemID)
-                    ,new KeyValuePair<string, object>(Db.GetParameterName("Title"),typeProduct.sTitle)
-                    ,new KeyValuePair<string, object>(Db.GetParameterName("Price"),decimal.Parse(typeProduct.sPrice))
-                    ,new KeyValuePair<string, object>(Db.GetParameterName("PriceAVG"),decimal.Parse(typeProduct.sPriceAVG))
-                    ,new KeyValuePair<string, object>(Db.GetParameterName("SellCount"),int.Parse(typeProduct.sSellCount))
-                    ,new KeyValuePair<string, object>(Db.GetParameterName("PriceUnit"),typeProduct.sPriceUnit)
-                    ,new KeyValuePair<string, object>(Db.GetParameterName("CountUnit"),typeProduct.sCountUnit)
-                    ,new KeyValuePair<string, object>(Db.GetParameterName("CountAVG"),typeProduct.sCountAVG)
-                    ,new KeyValuePair<string, object>(Db.GetParameterName("PDate"),typeProduct.PDate)
-                } );
+                    Common.CommonLog.LogError(e.ToString());
+                }
             }
             
         }
@@ -142,5 +146,11 @@ namespace CrawlServices.BusinessTask
         /// </summary>
         private int _taskcount = 1;
         public int TaskCount { get { return _taskcount; } set { _taskcount = value; } }
+
+        /// <summary>
+        /// 时间间隔
+        /// </summary>
+        private int _interval = 24*60*60;
+        public int Interval { get { return _interval; } set { _interval = value; } }
     }
 }

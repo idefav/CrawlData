@@ -19,8 +19,6 @@ C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServices\bin\Debug\Newton
 C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServices\bin\Debug\ParallelExtensionsExtras.dll
 C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServices\bin\Debug\HttpHelper.dll
 C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServices\bin\Debug\Ebend.DataSplider.pdb
-C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServices\bin\Debug\HttpHelper.pdb
-C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServices\bin\Debug\HttpHelper.xml
 C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServices\obj\Debug\CrawlServices.csprojResolveAssemblyReference.cache
 C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServices\obj\Debug\CrawlServices.exe
 C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServices\obj\Debug\CrawlServices.pdb

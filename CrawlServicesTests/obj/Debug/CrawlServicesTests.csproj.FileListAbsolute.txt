@@ -22,8 +22,6 @@ C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServicesTests\bin\Debug\P
 C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServicesTests\bin\Debug\HttpHelper.dll
 C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServicesTests\bin\Debug\CrawlServices.pdb
 C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServicesTests\bin\Debug\Ebend.DataSplider.pdb
-C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServicesTests\bin\Debug\HttpHelper.pdb
-C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServicesTests\bin\Debug\HttpHelper.xml
 C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServicesTests\bin\Debug\zh-Hans\Microsoft.VisualStudio.QualityTools.UnitTestFramework.resources.dll
 C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServicesTests\obj\Debug\CrawlServicesTests.csprojResolveAssemblyReference.cache
 C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServicesTests\obj\Debug\CrawlServicesTests.dll

@@ -35,6 +35,8 @@ namespace CrawlServices.Model
         public event TaskStopEventHandler TaskStopEvent;
         public event TaskProcessEventHandler TaskProcessEvent;
 
+        public DateTime NextStartTime { get; set; }
+
         public void OnTaskStartEvent(TaskEventHandlerArgs args)
         {
             if (TaskStartEvent!=null)
