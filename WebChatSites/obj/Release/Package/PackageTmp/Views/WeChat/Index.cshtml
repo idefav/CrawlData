@@ -1,0 +1,93 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<html>
+<head>
+    <title>历史价格查询</title>
+
+    <link href="~/Content/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/css/bootstrap-theme.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="row">
+                <div class="col-xs-12" style="height: 5em;">
+
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <input id="txtSearch" type="text" style="width: 20em; margin: 0 auto;" class="form-control" placeholder="请输入商品链接">
+            </div>
+
+        </div>
+        <div class="row" style="margin-top: 2em; text-align: center;">
+            <div class="col-xs-1"></div>
+            <div class="col-xs-10" style="">
+                <!-- Standard button -->
+                <button type="button" id="btnQuery" class="btn btn-default" disabled="disabled">查询历史价格</button>
+                <button type="button" id="btnClear" class="btn btn-default" disabled="disabled">清空</button>
+            </div>
+            <div class="col-xs-1"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <canvas id="myChart" style="width: 15em; height: 15em;" ></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+    <script src="~/Content/js/bootstrap.min.js"></script>
+    <script src="~/Content/Chart.min.js"></script>
+
+    <script>
+        $(function () {
+            var ctx = document.getElementById("myChart").getContext("2d");
+
+            // 查询框
+            $("#txtSearch").bind("keyup", function () {
+                if ($("#txtSearch").val().length > 0) {
+                    $("#btnQuery").attr("disabled", false);
+                    $("#btnClear").attr("disabled", false);
+                }
+            });
+
+            // 查询按钮
+            $("#btnQuery").bind("click", function () {
+                var productlink = $("#txtSearch").val();
+                $.getJSON("QueryProduct", { productlink: productlink }, function (json) {
+                    json = eval(json);
+                    var labels = [];
+                    var datas = [];
+                    for (var i = 0; i < json.length; i++) {
+                        var obj = json[i];
+                        labels.push(obj.PDate.replace("T00:00:00", ""));
+                        datas.push(obj.Price);
+                    }
+                    var dataj = {
+                        labels: labels,
+                        datasets: [
+                            { data: datas }
+                        ]
+                    };
+                    var myNewChart = new Chart(ctx).Line(dataj, {
+                        responsive: true
+                    });
+                });
+            });
+
+            // 清除按钮
+            $("#btnClear").click(function () {
+                $("#btnQuery").attr("disabled", true);
+                $("#btnClear").attr("disabled", true);
+                $("#txtSearch").val("");
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+C:\Sources\电商抓取平台\CrawlData\Ebend.DataSplider\bin\Debug\Ebend.DataSplider.dll
+C:\Sources\电商抓取平台\CrawlData\Ebend.DataSplider\bin\Debug\Ebend.DataSplider.pdb
+C:\Sources\电商抓取平台\CrawlData\Ebend.DataSplider\bin\Debug\HttpHelper.dll
+C:\Sources\电商抓取平台\CrawlData\Ebend.DataSplider\bin\Debug\Newtonsoft.Json.dll
+C:\Sources\电商抓取平台\CrawlData\Ebend.DataSplider\obj\Debug\Ebend.DataSplider.dll
+C:\Sources\电商抓取平台\CrawlData\Ebend.DataSplider\obj\Debug\Ebend.DataSplider.pdb
+C:\Sources\电商抓取平台\CrawlData\Ebend.DataSplider\obj\Debug\Ebend.DataSplider.csprojResolveAssemblyReference.cache
+C:\Sources\电商抓取平台\CrawlData\Ebend.DataSplider\bin\Debug\Crawl.Common.dll
+C:\Sources\电商抓取平台\CrawlData\Ebend.DataSplider\bin\Debug\Crawl.Common.pdb

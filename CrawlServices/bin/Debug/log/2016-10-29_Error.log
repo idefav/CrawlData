@@ -1,0 +1,29 @@
+2016-10-29 16:59:22 Error System.ArgumentException: 已添加了具有相同键的项。
+   在 System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
+   在 System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   在 System.Linq.Enumerable.ToDictionary[TSource,TKey,TElement](IEnumerable`1 source, Func`2 keySelector, Func`2 elementSelector, IEqualityComparer`1 comparer)
+   在 System.Linq.Enumerable.ToDictionary[TSource,TKey,TElement](IEnumerable`1 source, Func`2 keySelector, Func`2 elementSelector)
+   在 Idefav.DbObjects.SQLServer.DbObject.Upsert[T](T model, IDbTransaction transaction)
+   在 CrawlServices.BusinessTask.TmallTask.SaveDataToDb(TypeProduct[] typeProducts) 位置 C:\Sources\电商抓取平台\CrawlData\CrawlServices\BusinessTask\TmallTask.cs:行号 123
+2016-10-29 18:14:43 Error System.Data.SqlClient.SqlException (0x80131904): 对象名 'crawlconfig' 无效。
+   在 System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   在 System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   在 System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   在 System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   在 System.Data.SqlClient.SqlDataReader.get_MetaData()
+   在 System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   在 System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   在 System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean asyncWrite)
+   在 System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   在 System.Data.SqlClient.SqlCommand.ExecuteScalar()
+   在 Idefav.DbObjects.SQLServer.DbObject.<>c__DisplayClass21_0.<ExecuteScalar>b__0(IDbCommand cmd)
+   在 Idefav.DbObjects.SQLServer.DbObject.<>c__DisplayClass13_0`1.<DbExecute>b__0(IDbConnection conn)
+   在 Idefav.DbObjects.SQLServer.DbObject.DbConnect[T](Func`2 proc)
+   在 Idefav.DbObjects.SQLServer.DbObject.DbExecute[T](Func`2 proc, IDbTransaction transaction)
+   在 Idefav.DbObjects.SQLServer.DbObject.ExecuteScalar(String sql, Dictionary`2 parameters)
+   在 Idefav.DbObjects.SQLServer.DbObject.IsExist[T](T model, Boolean ignoreAutoIm)
+   在 Idefav.DbObjects.SQLServer.DbObject.Upsert[T](T model, IDbTransaction transaction)
+   在 CrawlServices.Common.UpdateCrawlStatus(String taskname, Boolean status) 位置 C:\Sources\电商抓取平台\CrawlData\CrawlServices\Common.cs:行号 74
+   在 CrawlServices.TaskManager.<>c__DisplayClass10_0.<Run>b__0() 位置 C:\Sources\电商抓取平台\CrawlData\CrawlServices\TaskManager.cs:行号 100
+ClientConnectionId:178dc01f-f9a5-40e1-8fa8-68c5cf1fd86e
+Error Number:208,State:1,Class:16

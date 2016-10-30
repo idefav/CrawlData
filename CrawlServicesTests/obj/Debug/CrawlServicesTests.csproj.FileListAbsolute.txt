@@ -41,9 +41,10 @@ C:\Sources\电商抓取平台\CrawlData\CrawlServicesTests\bin\Debug\Idefav.Util
 C:\Sources\电商抓取平台\CrawlData\CrawlServicesTests\bin\Debug\HttpHelper.dll
 C:\Sources\电商抓取平台\CrawlData\CrawlServicesTests\bin\Debug\CrawlServices.pdb
 C:\Sources\电商抓取平台\CrawlData\CrawlServicesTests\bin\Debug\Ebend.DataSplider.pdb
-C:\Sources\电商抓取平台\CrawlData\CrawlServicesTests\bin\Debug\HttpHelper.pdb
-C:\Sources\电商抓取平台\CrawlData\CrawlServicesTests\bin\Debug\HttpHelper.xml
 C:\Sources\电商抓取平台\CrawlData\CrawlServicesTests\bin\Debug\zh-Hans\Microsoft.VisualStudio.QualityTools.UnitTestFramework.resources.dll
 C:\Sources\电商抓取平台\CrawlData\CrawlServicesTests\obj\Debug\CrawlServicesTests.csprojResolveAssemblyReference.cache
 C:\Sources\电商抓取平台\CrawlData\CrawlServicesTests\obj\Debug\CrawlServicesTests.dll
 C:\Sources\电商抓取平台\CrawlData\CrawlServicesTests\obj\Debug\CrawlServicesTests.pdb
+C:\Sources\电商抓取平台\CrawlData\CrawlServicesTests\bin\Debug\Newtonsoft.Json.dll
+C:\Sources\电商抓取平台\CrawlData\CrawlServicesTests\bin\Debug\Crawl.Common.dll
+C:\Sources\电商抓取平台\CrawlData\CrawlServicesTests\bin\Debug\Crawl.Common.pdb

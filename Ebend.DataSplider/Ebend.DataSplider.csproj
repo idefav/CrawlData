@@ -31,11 +31,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="HttpHelper">
-      <HintPath>..\..\..\常用类库+DLL\HttpHelper万能框架\HttpHelper万能框架V1.6.zip\CsharpHttpHelper\bin\Debug\HttpHelper.dll</HintPath>
+      <HintPath>..\电商抓取平台\bin\Debug\HttpHelper.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\电商抓取平台\Reference\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -52,6 +52,12 @@
     <Compile Include="TaobaoSplider.cs" />
     <Compile Include="TMallSplider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Crawl.Common\Crawl.Common.csproj">
+      <Project>{1C9CC56D-3341-4E4F-A91D-7FCEFE0B15F0}</Project>
+      <Name>Crawl.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

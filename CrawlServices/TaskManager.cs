@@ -78,39 +78,48 @@ namespace CrawlServices
         {
             Task.Factory.StartNew(() =>
             {
-                while (!cancellationToken.IsCancellationRequested)
+                try
                 {
-                    try
+                    while (!cancellationToken.IsCancellationRequested)
                     {
-                        foreach (KeyValuePair<string, ITask<ITaskModel>> keyValuePair in Tasks)
+                        try
                         {
-                            var task = keyValuePair.Value;
-                            if (task.Task != null)
+                            foreach (KeyValuePair<string, ITask<ITaskModel>> keyValuePair in Tasks)
                             {
-                                if (task.Task.IsCompleted &&
-                                    task.NextStartTime != DateTime.MinValue &&
-                                    DateTime.Now > task.NextStartTime)
+                                var task = keyValuePair.Value;
+                                if (task.Task != null)
                                 {
-                                    task.NextStartTime = DateTime.MinValue;
+                                    if (task.Task.IsCompleted &&
+                                        Common.NeedCrawl(task.Model.TaskName))
+                                    {
+                                        //task.NextStartTime = DateTime.MinValue;
+                                        Common.UpdateCrawlStart(task.Model.TaskName);
+                                        task.Run(taskScheduler, cancellationToken);
+                                    }
+                                }
+                                else
+                                {
+                                    Common.UpdateCrawlStart(task.Model.TaskName);
+
+                               
+                                    //task.NextStartTime = DateTime.MinValue;
                                     task.Run(taskScheduler, cancellationToken);
                                 }
-                            }
-                            else
-                            {
-                                
-                                task.NextStartTime = DateTime.MinValue;
-                                task.Run(taskScheduler, cancellationToken);
-                            }
                             
                             
 
+                            }
                         }
+                        catch (Exception e)
+                        {
+                            Common.CommonLog.LogError(e.ToString());
+                        }
+                        Thread.Sleep(10000);
                     }
-                    catch (Exception e)
-                    {
-                        Common.CommonLog.LogError(e.ToString());
-                    }
-                    Thread.Sleep(2000);
+                }
+                catch (Exception e)
+                {
+                    Common.CommonLog.LogError(e.ToString());
                 }
 
             }, cancellationToken);

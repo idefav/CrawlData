@@ -85,6 +85,10 @@
     <Compile Include="TxtLog.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Crawl.Common\Crawl.Common.csproj">
+      <Project>{1c9cc56d-3341-4e4f-a91d-7fcefe0b15f0}</Project>
+      <Name>Crawl.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Ebend.DataSplider\Ebend.DataSplider.csproj">
       <Project>{b6ef604d-a8d5-4143-9ceb-9b9f46489529}</Project>
       <Name>Ebend.DataSplider</Name>

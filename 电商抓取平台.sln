@@ -24,6 +24,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Reference", "Reference", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrawlServicesTests", "CrawlServicesTests\CrawlServicesTests.csproj", "{699582D5-8431-4F4C-BA92-9BEE2B4DD771}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{0665E69D-BAA7-4C8F-83CD-1C2A60E2410E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebChatSites", "WebChatSites\WebChatSites.csproj", "{5BA6921A-82C4-47A6-86DB-CF0C223B3E71}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crawl.Common", "Crawl.Common\Crawl.Common.csproj", "{1C9CC56D-3341-4E4F-A91D-7FCEFE0B15F0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +52,14 @@ Global
 		{699582D5-8431-4F4C-BA92-9BEE2B4DD771}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{699582D5-8431-4F4C-BA92-9BEE2B4DD771}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{699582D5-8431-4F4C-BA92-9BEE2B4DD771}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BA6921A-82C4-47A6-86DB-CF0C223B3E71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BA6921A-82C4-47A6-86DB-CF0C223B3E71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BA6921A-82C4-47A6-86DB-CF0C223B3E71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BA6921A-82C4-47A6-86DB-CF0C223B3E71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C9CC56D-3341-4E4F-A91D-7FCEFE0B15F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C9CC56D-3341-4E4F-A91D-7FCEFE0B15F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C9CC56D-3341-4E4F-A91D-7FCEFE0B15F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C9CC56D-3341-4E4F-A91D-7FCEFE0B15F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

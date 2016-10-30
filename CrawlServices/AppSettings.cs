@@ -155,6 +155,8 @@ namespace CrawlServices
         public string DbConn { get; set; }
         public string LogPath { get; set; }
 
+        private int _interval = 10;
+        public int Interval { get { return _interval; } set { _interval = value; } }
         public int TaskCount { get; set; }
 
         public List<string> RegexList { get; set; }

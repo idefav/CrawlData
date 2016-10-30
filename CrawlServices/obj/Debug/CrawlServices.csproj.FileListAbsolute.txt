@@ -44,8 +44,8 @@ C:\Sources\电商抓取平台\CrawlData\CrawlServices\bin\Debug\System.Data.SQLi
 C:\Sources\电商抓取平台\CrawlData\CrawlServices\bin\Debug\Oracle.DataAccess.dll
 C:\Sources\电商抓取平台\CrawlData\CrawlServices\bin\Debug\MySql.Data.dll
 C:\Sources\电商抓取平台\CrawlData\CrawlServices\bin\Debug\Ebend.DataSplider.pdb
-C:\Sources\电商抓取平台\CrawlData\CrawlServices\bin\Debug\HttpHelper.pdb
-C:\Sources\电商抓取平台\CrawlData\CrawlServices\bin\Debug\HttpHelper.xml
 C:\Sources\电商抓取平台\CrawlData\CrawlServices\obj\Debug\CrawlServices.csprojResolveAssemblyReference.cache
 C:\Sources\电商抓取平台\CrawlData\CrawlServices\obj\Debug\CrawlServices.exe
 C:\Sources\电商抓取平台\CrawlData\CrawlServices\obj\Debug\CrawlServices.pdb
+C:\Sources\电商抓取平台\CrawlData\CrawlServices\bin\Debug\Crawl.Common.dll
+C:\Sources\电商抓取平台\CrawlData\CrawlServices\bin\Debug\Crawl.Common.pdb
