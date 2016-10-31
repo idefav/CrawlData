@@ -1,1 +1,5 @@
 var arr=new Array();$(".hot-word").each(function(){arr.push('"'+this.innerText+'"');});console.log(arr.join())
+
+
+// 获取大类
+var arr=new Array();$("div.pannel-normal ul.normal-nav>li.j_MenuNav a").each(function(){arr.push('"'+$(this).text()+'"');});console.log(arr.join());

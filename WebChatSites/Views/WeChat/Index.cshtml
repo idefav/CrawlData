@@ -9,17 +9,10 @@
     <title>历史价格查询</title>
 
     <link href="~/Content/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/Content/css/bootstrap-theme.css" rel="stylesheet"/>
-
+    <link href="~/Content/css/bootstrap-theme.css" rel="stylesheet" />
+    <link href="~/Content/WeChat.css" rel="stylesheet" />
     <style>
-        .btn-active {
-            background-color: rgb(102, 204, 204);
-            color: rgb(255, 255, 255);
-        }
-        .btn-disabled {
-            background-color: rgb(215, 215, 215);
-            color: rgb(2, 2, 2);
-        }
+        
     </style>
 </head>
 <body>
@@ -31,30 +24,30 @@
                 </div>
             </div>
             <div class="col-xs-12">
-                <input id="txtSearch" type="text" style="width: 20em; margin: 0 auto;" class="form-control" placeholder="请输入商品链接">
+                <input id="txtSearch" type="text" style="" class="form-control search-input" placeholder="请输入商品链接">
             </div>
 
         </div>
-        <div class="row" style="margin-top: 2em; text-align: center;">
+        <div class="row search-ctl-group" style="">
             <div class="col-xs-1"></div>
             <div class="col-xs-10" style="">
                 <!-- Standard button -->
-                <button type="button" id="btnQuery" class="btn btn-default btn-disabled" disabled="disabled"  >查询历史价格</button>
-                <button type="button" id="btnClear" class="btn btn-default btn-disabled" disabled="disabled" >清空</button>
+                <button type="button" id="btnQuery" class="btn btn-default btn-disabled" disabled="disabled">查询历史价格</button>
+                <button type="button" id="btnClear" class="btn btn-default btn-disabled" disabled="disabled">清空</button>
             </div>
             <div class="col-xs-1"></div>
         </div>
         <div class="row">
             <div class="col-md-12">
                 <div id="divNone" style="display: none;">
-                    <div style="background: url(../../Content/images/20161030164801.png) no-repeat; margin-top: 2em;"></div>
-                    <div style="margin: 0 auto; text-align: center;">Sorry，没有你要找的内容，换个其他的吧</div>
+                    <div class="divNoneImg" style=""></div>
+                    <div class="divNoneText" style="">Sorry，没有你要找的内容，换个其他的吧</div>
                 </div>
                 <div id="divInfo">
-                    <div id="divTitle" style="text-align: center; margin: 2em 0 0.2em 0; font-size: 1em; font-weight: bold; font-family: 微软雅黑;"></div>
-                    <div id="divMinPrice" style="text-align: center;font-size: 0.7em;font-family: 微软雅黑;"></div>
+                    <div id="divTitle" style=""></div>
+                    <div id="divMinPrice" style=""></div>
                 </div>
-               
+
                 <canvas id="myChart" style="width: 100%; height: 15em;"></canvas>
             </div>
         </div>
@@ -72,10 +65,8 @@
             // 查询框
             $("#txtSearch").bind("input propertychange", function () {
                 if ($("#txtSearch").val().length > 0) {
-                    $("#btnQuery").attr("disabled", false);
-                    $("#btnClear").attr("disabled", false);
-                    $("#btnQuery").addClass("btn-active").removeClass("btn-disabled");
-                    $("#btnClear").addClass("btn-active").removeClass("btn-disabled");
+                    $("#btnQuery").attr("disabled", false).addClass("btn-active").removeClass("btn-disabled");
+                    $("#btnClear").attr("disabled", false).addClass("btn-active").removeClass("btn-disabled");
                 } else {
                     $("#btnQuery").attr("disabled", true).removeClass("btn-active").addClass("btn-disabled");
                     $("#btnClear").attr("disabled", true).removeClass("btn-active").addClass("btn-disabled");
@@ -85,12 +76,17 @@
             // 查询按钮
             $("#btnQuery").bind("click", function () {
                 var productlink = $("#txtSearch").val();
+                if (productlink.length <= 0) {
+                    return;
+                }
+                $("#btnQuery").text("正在查询...").attr("disabled",true).addClass("btn-active");
                 $.getJSON("/WeChat/QueryProduct", { productlink: productlink }, function (json) {
-                    json = eval("("+json+")");
+                    json = eval("(" + json + ")");
 
-                    $("#divMinPrice").text("最低价："+json.MinPrice+"元");
+                    
                     //加载图表内容
                     if (json.ChartData.length > 0) {
+                        $("#divMinPrice").text("最低价：" + json.MinPrice + "元");
                         $("#myChart").show();
                         $("#divNone").hide();
                         $("#divInfo").show();
@@ -98,7 +94,7 @@
                         var datas = [];
                         for (var i = 0; i < json.ChartData.length; i++) {
                             var obj = json.ChartData[i];
-                            $("#divTitle").text(obj.Title);
+                            $("#divTitle").html("<a target='_blank' href='https://detail.tmall.com/item.htm?id="+obj.ItemId+"&rd="+new Date().getMilliseconds()+"' title='"+obj.Title+"'>" + obj.Title + "</a>");
                             labels.push(obj.PDate.replace("T00:00:00", ""));
                             datas.push(obj.Price);
                         }
@@ -114,12 +110,12 @@
                             scaleGridLineColor: "rgba(0,0,0,.05)",
                             bezierCurve: true,
                             datasetFill: false
-                    });
-                        
+                        });
+
                     } else {
                         $("#divNone").show();
                     }
-                    
+                    $("#btnQuery").text("查询历史价格").attr("disabled",false);
                 });
             });
 
