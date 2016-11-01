@@ -161,7 +161,7 @@ namespace Ebend.DataSplider
             ArrayList ALTypeProduct = new ArrayList();
 
 
-            string sExpStr = "<div class=\"product  \" data-id=\"\\d+\"data-atp=\".+?\">(.+?)</span>\\s*</p>\\s*</div>\\s*</div>";
+            string sExpStr = "<div class=\"product [^\"]* \" data-id=\"\\d+\"data-atp=\".+?\">(.+?)</span>\\s*</p>\\s*</div>\\s*</div>";
             SpliderType.TypeProduct TS;
             MatchCollection mc;
             Match m;

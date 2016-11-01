@@ -7,3 +7,11 @@ C:\Sources\电商抓取平台\CrawlData\Ebend.DataSplider\obj\Debug\Ebend.DataSp
 C:\Sources\电商抓取平台\CrawlData\Ebend.DataSplider\obj\Debug\Ebend.DataSplider.csprojResolveAssemblyReference.cache
 C:\Sources\电商抓取平台\CrawlData\Ebend.DataSplider\bin\Debug\Crawl.Common.dll
 C:\Sources\电商抓取平台\CrawlData\Ebend.DataSplider\bin\Debug\Crawl.Common.pdb
+C:\Users\Administrator\Documents\GitHub\CrawlData\Ebend.DataSplider\bin\Debug\Ebend.DataSplider.dll
+C:\Users\Administrator\Documents\GitHub\CrawlData\Ebend.DataSplider\bin\Debug\Ebend.DataSplider.pdb
+C:\Users\Administrator\Documents\GitHub\CrawlData\Ebend.DataSplider\bin\Debug\Crawl.Common.dll
+C:\Users\Administrator\Documents\GitHub\CrawlData\Ebend.DataSplider\bin\Debug\HttpHelper.dll
+C:\Users\Administrator\Documents\GitHub\CrawlData\Ebend.DataSplider\bin\Debug\Crawl.Common.pdb
+C:\Users\Administrator\Documents\GitHub\CrawlData\Ebend.DataSplider\obj\Debug\Ebend.DataSplider.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Documents\GitHub\CrawlData\Ebend.DataSplider\obj\Debug\Ebend.DataSplider.dll
+C:\Users\Administrator\Documents\GitHub\CrawlData\Ebend.DataSplider\obj\Debug\Ebend.DataSplider.pdb

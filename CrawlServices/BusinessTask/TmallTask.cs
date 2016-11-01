@@ -234,5 +234,7 @@ namespace CrawlServices.BusinessTask
             get { return _crawlpages; }
             set { _crawlpages = value; }
         }
+
+        
     }
 }
