@@ -6,6 +6,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 using Idefav.DbFactory;
 using Idefav.IDAL;
 using Idefav.Utility;
@@ -128,6 +129,36 @@ namespace CrawlServices
             config.CurrentPage = page;
             config.UpdateTime = DateTime.Now;
             db.Update(config);
+        }
+
+        /// <summary>
+        /// 是否是降价商品
+        /// </summary>
+        /// <param name="shop"></param>
+        /// <param name="productid"></param>
+        /// <param name="price"></param>
+        /// <returns></returns>
+        public static bool IsCheapProduct(string shop, string productid, decimal? price)
+        {
+            IDbObject db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConn);
+            StringBuilder stringBuilder = new StringBuilder("select top 1 price from ");
+            if (shop == "天猫")
+            {
+                stringBuilder.Append("DB_Tmall.dbo.td_data ");
+            }
+            stringBuilder.Append(" where itemid=@itemid ");
+            stringBuilder.Append(" order by updatetime desc ");
+            var table = db.QueryDataTable(stringBuilder.ToString(), new {itemid = productid});
+            if (table != null && table.Rows.Count > 0)
+            {
+                decimal? oldprice = table.Rows[0][0] as decimal?;
+                if (oldprice.HasValue && price < oldprice)
+                {
+                    return true;
+                }
+
+            }
+            return false;
         }
     }
 

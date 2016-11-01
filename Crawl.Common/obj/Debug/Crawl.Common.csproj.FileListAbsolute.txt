@@ -3,7 +3,6 @@ C:\Sources\电商抓取平台\CrawlData\Crawl.Common\bin\Debug\Crawl.Common.pdb
 C:\Sources\电商抓取平台\CrawlData\Crawl.Common\bin\Debug\HttpHelper.dll
 C:\Sources\电商抓取平台\CrawlData\Crawl.Common\obj\Debug\Crawl.Common.dll
 C:\Sources\电商抓取平台\CrawlData\Crawl.Common\obj\Debug\Crawl.Common.pdb
-C:\Sources\电商抓取平台\CrawlData\Crawl.Common\obj\Debug\Crawl.Common.csprojResolveAssemblyReference.cache
 C:\Users\Administrator\Documents\GitHub\CrawlData\Crawl.Common\bin\Debug\Crawl.Common.dll
 C:\Users\Administrator\Documents\GitHub\CrawlData\Crawl.Common\bin\Debug\Crawl.Common.pdb
 C:\Users\Administrator\Documents\GitHub\CrawlData\Crawl.Common\bin\Debug\HttpHelper.dll
