@@ -8,19 +8,35 @@
 
 </style>
 
-<div class="container">
+<div class="container" style="font-family: 微软雅黑; font-size: 14px;">
+    <div style="text-align: center; font-size: 14px; height: 4em; line-height: 4em; font-weight: bold;">
+        <div style="display: block;position: fixed;text-align: center;width: 100%;background: #f9f9f9; margin: 0 auto;left: 0;z-index: 999;box-shadow: 0 0 0.5em #ccc;">
+            降价排行
+        </div>
+        
+    </div>
     @for (int i = 0; i < @Model.Count; i++)
     {
         var m = Model[i];
-        <div class="row" style="height: 4em;  background-color: #a9a9a9; margin: 0.5em 0;">
-            <div class="col-xs-8">
-                <div class="row">
-                    <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="@m.ProductName">@m.ProductName</div>
-                    <div style="">@m.Shop</div>
-                    <div>@m.UpdateTime.ToString("yyyy年MM月dd日")</div>
+        <div class="row" style="height: 5em; border-bottom: #ccc 1px solid;">
+            <div class="col-xs-12" style="margin-top: 0.3em;">
+                <div class="row" style="height: 3em;">
+                    <div class="col-xs-9">
+                        <div style="overflow: hidden; text-overflow: ellipsis; height: 3em;" title="@m.ProductName">@m.ProductName</div>
+                    </div>
+                    <div class="col-xs-3" style="text-align: right; text-align: right; line-height: 3em;">@m.Price</div>
+                </div>
+                <div class="row" style="font-size: 12px;">
+                    <div class="col-xs-6">
+                        <div style="">@m.Shop</div>
+
+                    </div>
+                    <div class="col-xs-6" style="text-align: right;">
+                        <div>@m.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss")</div>
+                    </div>
                 </div>
             </div>
-            <div class="col-xs-4">@m.Price</div>
+
         </div>
     }
 

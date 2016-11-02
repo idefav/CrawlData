@@ -1,18 +1,8 @@
 ﻿@{
-    Layout = null;
+    Layout = "~/Views/Shared/WeChatLayout.cshtml";
+    ViewBag.Title = "历史价格查询";
 }
-
-<!DOCTYPE html>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<html>
-<head>
-    <title>历史价格查询</title>
-
-    <link href="~/Content/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/Content/css/bootstrap-theme.css" rel="stylesheet" />
-</head>
-<body>
-    <div class="container">
+    <div class="container" style="width: 100%; overflow: hidden;">
         <div class="row">
             <div class="row">
                 <div class="col-xs-12" style="height: 5em;">
@@ -20,74 +10,112 @@
                 </div>
             </div>
             <div class="col-xs-12">
-                <input id="txtSearch" type="text" style="width: 20em; margin: 0 auto;" class="form-control" placeholder="请输入商品链接">
+                <input id="txtSearch" type="text" style="" class="form-control search-input" placeholder="请输入商品链接">
             </div>
 
         </div>
-        <div class="row" style="margin-top: 2em; text-align: center;">
+        <div class="row search-ctl-group" style="">
             <div class="col-xs-1"></div>
             <div class="col-xs-10" style="">
                 <!-- Standard button -->
-                <button type="button" id="btnQuery" class="btn btn-default" disabled="disabled">查询历史价格</button>
-                <button type="button" id="btnClear" class="btn btn-default" disabled="disabled">清空</button>
+                <button type="button" id="btnQuery" class="btn btn-default btn-disabled" disabled="disabled">查询历史价格</button>
+                <button type="button" id="btnClear" class="btn btn-default btn-disabled" disabled="disabled">清空</button>
             </div>
             <div class="col-xs-1"></div>
         </div>
         <div class="row">
             <div class="col-md-12">
-                <canvas id="myChart" style="width: 15em; height: 15em;" ></canvas>
+                <div id="divNone" style="display: none;">
+                    <div class="divNoneImg" style=""></div>
+                    <div class="divNoneText" style="">Sorry，没有你要找的内容，换个其他的吧</div>
+                </div>
+                <div id="divInfo">
+                    <div id="divTitle" style=""></div>
+                    <div id="divMinPrice" style=""></div>
+                </div>
+
+                <canvas id="myChart" style="width: 100%; height: 15em;"></canvas>
             </div>
         </div>
     </div>
 
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-
-    <script src="~/Content/js/bootstrap.min.js"></script>
-    <script src="~/Content/Chart.min.js"></script>
-
+@section scripts
+{
     <script>
         $(function () {
             var ctx = document.getElementById("myChart").getContext("2d");
-
+            var myNewChart;
             // 查询框
-            $("#txtSearch").bind("keyup", function () {
+            $("#txtSearch").bind("input propertychange", function () {
                 if ($("#txtSearch").val().length > 0) {
-                    $("#btnQuery").attr("disabled", false);
-                    $("#btnClear").attr("disabled", false);
+                    $("#btnQuery").attr("disabled", false).addClass("btn-active").removeClass("btn-disabled");
+                    $("#btnClear").attr("disabled", false).addClass("btn-active").removeClass("btn-disabled");
+                } else {
+                    $("#btnQuery").attr("disabled", true).removeClass("btn-active").addClass("btn-disabled");
+                    $("#btnClear").attr("disabled", true).removeClass("btn-active").addClass("btn-disabled");
                 }
             });
 
             // 查询按钮
             $("#btnQuery").bind("click", function () {
                 var productlink = $("#txtSearch").val();
-                $.getJSON("QueryProduct", { productlink: productlink }, function (json) {
-                    json = eval(json);
-                    var labels = [];
-                    var datas = [];
-                    for (var i = 0; i < json.length; i++) {
-                        var obj = json[i];
-                        labels.push(obj.PDate.replace("T00:00:00", ""));
-                        datas.push(obj.Price);
+                if (productlink.length <= 0) {
+                    return;
+                }
+                $("#btnQuery").text("正在查询...").attr("disabled",true).addClass("btn-active");
+                $.getJSON("/WeChat/QueryProduct", { productlink: productlink }, function (json) {
+                    json = eval("(" + json + ")");
+
+
+                    //加载图表内容
+                    if (json.ChartData.length > 0) {
+                        $("#divMinPrice").text("最低价：" + json.MinPrice + "元");
+                        $("#myChart").show();
+                        $("#divNone").hide();
+                        $("#divInfo").show();
+                        var labels = [];
+                        var datas = [];
+                        for (var i = 0; i < json.ChartData.length; i++) {
+                            var obj = json.ChartData[i];
+                            $("#divTitle").html("<a target='_blank' href='https://detail.tmall.com/item.htm?id="+obj.ItemId+"&rd="+new Date().getMilliseconds()+"' title='"+obj.Title+"'>" + obj.Title + "</a>");
+                            labels.push(obj.PDate.replace("T00:00:00", ""));
+                            datas.push(obj.Price);
+                        }
+                        var dataj = {
+                            labels: labels,
+                            datasets: [
+                                { data: datas }
+                            ]
+                        };
+                        myNewChart = new Chart(ctx).Line(dataj,
+                        {
+                            scaleShowGridLines: true,
+                            scaleGridLineColor: "rgba(0,0,0,.05)",
+                            bezierCurve: true,
+                            datasetFill: false
+                        });
+
+                    } else {
+                        $("#divNone").show();
                     }
-                    var dataj = {
-                        labels: labels,
-                        datasets: [
-                            { data: datas }
-                        ]
-                    };
-                    var myNewChart = new Chart(ctx).Line(dataj, {
-                        responsive: true
-                    });
+                    $("#btnQuery").text("查询历史价格").attr("disabled",false);
                 });
             });
 
             // 清除按钮
             $("#btnClear").click(function () {
+                $("#divNone").hide();
                 $("#btnQuery").attr("disabled", true);
                 $("#btnClear").attr("disabled", true);
+                $("#btnQuery").removeClass("btn-active").addClass("btn-disabled");
+                $("#btnClear").removeClass("btn-active").addClass("btn-disabled");
                 $("#txtSearch").val("");
+                $("#myChart").hide();
+                $("#divInfo").hide();
             });
         });
-    </script>
-</body>
-</html>
+</script>
+}
+
+
+
