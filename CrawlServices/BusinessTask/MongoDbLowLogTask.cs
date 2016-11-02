@@ -12,8 +12,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using CrawlServices.Interface;
-using CrawlServices.Model;
+using Crawl.Common.Interface;
+using Crawl.Common.Model;
 
 namespace CrawlServices.BusinessTask
 {

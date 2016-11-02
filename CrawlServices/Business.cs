@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Crawl.Common;
 using Idefav.DbFactory;
 using Idefav.IDAL;
 using Idefav.Utility;
@@ -26,14 +27,9 @@ namespace CrawlServices
     ///     <date>2016/9/22 9:47:45</date>
     /// </author>
     /// </summary>
-    public class Common
+    public class Business
     {
-        public static ILog CommonLog { get; set; }
-
-        static Common()
-        {
-            CommonLog = new TxtLog();
-        }
+      
 
         public static bool IsCrawlComplete(string taskname)
         {
@@ -43,7 +39,7 @@ namespace CrawlServices
                  new { taskname = taskname });
             if (model != null)
             {
-                return model.UpdatedDay >= DateTime.Now.Date&&model.Status;
+                return model.UpdatedDay >= DateTime.Now.Date && model.Status;
             }
             return false;
         }
@@ -56,7 +52,7 @@ namespace CrawlServices
                  new { taskname = taskname });
             if (model != null)
             {
-                return model.UpdatedDay < DateTime.Now.Date ;
+                return model.UpdatedDay < DateTime.Now.Date;
             }
             return true;
         }
@@ -69,17 +65,17 @@ namespace CrawlServices
                  new { taskname = taskname });
             if (model != null)
             {
-                return new KeyValuePair<string, int?>(model.CurrentKeyWord,model.CurrentPage);
+                return new KeyValuePair<string, int?>(model.CurrentKeyWord, model.CurrentPage);
             }
-            return new KeyValuePair<string, int?>(null,null);
+            return new KeyValuePair<string, int?>(null, null);
         }
 
         public static void UpdateCrawlStart(string taskname)
         {
             IDbObject db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConn);
-            CrawlConfig config=new CrawlConfig();
+            CrawlConfig config = new CrawlConfig();
             config.Guid = Guid.NewGuid().ToString();
-            
+
             config.TaskName = taskname;
             config.TimeUsed = 0;
             config.Status = false;
@@ -97,9 +93,9 @@ namespace CrawlServices
             var model = db.QueryModel<CrawlConfig>(
                 " select * from DB_CrawlConfig.dbo.td_crawlconfig where taskname=" + db.GetParameterName("taskname"),
                 new { taskname = taskname });
-            if (model!=null)
+            if (model != null)
             {
-                return (model.UpdatedDay<DateTime.Now.Date&&model.Status)||!model.UpdatedDay.HasValue;
+                return (model.UpdatedDay < DateTime.Now.Date && model.Status) || !model.UpdatedDay.HasValue;
             }
             return false;
         }
@@ -113,7 +109,7 @@ namespace CrawlServices
             config.TaskName = taskname;
             config.TimeUsed = 0;
             config.Status = true;
-            config.CurrentKeyWord = null;
+            config.CurrentKeyWord = "";
             config.CurrentPage = 0;
             config.UpdateTime = DateTime.Now;
             db.Upsert(config);
@@ -148,7 +144,7 @@ namespace CrawlServices
             }
             stringBuilder.Append(" where itemid=@itemid ");
             stringBuilder.Append(" order by updatetime desc ");
-            var table = db.QueryDataTable(stringBuilder.ToString(), new {itemid = productid});
+            var table = db.QueryDataTable(stringBuilder.ToString(), new { itemid = productid });
             if (table != null && table.Rows.Count > 0)
             {
                 decimal? oldprice = table.Rows[0][0] as decimal?;
@@ -175,6 +171,6 @@ namespace CrawlServices
         public string CurrentKeyWord { get; set; }
         public int? CurrentPage { get; set; }
 
-        
+
     }
 }

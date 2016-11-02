@@ -1,21 +1,7 @@
 ﻿@{
-    Layout = null;
+    Layout = "~/Views/Shared/WeChatLayout.cshtml";
+    ViewBag.Title = "历史价格查询";
 }
-
-<!DOCTYPE html>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<html>
-<head>
-    <title>历史价格查询</title>
-
-    <link href="~/Content/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/Content/css/bootstrap-theme.css" rel="stylesheet" />
-    <link href="~/Content/WeChat.css" rel="stylesheet" />
-    <style>
-        
-    </style>
-</head>
-<body>
     <div class="container" style="width: 100%; overflow: hidden;">
         <div class="row">
             <div class="row">
@@ -53,11 +39,8 @@
         </div>
     </div>
 
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-
-    <script src="~/Content/js/bootstrap.min.js"></script>
-    <script src="~/Content/Chart.min.js"></script>
-
+@section scripts
+{
     <script>
         $(function () {
             var ctx = document.getElementById("myChart").getContext("2d");
@@ -83,7 +66,7 @@
                 $.getJSON("/WeChat/QueryProduct", { productlink: productlink }, function (json) {
                     json = eval("(" + json + ")");
 
-                    
+
                     //加载图表内容
                     if (json.ChartData.length > 0) {
                         $("#divMinPrice").text("最低价：" + json.MinPrice + "元");
@@ -131,6 +114,8 @@
                 $("#divInfo").hide();
             });
         });
-    </script>
-</body>
-</html>
+</script>
+}
+
+
+

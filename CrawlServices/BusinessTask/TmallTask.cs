@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using CrawlServices.Interface;
-using CrawlServices.Model;
+using Crawl.Common;
+using Crawl.Common.Interface;
+using Crawl.Common.Model;
 using Ebend.DataSplider;
 using Idefav.DbFactory;
 using Idefav.IDAL;
@@ -40,11 +41,11 @@ namespace CrawlServices.BusinessTask
                     Business();
                     NextStartTime = DateTime.Now.AddSeconds(TmallTaskModel.Interval);
                     //Common.UpdateCrawlStatus(TmallTaskModel.TaskName, true);
-                    Common.UpdateCrawlComplete(TmallTaskModel.TaskName);
+                    CrawlServices.Business.UpdateCrawlComplete(TmallTaskModel.TaskName);
                 }
                 catch (Exception e)
                 {
-                    Common.CommonLog.LogError(e.ToString());
+                    Crawl.Common.Common.Log.LogError(e.ToString());
                 }
                 return null;
             }, token);
@@ -57,12 +58,12 @@ namespace CrawlServices.BusinessTask
         {
             try
             {
-                Common.CommonLog.LogInfo(string.Format("{0}_{1}", TmallTaskModel.TaskName, "开始"));
+                Crawl.Common.Common.Log.LogInfo(string.Format("{0}_{1}", TmallTaskModel.TaskName, "开始"));
 
-                var breakpoint = Common.GetCurrBreakpoint(TmallTaskModel.TaskName);
+                var breakpoint = CrawlServices.Business.GetCurrBreakpoint(TmallTaskModel.TaskName);
                 int index = 0;
                 int ipage = 0;
-                if (breakpoint.Key != null)
+                if (!string.IsNullOrEmpty(breakpoint.Key))
                 {
                     index = TmallTaskModel.KeyWords.ToList().IndexOf(breakpoint.Key);
                     if (breakpoint.Value.HasValue)
@@ -76,14 +77,14 @@ namespace CrawlServices.BusinessTask
                     try
                     {
                         string keyWord = TmallTaskModel.KeyWords[i];
-                        Common.CommonLog.LogInfo(string.Format("{0}-正在解析关键字:{1}", TmallTaskModel.TaskName, keyWord));
+                        Crawl.Common.Common.Log.LogInfo(string.Format("{0}-正在解析关键字:{1}", TmallTaskModel.TaskName, keyWord));
                         ResolveKeyWord(keyWord, ipage);
                         ipage = 0;
-                        Common.CommonLog.LogInfo(string.Format("{0}-解析关键字:{1} 完成", TmallTaskModel.TaskName, keyWord));
+                        Crawl.Common.Common.Log.LogInfo(string.Format("{0}-解析关键字:{1} 完成", TmallTaskModel.TaskName, keyWord));
                     }
                     catch (Exception e)
                     {
-                        Common.CommonLog.LogError(e.ToString());
+                        Crawl.Common.Common.Log.LogError(e.ToString());
                     }
                 }
                 //foreach (string keyWord in TmallTaskModel.KeyWords)
@@ -104,11 +105,11 @@ namespace CrawlServices.BusinessTask
                 //        Common.CommonLog.LogError(e.ToString());
                 //    }
                 //}
-                Common.CommonLog.LogInfo(string.Format("{0}_{1}", TmallTaskModel.TaskName, "结束"));
+                Crawl.Common.Common.Log.LogInfo(string.Format("{0}_{1}", TmallTaskModel.TaskName, "结束"));
             }
             catch (Exception e)
             {
-                Common.CommonLog.LogError(e.ToString());
+                Crawl.Common.Common.Log.LogError(e.ToString());
             }
         }
 
@@ -121,13 +122,13 @@ namespace CrawlServices.BusinessTask
 
             
             SaveDataToDb(tMallSplider.SearchProduct2(keyword, iPage, out totalPage));
-            Common.UpdateCrawlBreakpoint(TmallTaskModel.TaskName, keyword, iPage);
+            CrawlServices.Business.UpdateCrawlBreakpoint(TmallTaskModel.TaskName, keyword, iPage);
             iPage++;
             while (iPage < totalPage&&iPage<TmallTaskModel.CrawlPages)
             {
                 
                 SaveDataToDb(tMallSplider.SearchProduct2(keyword, iPage, out totalPage));
-                Common.UpdateCrawlBreakpoint(TmallTaskModel.TaskName, keyword, iPage);
+                CrawlServices.Business.UpdateCrawlBreakpoint(TmallTaskModel.TaskName, keyword, iPage);
                 iPage++;
                 Thread.Sleep(AppSettings.COMMONSETTINGS.Interval * 1000);
             }
@@ -141,18 +142,18 @@ namespace CrawlServices.BusinessTask
                 try
                 {
                     var product = Product.Create(typeProduct);
-                    if (Common.IsCheapProduct(Shop, product.ItemId, product.Price))
+                    if (CrawlServices.Business.IsCheapProduct(Shop, product.ItemId, product.Price))
                     {
                         Db.Upsert(CheapProduct.Create(Shop, product.ItemId, product.Title, product.Price));
                     }
                     var result = Db.Upsert(product);
-                    Common.CommonLog.LogInfo(result
+                    Crawl.Common.Common.Log.LogInfo(result
                         ? string.Format("更新[{0}]{1} 成功", typeProduct.sItemID, typeProduct.sTitle)
                         : string.Format("更新[{0}]{1} 失败", typeProduct.sItemID, typeProduct.sTitle));
                 }
                 catch (Exception e)
                 {
-                    Common.CommonLog.LogError(e.ToString());
+                    Crawl.Common.Common.Log.LogError(e.ToString());
                 }
             }
 
@@ -280,39 +281,5 @@ namespace CrawlServices.BusinessTask
         }
     }
 
-    public class TmallTaskModel : ITaskModel
-    {
-        public bool Enable { get; set; }
-        public string TaskName { get; set; }
-
-        /// <summary>
-        /// 关键字
-        /// </summary>
-        public string[] KeyWords { get; set; }
-
-        /// <summary>
-        /// 并发数
-        /// </summary>
-        private int _taskcount = 1;
-        public int TaskCount { get { return _taskcount; } set { _taskcount = value; } }
-
-        /// <summary>
-        /// 时间间隔
-        /// </summary>
-        private int _interval = 24 * 60 * 60;
-        public int Interval { get { return _interval; } set { _interval = value; } }
-
-        /// <summary>
-        /// 抓取的页数
-        /// </summary>
-        private int _crawlpages = 5;
-
-        public int CrawlPages
-        {
-            get { return _crawlpages; }
-            set { _crawlpages = value; }
-        }
-
-        
-    }
+    
 }

@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 
-namespace CrawlServices
+namespace Crawl.Common
 {
     /// <summary>
     ///     TxtLog

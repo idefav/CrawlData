@@ -4,7 +4,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace CrawlServices.Interface
+namespace Crawl.Common.Interface
 {
     /// <summary>
     /// ITaskItemModel

@@ -33,7 +33,6 @@ C:\Users\Administrator\Documents\GitHub\CrawlData\电商抓取平台\obj\Debug\�
 C:\Users\Administrator\Documents\GitHub\CrawlData\电商抓取平台\bin\Debug\电商抓取平台.exe
 C:\Users\Administrator\Documents\GitHub\CrawlData\电商抓取平台\bin\Debug\电商抓取平台.pdb
 C:\Users\Administrator\Documents\GitHub\CrawlData\电商抓取平台\bin\Debug\Ebend.DataSplider.dll
-C:\Users\Administrator\Documents\GitHub\CrawlData\电商抓取平台\bin\Debug\Newtonsoft.Json.dll
 C:\Users\Administrator\Documents\GitHub\CrawlData\电商抓取平台\bin\Debug\Ebend.DataSplider.pdb
 C:\Users\Administrator\Documents\GitHub\CrawlData\电商抓取平台\obj\Debug\天猫.csprojResolveAssemblyReference.cache
 C:\Users\Administrator\Documents\GitHub\CrawlData\电商抓取平台\obj\Debug\电商抓取平台.FormMain.resources
@@ -53,3 +52,5 @@ C:\Sources\电商抓取平台\CrawlData\电商抓取平台\obj\Debug\电商抓�
 C:\Sources\电商抓取平台\CrawlData\电商抓取平台\obj\Debug\天猫.csproj.GenerateResource.Cache
 C:\Sources\电商抓取平台\CrawlData\电商抓取平台\bin\Debug\Crawl.Common.dll
 C:\Sources\电商抓取平台\CrawlData\电商抓取平台\bin\Debug\Crawl.Common.pdb
+C:\Users\Administrator\Documents\GitHub\CrawlData\电商抓取平台\bin\Debug\Crawl.Common.dll
+C:\Users\Administrator\Documents\GitHub\CrawlData\电商抓取平台\bin\Debug\Crawl.Common.pdb

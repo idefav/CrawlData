@@ -7,9 +7,9 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using CrawlServices.Interface;
+using Crawl.Common.Interface;
 
-namespace CrawlServices.Model
+namespace Crawl.Common.Model
 {
     /// <summary>
     /// TaskBase

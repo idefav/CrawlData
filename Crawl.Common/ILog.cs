@@ -1,4 +1,4 @@
-﻿namespace CrawlServices
+﻿namespace Crawl.Common
 {
     /// <summary>
     /// 日志接口

@@ -10,7 +10,8 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Schedulers;
-using CrawlServices.Interface;
+using Crawl.Common;
+using Crawl.Common.Interface;
 
 namespace CrawlServices
 {
@@ -90,16 +91,16 @@ namespace CrawlServices
                                 if (task.Task != null)
                                 {
                                     if (task.Task.IsCompleted &&
-                                        Common.NeedCrawl(task.Model.TaskName))
+                                        Business.NeedCrawl(task.Model.TaskName))
                                     {
                                         //task.NextStartTime = DateTime.MinValue;
-                                        Common.UpdateCrawlStart(task.Model.TaskName);
+                                        Business.UpdateCrawlStart(task.Model.TaskName);
                                         task.Run(taskScheduler, cancellationToken);
                                     }
                                 }
                                 else
                                 {
-                                    Common.UpdateCrawlStart(task.Model.TaskName);
+                                    Business.UpdateCrawlStart(task.Model.TaskName);
 
                                
                                     //task.NextStartTime = DateTime.MinValue;
@@ -112,14 +113,14 @@ namespace CrawlServices
                         }
                         catch (Exception e)
                         {
-                            Common.CommonLog.LogError(e.ToString());
+                            Crawl.Common.Common.Log.LogError(e.ToString());
                         }
                         Thread.Sleep(10000);
                     }
                 }
                 catch (Exception e)
                 {
-                    Common.CommonLog.LogError(e.ToString());
+                    Crawl.Common.Common.Log.LogError(e.ToString());
                 }
 
             }, cancellationToken);

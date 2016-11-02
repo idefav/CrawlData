@@ -63,26 +63,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppSettings.cs" />
     <Compile Include="BusinessTask\MongoDbLowLogTask.cs" />
     <Compile Include="BusinessTask\TmallTask.cs" />
-    <Compile Include="Common.cs" />
+    <Compile Include="Business.cs" />
     <Compile Include="CrawlService.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="CrawlService.Designer.cs">
       <DependentUpon>CrawlService.cs</DependentUpon>
     </Compile>
-    <Compile Include="ILog.cs" />
     <Compile Include="InstallService.cs" />
-    <Compile Include="Interface\ITask.cs" />
-    <Compile Include="Interface\ITaskItemModel.cs" />
-    <Compile Include="Interface\ITaskModel.cs" />
-    <Compile Include="Model\TaskBase.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaskManager.cs" />
-    <Compile Include="TxtLog.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Crawl.Common\Crawl.Common.csproj">

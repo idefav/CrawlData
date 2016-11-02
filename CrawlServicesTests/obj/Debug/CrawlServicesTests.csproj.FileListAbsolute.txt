@@ -48,3 +48,7 @@ C:\Sources\电商抓取平台\CrawlData\CrawlServicesTests\obj\Debug\CrawlServic
 C:\Sources\电商抓取平台\CrawlData\CrawlServicesTests\bin\Debug\Newtonsoft.Json.dll
 C:\Sources\电商抓取平台\CrawlData\CrawlServicesTests\bin\Debug\Crawl.Common.dll
 C:\Sources\电商抓取平台\CrawlData\CrawlServicesTests\bin\Debug\Crawl.Common.pdb
+C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServicesTests\bin\Debug\Crawl.Common.dll
+C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServicesTests\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServicesTests\bin\Debug\Crawl.Common.pdb
+C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServicesTests\bin\Debug\Newtonsoft.Json.xml

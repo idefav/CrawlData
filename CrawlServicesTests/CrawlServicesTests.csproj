@@ -57,6 +57,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Crawl.Common\Crawl.Common.csproj">
+      <Project>{1C9CC56D-3341-4E4F-A91D-7FCEFE0B15F0}</Project>
+      <Name>Crawl.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CrawlServices\CrawlServices.csproj">
       <Project>{C5863923-B7E3-4FCF-82DE-744BC292399B}</Project>
       <Name>CrawlServices</Name>

@@ -8,3 +8,6 @@ C:\Users\Administrator\Documents\GitHub\CrawlData\Crawl.Common\bin\Debug\Crawl.C
 C:\Users\Administrator\Documents\GitHub\CrawlData\Crawl.Common\bin\Debug\HttpHelper.dll
 C:\Users\Administrator\Documents\GitHub\CrawlData\Crawl.Common\obj\Debug\Crawl.Common.dll
 C:\Users\Administrator\Documents\GitHub\CrawlData\Crawl.Common\obj\Debug\Crawl.Common.pdb
+C:\Users\Administrator\Documents\GitHub\CrawlData\Crawl.Common\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Administrator\Documents\GitHub\CrawlData\Crawl.Common\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Administrator\Documents\GitHub\CrawlData\Crawl.Common\obj\Debug\Crawl.Common.csprojResolveAssemblyReference.cache

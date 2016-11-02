@@ -21,6 +21,11 @@ namespace WebChatSites.Controllers
             return View();
         }
 
+        public ActionResult CheapProduct()
+        {
+            return View();
+        }
+
         public JsonResult QueryProduct(string productlink)
         {
             // PC链接解析
