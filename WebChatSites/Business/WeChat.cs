@@ -49,16 +49,16 @@ namespace WebChatSites.Business
 
         private IDbObject Db = DBOMaker.CreateDbObj(DBType.SQLServer, CommSettings.DbConn);
 
-        private static string DownloadProduct(string url,string sTCookies)
+        private static string DownloadProduct(string url, string sTCookies)
         {
             HtmlHttpHelper HHH = new HtmlHttpHelper();
             HHH.sCookies = sTCookies;
             HHH.UserAgent = GetUserAgent();
             HHH.Referer = "https://www.tmall.com/";
             string sUrl = url;
-            
-            string sHtmlCode = HHH.Get(sUrl, "").Replace("\n","");
-            Regex regex=new Regex("\"itemid\":([^,]*)", RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.IgnoreCase);
+
+            string sHtmlCode = HHH.Get(sUrl, "").Replace("\n", "");
+            Regex regex = new Regex("\"itemid\":([^,]*)", RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.IgnoreCase);
             var match = regex.Match(sHtmlCode);
             if (match.Success)
             {
@@ -78,7 +78,7 @@ namespace WebChatSites.Business
             }
             else
             {
-                regex=new Regex("复制整段信息，打开.*】\\(未安装App点这里：(.*?)\\)");
+                regex = new Regex("复制整段信息，打开.*】\\(未安装App点这里：(.*?)\\)");
                 match = regex.Match(input);
                 if (match.Success)
                 {
@@ -87,7 +87,7 @@ namespace WebChatSites.Business
                 }
                 else
                 {
-                    regex=new Regex("http://sjtm.me/s/.*?\\?tm=.*",RegexOptions.Compiled|RegexOptions.IgnoreCase);
+                    regex = new Regex("http://sjtm.me/s/.*?\\?tm=.*", RegexOptions.Compiled | RegexOptions.IgnoreCase);
                     match = regex.Match(input);
                     if (match.Success)
                     {
@@ -107,8 +107,8 @@ namespace WebChatSites.Business
         /// <returns></returns>
         public List<ProductChartData> GetData(string itemid)
         {
-            StringBuilder stringBuilder=new StringBuilder("SELECT [ItemId],[Price],[Title],[PDate]FROM [DB_Tmall].[dbo].[td_data] where  itemid=@itemid order by updatetime");
-            var data = Db.QueryModels<ProductChartData>(stringBuilder.ToString(), new {itemid = itemid});
+            StringBuilder stringBuilder = new StringBuilder("SELECT [ItemId],[Price],[Title],[PDate]FROM [DB_Tmall].[dbo].[td_data] where  itemid=@itemid order by updatetime");
+            var data = Db.QueryModels<ProductChartData>(stringBuilder.ToString(), new { itemid = itemid });
             return data;
         }
 
@@ -121,9 +121,9 @@ namespace WebChatSites.Business
         public decimal? GetMinPrice(string itemid)
         {
 
-            StringBuilder stringBuilder=new StringBuilder(" SELECT MIN(Price) minprice FROM [DB_Tmall].[dbo].[td_data] where ItemId=@itemid");
-            var dataset = Db.Query(stringBuilder.ToString(), new {itemid = itemid});
-            if (dataset!=null && dataset.Tables.Count>0 && dataset.Tables[0].Rows.Count>0)
+            StringBuilder stringBuilder = new StringBuilder(" SELECT MIN(Price) minprice FROM [DB_Tmall].[dbo].[td_data] where ItemId=@itemid");
+            var dataset = Db.Query(stringBuilder.ToString(), new { itemid = itemid });
+            if (dataset != null && dataset.Tables.Count > 0 && dataset.Tables[0].Rows.Count > 0)
             {
                 decimal v = 0;
                 decimal.TryParse(dataset.Tables[0].Rows[0][0].ToString(), out v);
@@ -131,6 +131,30 @@ namespace WebChatSites.Business
             }
             return null;
         }
-        
+
+        /// <summary>
+        /// 获取降价排行版
+        /// </summary>
+        /// <param name="updatetime">更新时间</param>
+        /// <param name="count">数量</param>
+        /// <returns></returns>
+        public List<CheapProductData> GetCheapProductDatas(DateTime updatetime ,int count=20)
+        {
+            StringBuilder stringBuilder = new StringBuilder(@"SELECT TOP 20 "); 
+            stringBuilder.Append(
+                                  @" [Guid]
+                                    ,[Shop]
+                                    ,[ProductId]
+                                    ,[ProductName]
+                                    ,[Price]
+                                    ,[UpdateTime]
+                                    FROM[DB_CrawlConfig].[dbo].[td_cheapproduct] a
+                                    where a.updatetime > @updatetime
+                                    order by updatetime desc");
+
+            var datas = Db.QueryModels<CheapProductData>(stringBuilder.ToString(), new { updatetime = updatetime });
+            return datas;
+        }
+
     }
 }

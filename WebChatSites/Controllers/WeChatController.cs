@@ -23,7 +23,9 @@ namespace WebChatSites.Controllers
 
         public ActionResult CheapProduct()
         {
-            return View();
+            WeChat weChat = new WeChat();
+            var datas = weChat.GetCheapProductDatas(DateTime.Parse("1990-01-01"));
+            return View(datas);
         }
 
         public JsonResult QueryProduct(string productlink)
