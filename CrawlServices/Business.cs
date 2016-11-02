@@ -29,7 +29,7 @@ namespace CrawlServices
     /// </summary>
     public class Business
     {
-      
+
 
         public static bool IsCrawlComplete(string taskname)
         {
@@ -74,13 +74,19 @@ namespace CrawlServices
         {
             IDbObject db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConn);
             CrawlConfig config = new CrawlConfig();
+           var config1 = db.QueryModel<CrawlConfig>("select * from db_crawlconfig.dbo.td_crawlconfig where taskname=@taskname",
+                   new { taskname = taskname });
+            if (config1 != null)
+            {
+                config = config1;
+            }
             config.Guid = Guid.NewGuid().ToString();
 
             config.TaskName = taskname;
             config.TimeUsed = 0;
-            config.Status = false;
             if (NewDayOfCrawl(taskname))
             {
+                config.Status = false;
                 config.UpdatedDay = DateTime.Now.Date;
             }
             config.UpdateTime = DateTime.Now;

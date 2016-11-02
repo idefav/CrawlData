@@ -5,4 +5,3 @@ C:\Sources\电商抓取平台\CrawlData\Crawl.Common\obj\Release\Crawl.Common.cs
 C:\Sources\电商抓取平台\CrawlData\Crawl.Common\obj\Release\Crawl.Common.dll
 C:\Sources\电商抓取平台\CrawlData\Crawl.Common\obj\Release\Crawl.Common.pdb
 C:\Sources\电商抓取平台\CrawlData\Crawl.Common\bin\Release\Newtonsoft.Json.dll
-C:\Sources\电商抓取平台\CrawlData\Crawl.Common\bin\Release\Newtonsoft.Json.xml

@@ -12,4 +12,3 @@ C:\Users\Administrator\Documents\GitHub\CrawlData\Crawl.Common\bin\Debug\Newtons
 C:\Users\Administrator\Documents\GitHub\CrawlData\Crawl.Common\bin\Debug\Newtonsoft.Json.xml
 C:\Users\Administrator\Documents\GitHub\CrawlData\Crawl.Common\obj\Debug\Crawl.Common.csprojResolveAssemblyReference.cache
 C:\Sources\电商抓取平台\CrawlData\Crawl.Common\bin\Debug\Newtonsoft.Json.dll
-C:\Sources\电商抓取平台\CrawlData\Crawl.Common\bin\Debug\Newtonsoft.Json.xml
