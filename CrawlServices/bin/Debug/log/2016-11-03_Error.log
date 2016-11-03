@@ -1,0 +1,14 @@
+2016-11-03 14:35:32 Error System.IndexOutOfRangeException: 索引超出了数组界限。
+   在 CrawlServices.BusinessTask.TaoBaoTask.Business() 位置 C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServices\BusinessTask\TaoBaoTask.cs:行号 54
+2016-11-03 14:40:06 Error System.IndexOutOfRangeException: 索引超出了数组界限。
+   在 CrawlServices.BusinessTask.TaoBaoTask.Business() 位置 C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServices\BusinessTask\TaoBaoTask.cs:行号 54
+2016-11-03 14:41:12 Error System.IndexOutOfRangeException: 索引超出了数组界限。
+   在 CrawlServices.BusinessTask.TaoBaoTask.Business() 位置 C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServices\BusinessTask\TaoBaoTask.cs:行号 54
+2016-11-03 14:44:57 Error System.IndexOutOfRangeException: 索引超出了数组界限。
+   在 CrawlServices.BusinessTask.TaoBaoTask.Business() 位置 C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServices\BusinessTask\TaoBaoTask.cs:行号 54
+2016-11-03 14:46:28 Error System.IndexOutOfRangeException: 索引超出了数组界限。
+   在 CrawlServices.BusinessTask.TaoBaoTask.Business() 位置 C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServices\BusinessTask\TaoBaoTask.cs:行号 54
+2016-11-03 14:53:31 Error System.IndexOutOfRangeException: 索引超出了数组界限。
+   在 CrawlServices.BusinessTask.TaoBaoTask.Business() 位置 C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServices\BusinessTask\TaoBaoTask.cs:行号 54
+2016-11-03 14:55:31 Error System.IndexOutOfRangeException: 索引超出了数组界限。
+   在 CrawlServices.BusinessTask.TaoBaoTask.Business() 位置 C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServices\BusinessTask\TaoBaoTask.cs:行号 54

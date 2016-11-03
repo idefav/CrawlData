@@ -61,6 +61,10 @@ namespace Ebend.DataSplider
             /// </summary>
             public DateTime PDate { get; set; }
 
+            public string PicUrl { get; set; }
+
+            public string CommentCount { get; set; }
+
         }
     }
 }

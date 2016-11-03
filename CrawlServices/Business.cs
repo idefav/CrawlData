@@ -148,6 +148,10 @@ namespace CrawlServices
             {
                 stringBuilder.Append("DB_Tmall.dbo.td_data ");
             }
+            else if (shop == "淘宝")
+            {
+                stringBuilder.Append("db_taobao.dbo.td_data ");
+            }
             stringBuilder.Append(" where itemid=@itemid ");
             stringBuilder.Append(" order by updatetime desc ");
             var table = db.QueryDataTable(stringBuilder.ToString(), new { itemid = productid });

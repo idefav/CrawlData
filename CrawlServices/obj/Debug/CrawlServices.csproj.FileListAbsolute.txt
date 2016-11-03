@@ -51,3 +51,4 @@ C:\Sources\电商抓取平台\CrawlData\CrawlServices\bin\Debug\Crawl.Common.dll
 C:\Sources\电商抓取平台\CrawlData\CrawlServices\bin\Debug\Crawl.Common.pdb
 C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServices\bin\Debug\Crawl.Common.dll
 C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServices\bin\Debug\Crawl.Common.pdb
+C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServices\bin\Debug\Newtonsoft.Json.xml

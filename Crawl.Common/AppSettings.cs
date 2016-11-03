@@ -169,7 +169,9 @@ namespace Crawl.Common
     {
         public FileConfigTaskModel[] FileConfigTask { get; set; }
 
-        public TmallTaskModel[] TmallTask { get; set; }
+        //public TmallTaskModel[] TmallTask { get; set; }
+
+        public TmallTaskModel[] TaoBaoTask { get; set; }
     }
 
     public class TmallTaskModel : ITaskModel

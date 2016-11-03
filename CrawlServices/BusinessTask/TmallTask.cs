@@ -144,7 +144,7 @@ namespace CrawlServices.BusinessTask
                     var product = Product.Create(typeProduct);
                     if (CrawlServices.Business.IsCheapProduct(Shop, product.ItemId, product.Price))
                     {
-                        Db.Upsert(CheapProduct.Create(Shop, product.ItemId, product.Title, product.Price));
+                        Db.Upsert(CheapProduct.Create(Shop, product.ItemId, product.Title, product.Price,typeProduct.PicUrl));
                     }
                     var result = Db.Upsert(product);
                     Crawl.Common.Common.Log.LogInfo(result
@@ -161,7 +161,7 @@ namespace CrawlServices.BusinessTask
 
     }
 
-    [TableName("td_data")]
+    [TableName("db_tmall.dbo.td_data")]
     public class Product
     {
         public string Guid { get; set; }
@@ -249,13 +249,18 @@ namespace CrawlServices.BusinessTask
         public DateTime UpdateTime { get; set; }
 
         /// <summary>
+        ///  图片链接
+        /// </summary>
+        public string PicUrl { get; set; }
+
+        /// <summary>
         /// 初始化实例
         /// </summary>
         /// <param name="shop">商城</param>
         /// <param name="productid">商品编号</param>
         /// <param name="productname">商品名称</param>
         /// <param name="price">商品价格</param>
-        public void Init(string shop, string productid, string productname, decimal? price)
+        public void Init(string shop, string productid, string productname, decimal? price,string picurl=null)
         {
             Guid=System.Guid.NewGuid().ToString();
             Shop = shop;
@@ -263,6 +268,7 @@ namespace CrawlServices.BusinessTask
             ProductName = productname;
             Price = price;
             UpdateTime = DateTime.Now;
+            PicUrl = picurl;
         }
 
         /// <summary>
@@ -273,10 +279,10 @@ namespace CrawlServices.BusinessTask
         /// <param name="productname"></param>
         /// <param name="price"></param>
         /// <returns></returns>
-        public static CheapProduct Create(string shop, string productid, string productname, decimal? price)
+        public static CheapProduct Create(string shop, string productid, string productname, decimal? price,string prcurl=null)
         {
             CheapProduct cheapProduct=new CheapProduct();
-            cheapProduct.Init(shop, productid, productname, price);
+            cheapProduct.Init(shop, productid, productname, price,prcurl);
             return cheapProduct;
         }
     }
