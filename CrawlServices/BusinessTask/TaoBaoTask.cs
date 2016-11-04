@@ -14,7 +14,7 @@ using Idefav.Utility;
 
 namespace CrawlServices.BusinessTask
 {
-    public class TaoBaoTask:TaskBase
+    public class TaoBaoTask : TaskBase
     {
         public TmallTaskModel TmallTaskModel { get { return base.Model as TmallTaskModel; } }
         public CancellationToken CancellationToken { get; set; }
@@ -47,6 +47,7 @@ namespace CrawlServices.BusinessTask
                     }
 
                 }
+                index = index <=0 ? 0 : index;
                 for (int i = index; i < TmallTaskModel.KeyWords.Length; i++)
                 {
                     try
@@ -144,7 +145,7 @@ namespace CrawlServices.BusinessTask
                     var product = TaoBaoProduct.Create(typeProduct);
                     if (CrawlServices.Business.IsCheapProduct(Shop, product.ItemId, product.Price))
                     {
-                        Db.Upsert(CheapProduct.Create(Shop, product.ItemId, product.Title, product.Price,typeProduct.PicUrl));
+                        Db.Upsert(CheapProduct.Create(Shop, product.ItemId, product.Title, product.Price, typeProduct.PicUrl));
                     }
                     var result = Db.Upsert(product);
                     Crawl.Common.Common.Log.LogInfo(result

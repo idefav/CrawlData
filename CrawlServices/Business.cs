@@ -52,7 +52,7 @@ namespace CrawlServices
                  new { taskname = taskname });
             if (model != null)
             {
-                return model.UpdatedDay < DateTime.Now.Date;
+                return model.UpdatedDay < DateTime.Now.Date||!model.Status;
             }
             return true;
         }

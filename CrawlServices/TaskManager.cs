@@ -100,11 +100,13 @@ namespace CrawlServices
                                 }
                                 else
                                 {
-                                    Business.UpdateCrawlStart(task.Model.TaskName);
-
-                               
-                                    //task.NextStartTime = DateTime.MinValue;
-                                    task.Run(taskScheduler, cancellationToken);
+                                    if (Business.NeedCrawl(task.Model.TaskName))
+                                    {
+                                        Business.UpdateCrawlStart(task.Model.TaskName);
+                                        //task.NextStartTime = DateTime.MinValue;
+                                        task.Run(taskScheduler, cancellationToken);
+                                    }
+                                   
                                 }
                             
                             
