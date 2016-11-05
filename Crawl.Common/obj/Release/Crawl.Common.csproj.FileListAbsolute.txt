@@ -13,3 +13,4 @@ C:\Users\Administrator\Documents\GitHub\CrawlData\Crawl.Common\bin\Release\Newto
 C:\Users\Administrator\Documents\GitHub\CrawlData\Crawl.Common\obj\Release\Crawl.Common.csprojResolveAssemblyReference.cache
 C:\Users\Administrator\Documents\GitHub\CrawlData\Crawl.Common\obj\Release\Crawl.Common.dll
 C:\Users\Administrator\Documents\GitHub\CrawlData\Crawl.Common\obj\Release\Crawl.Common.pdb
+C:\Sources\电商抓取平台\CrawlData\Crawl.Common\bin\Release\Newtonsoft.Json.xml

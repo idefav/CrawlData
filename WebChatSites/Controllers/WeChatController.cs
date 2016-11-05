@@ -31,11 +31,14 @@ namespace WebChatSites.Controllers
         public JsonResult QueryProduct(string productlink)
         {
             // PC链接解析
-            var itemid = WeChat.GetProductId(productlink);
+            var data = WeChat.GetProductId(productlink);
             WeChat weChat = new WeChat();
-            var model = weChat.GetData(itemid);
+            string itemid = data["itemid"].ToString();
+            string shopname = data["shopname"].ToString();
+            string dbtable = data["table"].ToString();
+            var model = weChat.GetData(itemid,dbtable);
             var minModel = weChat.GetMinPrice(itemid);
-            HybridDictionary hybrid = new HybridDictionary { { "ChartData", model }, { "MinPrice", minModel } };
+            HybridDictionary hybrid = new HybridDictionary { { "ChartData", model }, { "MinPrice", minModel }, { "Shop", shopname } };
             return Json(JsonConvert.SerializeObject(hybrid), JsonRequestBehavior.AllowGet);
 
         }

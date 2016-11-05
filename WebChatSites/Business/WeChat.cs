@@ -1,16 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Data;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.DynamicData;
 using System.Web.SessionState;
 using Crawl.Common;
 using Idefav.DbFactory;
 using Idefav.IDAL;
 using Idefav.Utility;
+using Newtonsoft.Json;
 using WebChatSites.Models.WeChat;
 
 namespace WebChatSites.Business
@@ -49,16 +52,16 @@ namespace WebChatSites.Business
 
         private IDbObject Db = DBOMaker.CreateDbObj(DBType.SQLServer, CommSettings.DbConn);
 
-        private static string DownloadProduct(string url, string sTCookies)
+        private static string DownloadProduct(string url, string sTCookies, string filter)
         {
             HtmlHttpHelper HHH = new HtmlHttpHelper();
             HHH.sCookies = sTCookies;
             HHH.UserAgent = GetUserAgent();
             HHH.Referer = "https://www.tmall.com/";
             string sUrl = url;
-
+            // "\"itemid\":([^,]*)"
             string sHtmlCode = HHH.Get(sUrl, "").Replace("\n", "");
-            Regex regex = new Regex("\"itemid\":([^,]*)", RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.IgnoreCase);
+            Regex regex = new Regex(filter, RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.IgnoreCase);
             var match = regex.Match(sHtmlCode);
             if (match.Success)
             {
@@ -67,47 +70,150 @@ namespace WebChatSites.Business
             return "";
         }
 
-        public static string GetProductId(string input)
+        public static HybridDictionary GetProductId(string input)
         {
+            var shopconfigs = GetShopConfigs();
+            ShopEnum shop = ShopEnum.天猫;
             string productId = "";
-            Regex regex = new Regex("//detail.tmall.com/item.htm\\?.*?id=([^&]*)&*");
-            var match = regex.Match(input);
-            if (match.Success)
+            string dbtable = "db_tmall.dbo.td_data";
+            foreach (ShopConfig shopconfig in shopconfigs)
             {
-                productId = match.Groups[1].Value;
-            }
-            else
-            {
-                regex = new Regex("复制整段信息，打开.*】\\(未安装App点这里：(.*?)\\)");
-                match = regex.Match(input);
-                if (match.Success)
+                var shopFilter = JsonConvert.DeserializeObject<List<ShopFilter>>(shopconfig.Regex);
+                if (shopFilter != null)
                 {
-                    string url = match.Groups[1].Value;
-                    productId = DownloadProduct(url, sCookies);
-                }
-                else
-                {
-                    regex = new Regex("http://sjtm.me/s/.*?\\?tm=.*", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-                    match = regex.Match(input);
-                    if (match.Success)
+                    foreach (ShopFilter filter in shopFilter)
                     {
-                        productId = DownloadProduct(input, sCookies);
+                        switch (filter.name)
+                        {
+                            case ProductLinkMode.PcLink:
+                                {
+                                    Regex regex = new Regex(filter.value, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                                    var match = regex.Match(input);
+                                    if (match.Success)
+                                    {
+                                        productId = match.Groups[1].Value;
+
+                                        break;
+                                    }
+                                    break;
+                                }
+                            case ProductLinkMode.AppShareToken:
+                            case ProductLinkMode.AppShareLink:
+                                {
+                                    Regex regex = new Regex(filter.value, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                                    var match = regex.Match(input);
+                                    string url = match.Success ? match.Groups[1].Value : input;
+                                    productId = DownloadProduct(url, shopconfig.Cookies, filter.regex);
+
+                                    break;
+                                }
+                            case ProductLinkMode.ItemId:
+                                {
+                                    Regex regex = new Regex(filter.value, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                                    var match = regex.Match(input);
+                                    if (match.Success)
+                                    {
+                                        productId = match.Groups[1].Value;
+                                    }
+                                    break;
+                                }
+
+                        }
+                        if (!string.IsNullOrEmpty(productId))
+                        {
+                            Enum.TryParse(shopconfig.Shop, true, out shop);
+
+                            break;
+                        }
                     }
                 }
+                if (!string.IsNullOrEmpty(productId))
+                {
+                    Enum.TryParse(shopconfig.Shop, true, out shop);
+                    dbtable = shopconfig.DbTable;
+                    break;
+                }
             }
+            //    string[] filters = shopconfig.Regex.Split('');
+            //    foreach (string filter in filters)
+            //    {
+            //        if (filter.Contains("\n"))
+            //        {
+            //            var files2 = filter.Split('\n');
+            //            string url = "";
+            //            Regex regex = new Regex(files2[0]);
+            //            Match match = regex.Match(input);
+            //            url = match.Success ? match.Groups[1].Value : input;
+            //            productId = DownloadProduct(url, shopconfig.Cookies, files2[1]);
 
-            return productId;
+            //        }
+            //        else
+            //        {
+            //            Regex regex=new Regex(filter);
+            //            var match = regex.Match(input);
+            //            if (match.Success)
+            //            {
+            //                productId = match.Groups[1].Value;
+            //            }
+            //        }
+            //    }
+
+            //}
+            //Regex regex = new Regex("//detail.tmall.com/item.htm\\?.*?id=([^&]*)&*");
+            //var match = regex.Match(input);
+            //if (match.Success)
+            //{
+            //    productId = match.Groups[1].Value;
+            //}
+            //else
+            //{
+            //    regex = new Regex("复制整段信息，打开.*】\\(未安装App点这里：(.*?)\\)");
+            //    match = regex.Match(input);
+            //    if (match.Success)
+            //    {
+            //        string url = match.Groups[1].Value;
+            //        productId = DownloadProduct(url, sCookies);
+            //    }
+            //    else
+            //    {
+            //        regex = new Regex("http://sjtm.me/s/.*?\\?tm=.*", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+            //        match = regex.Match(input);
+            //        if (match.Success)
+            //        {
+            //            productId = DownloadProduct(input, sCookies);
+            //        }
+            //    }
+            //}
+
+            return new HybridDictionary { { "itemid", productId }, { "shopname", shop.ToString() }, { "table", dbtable } };
         }
 
+        /// <summary>
+        /// 获取店铺配置
+        /// </summary>
+        /// <returns></returns>
+        public static List<ShopConfig> GetShopConfigs()
+        {
+            string sql = "select * from db_crawlconfig.dbo.td_shopconfig order by [order] asc";
+            return CacheFactory.Cache(sql, () =>
+             {
+                 StringBuilder stringBuilder = new StringBuilder(sql);
+                 IDbObject Db = DBOMaker.CreateDbObj(DBType.SQLServer, CommSettings.DbConn);
+                 return Db.QueryModels<ShopConfig>(stringBuilder.ToString());
+             }, true, cacheTime: TimeSpan.FromMinutes(1));
+
+        }
 
         /// <summary>
         /// 获取图表数据
         /// </summary>
         /// <param name="itemid">商品编号</param>
+        /// <param name="table">数据库表名</param>
         /// <returns></returns>
-        public List<ProductChartData> GetData(string itemid)
+        public List<ProductChartData> GetData(string itemid, string table)
         {
-            StringBuilder stringBuilder = new StringBuilder("SELECT [ItemId],[Price],[Title],[PDate]FROM [DB_Tmall].[dbo].[td_data] where  itemid=@itemid order by updatetime");
+
+            StringBuilder stringBuilder = new StringBuilder("SELECT [ItemId],[Price],[Title],[PDate]FROM " + table + " where  itemid=@itemid order by updatetime");
             var data = Db.QueryModels<ProductChartData>(stringBuilder.ToString(), new { itemid = itemid });
             return data;
         }
@@ -138,9 +244,9 @@ namespace WebChatSites.Business
         /// <param name="updatetime">更新时间</param>
         /// <param name="count">数量</param>
         /// <returns></returns>
-        public List<CheapProductData> GetCheapProductDatas(DateTime updatetime ,int count=20)
+        public List<CheapProductData> GetCheapProductDatas(DateTime updatetime, int count = 20)
         {
-            StringBuilder stringBuilder = new StringBuilder(@"SELECT TOP 20 "); 
+            StringBuilder stringBuilder = new StringBuilder(@"SELECT TOP 20 ");
             stringBuilder.Append(
                                   @" [Guid]
                                     ,[Shop]

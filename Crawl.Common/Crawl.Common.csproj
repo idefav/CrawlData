@@ -42,6 +42,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -50,6 +51,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppSettings.cs" />
+    <Compile Include="CacheFactory.cs" />
+    <Compile Include="CacheHelper.cs" />
     <Compile Include="Common.cs" />
     <Compile Include="HtmlHttpHelper.cs" />
     <Compile Include="ILog.cs" />

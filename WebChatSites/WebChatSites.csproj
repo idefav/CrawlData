@@ -169,6 +169,7 @@
     </Compile>
     <Compile Include="Models\WeChat\CheapProductData.cs" />
     <Compile Include="Models\WeChat\ProductChartData.cs" />
+    <Compile Include="Models\WeChat\ShopConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

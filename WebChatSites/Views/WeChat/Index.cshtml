@@ -77,7 +77,7 @@
                         var datas = [];
                         for (var i = 0; i < json.ChartData.length; i++) {
                             var obj = json.ChartData[i];
-                            $("#divTitle").html("<a target='_blank' href='https://detail.tmall.com/item.htm?id="+obj.ItemId+"&rd="+new Date().getMilliseconds()+"' title='"+obj.Title+"'>" + obj.Title + "</a>");
+                            $("#divTitle").html("<a target='_blank' href='https://detail.tmall.com/item.htm?id="+obj.ItemId+"&rd="+new Date().getMilliseconds()+"' title='"+obj.Title+"'>【"+json.Shop+"】" + obj.Title + "</a>");
                             labels.push(obj.PDate.replace("T00:00:00", ""));
                             datas.push(obj.Price);
                         }
