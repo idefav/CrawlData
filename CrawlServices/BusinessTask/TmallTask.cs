@@ -70,7 +70,7 @@ namespace CrawlServices.BusinessTask
                     {
                         ipage = breakpoint.Value.Value;
                     }
-                   
+
                 }
                 for (int i = index; i < TmallTaskModel.KeyWords.Length; i++)
                 {
@@ -113,20 +113,20 @@ namespace CrawlServices.BusinessTask
             }
         }
 
-        private void ResolveKeyWord(string keyword,int page)
+        private void ResolveKeyWord(string keyword, int page)
         {
             int totalPage = 0;
             int iPage = page;
             TMallSplider tMallSplider = new TMallSplider();
             tMallSplider.sCookies = sCookies;
 
-            
+
             SaveDataToDb(tMallSplider.SearchProduct2(keyword, iPage, out totalPage));
             CrawlServices.Business.UpdateCrawlBreakpoint(TmallTaskModel.TaskName, keyword, iPage);
             iPage++;
-            while (iPage < totalPage&&iPage<TmallTaskModel.CrawlPages)
+            while (iPage < totalPage && iPage < TmallTaskModel.CrawlPages)
             {
-                
+
                 SaveDataToDb(tMallSplider.SearchProduct2(keyword, iPage, out totalPage));
                 CrawlServices.Business.UpdateCrawlBreakpoint(TmallTaskModel.TaskName, keyword, iPage);
                 iPage++;
@@ -141,10 +141,11 @@ namespace CrawlServices.BusinessTask
             {
                 try
                 {
+                    decimal? oldprice = null;
                     var product = Product.Create(typeProduct);
-                    if (CrawlServices.Business.IsCheapProduct(Shop, product.ItemId, product.Price))
+                    if (CrawlServices.Business.IsCheapProduct(Shop, product.ItemId, product.Price, out oldprice))
                     {
-                        Db.Upsert(CheapProduct.Create(Shop, product.ItemId, product.Title, product.Price,typeProduct.PicUrl));
+                        Db.Upsert(CheapProduct.Create(Shop, product.ItemId, product.Title, product.Price, oldprice, typeProduct.PicUrl));
                     }
                     var result = Db.Upsert(product);
                     Crawl.Common.Common.Log.LogInfo(result
@@ -254,21 +255,26 @@ namespace CrawlServices.BusinessTask
         public string PicUrl { get; set; }
 
         /// <summary>
+        /// 原价
+        /// </summary>
+        public decimal? OldPrice { get; set; }
+        /// <summary>
         /// 初始化实例
         /// </summary>
         /// <param name="shop">商城</param>
         /// <param name="productid">商品编号</param>
         /// <param name="productname">商品名称</param>
         /// <param name="price">商品价格</param>
-        public void Init(string shop, string productid, string productname, decimal? price,string picurl=null)
+        public void Init(string shop, string productid, string productname, decimal? price, decimal? oldprice, string picurl = null)
         {
-            Guid=System.Guid.NewGuid().ToString();
+            Guid = System.Guid.NewGuid().ToString();
             Shop = shop;
             ProductId = productid;
             ProductName = productname;
             Price = price;
             UpdateTime = DateTime.Now;
             PicUrl = picurl;
+            OldPrice = oldprice;
         }
 
         /// <summary>
@@ -279,13 +285,13 @@ namespace CrawlServices.BusinessTask
         /// <param name="productname"></param>
         /// <param name="price"></param>
         /// <returns></returns>
-        public static CheapProduct Create(string shop, string productid, string productname, decimal? price,string prcurl=null)
+        public static CheapProduct Create(string shop, string productid, string productname, decimal? price, decimal? oldprice, string prcurl = null)
         {
-            CheapProduct cheapProduct=new CheapProduct();
-            cheapProduct.Init(shop, productid, productname, price,prcurl);
+            CheapProduct cheapProduct = new CheapProduct();
+            cheapProduct.Init(shop, productid, productname, price, oldprice, prcurl);
             return cheapProduct;
         }
     }
 
-    
+
 }

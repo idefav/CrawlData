@@ -248,12 +248,7 @@ namespace WebChatSites.Business
         {
             StringBuilder stringBuilder = new StringBuilder(@"SELECT TOP 20 ");
             stringBuilder.Append(
-                                  @" [Guid]
-                                    ,[Shop]
-                                    ,[ProductId]
-                                    ,[ProductName]
-                                    ,[Price]
-                                    ,[UpdateTime]
+                                  @" *
                                     FROM[DB_CrawlConfig].[dbo].[td_cheapproduct] a
                                     where a.updatetime > @updatetime
                                     order by updatetime desc");
