@@ -143,9 +143,10 @@ namespace CrawlServices.BusinessTask
                 try
                 {
                     var product = TaoBaoProduct.Create(typeProduct);
-                    if (CrawlServices.Business.IsCheapProduct(Shop, product.ItemId, product.Price))
+                    decimal? oldprice;
+                    if (CrawlServices.Business.IsCheapProduct(Shop, product.ItemId, product.Price,out oldprice))
                     {
-                        Db.Upsert(CheapProduct.Create(Shop, product.ItemId, product.Title, product.Price, typeProduct.PicUrl));
+                        Db.Upsert(CheapProduct.Create(Shop, product.ItemId, product.Title, product.Price,oldprice, typeProduct.PicUrl));
                     }
                     var result = Db.Upsert(product);
                     Crawl.Common.Common.Log.LogInfo(result

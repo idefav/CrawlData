@@ -218,16 +218,32 @@ namespace WebChatSites.Business
             return data;
         }
 
+        /// <summary>
+        /// 获取店铺配置
+        /// </summary>
+        /// <param name="shop"></param>
+        /// <returns></returns>
+        public  ShopConfig GetShopConfigByName(ShopEnum shop)
+        {
+            StringBuilder stringBuilder = new StringBuilder("select * from db_crawlconfig.dbo.td_shopconfig where shop=@shop ");
+            return CacheFactory.Cache(stringBuilder.ToString() + shop.ToString(), () =>
+            {
+                IDbObject Db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConn);
 
+                var model = Db.QueryModel<ShopConfig>(stringBuilder.ToString(), new { shop = shop.ToString() });
+                return model;
+            }, true, cacheTime: TimeSpan.FromMinutes(1));
+
+        }
         /// <summary>
         /// 获取最低价格
         /// </summary>
         /// <param name="itemid">商品编号</param>
         /// <returns></returns>
-        public decimal? GetMinPrice(string itemid)
+        public decimal? GetMinPrice(string itemid,string dbtable)
         {
-
-            StringBuilder stringBuilder = new StringBuilder(" SELECT MIN(Price) minprice FROM [DB_Tmall].[dbo].[td_data] where ItemId=@itemid");
+            //var shopconfig=GetShopConfigByName()
+            StringBuilder stringBuilder = new StringBuilder(" SELECT MIN(Price) minprice FROM "+dbtable+" where ItemId=@itemid");
             var dataset = Db.Query(stringBuilder.ToString(), new { itemid = itemid });
             if (dataset != null && dataset.Tables.Count > 0 && dataset.Tables[0].Rows.Count > 0)
             {

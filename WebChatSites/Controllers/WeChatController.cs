@@ -37,7 +37,7 @@ namespace WebChatSites.Controllers
             string shopname = data["shopname"].ToString();
             string dbtable = data["table"].ToString();
             var model = weChat.GetData(itemid,dbtable);
-            var minModel = weChat.GetMinPrice(itemid);
+            var minModel = weChat.GetMinPrice(itemid,dbtable);
             HybridDictionary hybrid = new HybridDictionary { { "ChartData", model }, { "MinPrice", minModel }, { "Shop", shopname } };
             return Json(JsonConvert.SerializeObject(hybrid), JsonRequestBehavior.AllowGet);
 
