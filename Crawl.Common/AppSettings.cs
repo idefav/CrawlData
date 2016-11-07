@@ -169,9 +169,9 @@ namespace Crawl.Common
     {
         public FileConfigTaskModel[] FileConfigTask { get; set; }
 
-        //public TmallTaskModel[] TmallTask { get; set; }
+        public TmallTaskModel[] TmallTask { get; set; }
 
-        public TmallTaskModel[] TaoBaoTask { get; set; }
+        public TaoBaoTaskModel[] TaoBaoTask { get; set; }
     }
 
     public class TmallTaskModel : ITaskModel
@@ -183,6 +183,42 @@ namespace Crawl.Common
         /// 关键字
         /// </summary>
         public string[] KeyWords { get; set; }
+
+        /// <summary>
+        /// 并发数
+        /// </summary>
+        private int _taskcount = 1;
+        public int TaskCount { get { return _taskcount; } set { _taskcount = value; } }
+
+        /// <summary>
+        /// 时间间隔
+        /// </summary>
+        private int _interval = 24 * 60 * 60;
+        public int Interval { get { return _interval; } set { _interval = value; } }
+
+        /// <summary>
+        /// 抓取的页数
+        /// </summary>
+        private int _crawlpages = 5;
+
+        public int CrawlPages
+        {
+            get { return _crawlpages; }
+            set { _crawlpages = value; }
+        }
+
+
+    }
+
+    public class TaoBaoTaskModel : ITaskModel
+    {
+        public bool Enable { get; set; }
+        public string TaskName { get; set; }
+
+        /// <summary>
+        /// 关键字
+        /// </summary>
+        public KeyValuePair<string,string>[] KeyWords { get; set; }
 
         /// <summary>
         /// 并发数

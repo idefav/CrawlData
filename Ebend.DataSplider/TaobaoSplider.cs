@@ -140,14 +140,14 @@ namespace Ebend.DataSplider
             return ualist[d];
         }
 
-        public SpliderType.TypeProduct[] SearchProducts2(string sKeyWord, int iPage, out int iTotalPage)
+        public SpliderType.TypeProduct[] SearchProducts2(string sKeyWord, int iPage,string cat, out int iTotalPage)
         {
             ArrayList ALTypeProduct = new ArrayList();
             HtmlHttpHelper HHH = new HtmlHttpHelper();
             HHH.sCookies = sTCookies;
             HHH.UserAgent = GetUserAgent();
             HHH.Referer = "https://www.taobao.com/";
-            string sUrl = "https://s.taobao.com/list?bcoffset=12&spm=" + DateTime.Now.ToFileTime().ToString() + "&s=" + Convert.ToString(60 * iPage) + "&q=" + sKeyWord + "&style=grid&seller_type=taobao";
+            string sUrl = "https://s.taobao.com/list?bcoffset=12&spm=" + DateTime.Now.ToFileTime().ToString() + "&s=" + Convert.ToString(60 * iPage) + "&q=" + sKeyWord + "&style=grid&seller_type=taobao&cat="+cat;
             //sUrl =
             //    "https://list.tmall.com/search_product.htm?spm=" + DateTime.Now.ToFileTime().ToString() + "&s=" + Convert.ToString(60 * iPage) + "&q=" + sKeyWord + "&sort=s&style=g&from=.list.pc_1_searchbutton&smAreaId=310100&type=pc#J_Filter";
             string sHtmlCode = HHH.Get(sUrl, "");
@@ -166,7 +166,12 @@ namespace Ebend.DataSplider
                         if (mods != null)
                         {
                             pager = mods["pager"]["data"];
-                        
+                            var status = mods["itemlist"]["status"].ToString();
+                            if (status.Equals("hide", StringComparison.CurrentCultureIgnoreCase))
+                            {
+                                iTotalPage = -1;
+                                return (SpliderType.TypeProduct[])ALTypeProduct.ToArray(typeof(SpliderType.TypeProduct));
+                            }
                             var itemlist = mods["itemlist"]["data"]["auctions"].Value<JArray>();
                         
                             foreach (JToken jToken in itemlist)

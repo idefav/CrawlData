@@ -16,7 +16,7 @@ namespace CrawlServices.BusinessTask
 {
     public class TaoBaoTask : TaskBase
     {
-        public TmallTaskModel TmallTaskModel { get { return base.Model as TmallTaskModel; } }
+        public TaoBaoTaskModel TaoBaoTaskModel { get { return base.Model as TaoBaoTaskModel; } }
         public CancellationToken CancellationToken { get; set; }
         public const string Shop = "淘宝";
 
@@ -33,14 +33,18 @@ namespace CrawlServices.BusinessTask
         {
             try
             {
-                Crawl.Common.Common.Log.LogInfo(string.Format("{0}_{1}", TmallTaskModel.TaskName, "开始"));
+                Crawl.Common.Common.Log.LogInfo(string.Format("{0}_{1}", TaoBaoTaskModel.TaskName, "开始"));
 
-                var breakpoint = CrawlServices.Business.GetCurrBreakpoint(TmallTaskModel.TaskName);
+                var breakpoint = CrawlServices.Business.GetCurrBreakpoint(TaoBaoTaskModel.TaskName);
                 int index = 0;
                 int ipage = 0;
                 if (!string.IsNullOrEmpty(breakpoint.Key))
                 {
-                    index = TmallTaskModel.KeyWords.ToList().IndexOf(breakpoint.Key);
+                    index =
+                        TaoBaoTaskModel.KeyWords.ToList()
+                            .Select(c => c.Key + "_" + c.Value)
+                            .ToList()
+                            .IndexOf(breakpoint.Key);
                     if (breakpoint.Value.HasValue)
                     {
                         ipage = breakpoint.Value.Value;
@@ -48,15 +52,16 @@ namespace CrawlServices.BusinessTask
 
                 }
                 index = index <=0 ? 0 : index;
-                for (int i = index; i < TmallTaskModel.KeyWords.Length; i++)
+                for (int i = index; i < TaoBaoTaskModel.KeyWords.Length; i++)
                 {
                     try
                     {
-                        string keyWord = TmallTaskModel.KeyWords[i];
-                        Crawl.Common.Common.Log.LogInfo(string.Format("{0}-正在解析关键字:{1}", TmallTaskModel.TaskName, keyWord));
-                        ResolveKeyWord(keyWord, ipage);
+                        string keyWord = TaoBaoTaskModel.KeyWords.ToList()[i].Key;
+                        string cat = TaoBaoTaskModel.KeyWords.ToList()[i].Value;
+                        Crawl.Common.Common.Log.LogInfo(string.Format("{0}-正在解析关键字:{1}", TaoBaoTaskModel.TaskName, keyWord+"_"+cat));
+                        ResolveKeyWord(keyWord,cat, ipage);
                         ipage = 0;
-                        Crawl.Common.Common.Log.LogInfo(string.Format("{0}-解析关键字:{1} 完成", TmallTaskModel.TaskName, keyWord));
+                        Crawl.Common.Common.Log.LogInfo(string.Format("{0}-解析关键字:{1} 完成", TaoBaoTaskModel.TaskName, keyWord + "_" + cat));
                     }
                     catch (Exception e)
                     {
@@ -81,7 +86,7 @@ namespace CrawlServices.BusinessTask
                 //        Common.CommonLog.LogError(e.ToString());
                 //    }
                 //}
-                Crawl.Common.Common.Log.LogInfo(string.Format("{0}_{1}", TmallTaskModel.TaskName, "结束"));
+                Crawl.Common.Common.Log.LogInfo(string.Format("{0}_{1}", TaoBaoTaskModel.TaskName, "结束"));
             }
             catch (Exception e)
             {
@@ -89,7 +94,7 @@ namespace CrawlServices.BusinessTask
             }
         }
 
-        private void ResolveKeyWord(string keyword, int page)
+        private void ResolveKeyWord(string keyword,string cat, int page)
         {
             int totalPage = 0;
             int iPage = page;
@@ -97,16 +102,16 @@ namespace CrawlServices.BusinessTask
             taoBaoSplider.sCookies = sCookies;
 
 
-            SaveDataToDb(taoBaoSplider.SearchProducts2(keyword, iPage, out totalPage));
-            CrawlServices.Business.UpdateCrawlBreakpoint(TmallTaskModel.TaskName, keyword, iPage);
+            SaveDataToDb(taoBaoSplider.SearchProducts2(keyword, iPage,cat, out totalPage));
+            CrawlServices.Business.UpdateCrawlBreakpoint(TaoBaoTaskModel.TaskName, keyword + "_" + cat, iPage);
             iPage++;
-            while (iPage < totalPage && iPage < TmallTaskModel.CrawlPages)
+            while (totalPage>=0 && iPage < TaoBaoTaskModel.CrawlPages)
             {
 
-                SaveDataToDb(taoBaoSplider.SearchProducts2(keyword, iPage, out totalPage));
-                CrawlServices.Business.UpdateCrawlBreakpoint(TmallTaskModel.TaskName, keyword, iPage);
+                SaveDataToDb(taoBaoSplider.SearchProducts2(keyword, iPage,cat, out totalPage));
+                CrawlServices.Business.UpdateCrawlBreakpoint(TaoBaoTaskModel.TaskName, keyword+"_"+cat, iPage);
                 iPage++;
-                Thread.Sleep(AppSettings.COMMONSETTINGS.Interval * 1000);
+                Thread.Sleep(AppSettings.COMMONSETTINGS.Interval);
             }
         }
 
@@ -120,9 +125,9 @@ namespace CrawlServices.BusinessTask
                 try
                 {
                     Business();
-                    NextStartTime = DateTime.Now.AddSeconds(TmallTaskModel.Interval);
+                    NextStartTime = DateTime.Now.AddSeconds(TaoBaoTaskModel.Interval);
                     //Common.UpdateCrawlStatus(TmallTaskModel.TaskName, true);
-                    CrawlServices.Business.UpdateCrawlComplete(TmallTaskModel.TaskName);
+                    CrawlServices.Business.UpdateCrawlComplete(TaoBaoTaskModel.TaskName);
                 }
                 catch (Exception e)
                 {
