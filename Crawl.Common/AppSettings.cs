@@ -57,7 +57,7 @@ namespace Crawl.Common
                 }
                 if (File.Exists(filename))
                 {
-                    string settingscontent = File.ReadAllText(filename, Encoding.Default);
+                    string settingscontent = File.ReadAllText(filename, Encoding.UTF8);
                     var model = JsonConvert.DeserializeObject<T>(settingscontent);
                     return model;
                 }
@@ -88,7 +88,7 @@ namespace Crawl.Common
                 }
                 if (File.Exists(filename))
                 {
-                    string settingscontent = File.ReadAllText(filename, Encoding.Default);
+                    string settingscontent = File.ReadAllText(filename, Encoding.UTF8);
                     var model = JsonConvert.DeserializeObject<List<T>>(settingscontent);
                     return model;
                 }
