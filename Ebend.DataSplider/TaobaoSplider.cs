@@ -147,7 +147,7 @@ namespace Ebend.DataSplider
             HHH.sCookies = sTCookies;
             HHH.UserAgent = GetUserAgent();
             HHH.Referer = "https://www.taobao.com/";
-            string sUrl = "https://s.taobao.com/list?bcoffset=12&spm=" + DateTime.Now.ToFileTime().ToString() + "&s=" + Convert.ToString(60 * iPage) + "&q=" + sKeyWord + "&style=grid&seller_type=taobao&cat="+cat;
+            string sUrl = "https://s.taobao.com/list?bcoffset=12&spm=" + DateTime.Now.ToFileTime().ToString() + "&s=" + Convert.ToString(60 * iPage) + "&q=" + sKeyWord + "&style=grid&seller_type=taobao&cat="+cat+ "&sort=sale-desc";
             //sUrl =
             //    "https://list.tmall.com/search_product.htm?spm=" + DateTime.Now.ToFileTime().ToString() + "&s=" + Convert.ToString(60 * iPage) + "&q=" + sKeyWord + "&sort=s&style=g&from=.list.pc_1_searchbutton&smAreaId=310100&type=pc#J_Filter";
             string sHtmlCode = HHH.Get(sUrl, "");

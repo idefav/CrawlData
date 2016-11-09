@@ -243,7 +243,7 @@
   ],
   "TaoBaoTask": [
     {
-      "Enable": true,
+      "Enable": false,
       "Interval": 7200,
       "CrawlPages": 100,
       "TaskName": "TaoBaoTask_T1",
