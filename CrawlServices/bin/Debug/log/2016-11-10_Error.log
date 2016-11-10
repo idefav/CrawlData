@@ -44,3 +44,22 @@ Error Number:102,State:1,Class:15
    在 CrawlServices.BusinessTask.DataAnalyzeTask.<Run>b__11_0() 位置 C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServices\BusinessTask\DataAnalyzeTask.cs:行号 35
 ClientConnectionId:1b6d08bf-fa20-4cb7-bb32-2cceca001a64
 Error Number:102,State:1,Class:15
+2016-11-10 19:58:18 Error System.Data.SqlClient.SqlException (0x80131904): 在 sys.servers 中找不到服务器 'CrawlServices'。请验证指定的服务器名称是否正确。如果需要，请执行存储过程 sp_addlinkedserver 以将服务器添加到 sys.servers。
+   在 System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   在 System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   在 System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   在 System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   在 System.Data.SqlClient.SqlDataReader.get_MetaData()
+   在 System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   在 System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   在 System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean asyncWrite)
+   在 System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   在 System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   在 System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior)
+   在 Idefav.DbObjects.SQLServer.DbObject.QueryDataReader(String sql, Dictionary`2 parameters)
+   在 Idefav.DbObjects.SQLServer.DbObject.QueryModels[T](String sql, Dictionary`2 parameters)
+   在 Idefav.DbObjects.SQLServer.DbObject.QueryModels[T](String sql, Object parameters)
+   在 CrawlServices.BusinessTask.DataAnalyzeTask.Business() 位置 C:\Sources\电商抓取平台\CrawlData\CrawlServices\BusinessTask\DataAnalyzeTask.cs:行号 63
+   在 CrawlServices.BusinessTask.DataAnalyzeTask.<Run>b__11_0() 位置 C:\Sources\电商抓取平台\CrawlData\CrawlServices\BusinessTask\DataAnalyzeTask.cs:行号 35
+ClientConnectionId:87ff7576-cd36-431d-bb25-79c788468ee8
+Error Number:7202,State:2,Class:11

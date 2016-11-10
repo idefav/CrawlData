@@ -168,6 +168,7 @@ namespace Crawl.Common
         public List<string> FileExtension { get; set; }
 
         public List<string> FileRegex { get; set; }
+        public int AnalyzeInterval { get; set; }
     }
 
     public class CommonTaskModel

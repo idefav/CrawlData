@@ -2865,7 +2865,7 @@
       "Enable": true,
       "Interval": 0,
       "TaskName": "AnalyzeTask_Test",
-      "Shops": [ "淘宝Test" ]
+      "Shops": [ "淘宝" ]
     }
   ]
 }

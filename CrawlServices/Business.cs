@@ -105,7 +105,7 @@ namespace CrawlServices
                  new { taskname = taskname });
             if (model != null)
             {
-                return (model.UpdatedDay.HasValue && (DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH")+":00:00") - model.UpdatedDay.Value).TotalHours > 2) || !model.Status;
+                return (model.UpdatedDay.HasValue && (DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH")+":00:00") - model.UpdatedDay.Value).TotalHours >= 2) || !model.Status;
             }
             return true;
         }
@@ -190,7 +190,7 @@ namespace CrawlServices
                 new { taskname = taskname });
             if (model != null)
             {
-                return (model.UpdatedDay.HasValue && (DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH")+":00:00") - model.UpdatedDay.Value).TotalHours > 2 && model.Status) || !model.UpdatedDay.HasValue;
+                return (model.UpdatedDay.HasValue && (DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH")+":00:00") - model.UpdatedDay.Value).TotalHours >= 2 && model.Status) || !model.UpdatedDay.HasValue;
             }
             return false;
         }
@@ -333,7 +333,8 @@ namespace CrawlServices
     public enum ShopEnum
     {
         天猫,
-        淘宝
+        淘宝,
+        淘宝Test
     }
     [TableName("db_crawlconfig.dbo.td_crawlconfig")]
     public class CrawlConfig

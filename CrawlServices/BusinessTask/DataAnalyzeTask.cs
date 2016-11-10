@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 
 namespace CrawlServices.BusinessTask
 {
-    public class DataAnalyzeTask : TaskBase,IAnalyzeTask
+    public class DataAnalyzeTask : TaskBase, IAnalyzeTask
     {
         public DataAnalyzeModel DataAnalyzeModel { get { return base.Model as DataAnalyzeModel; } }
         public IDbObject Db { get; set; }
@@ -55,11 +55,11 @@ namespace CrawlServices.BusinessTask
                 ShopEnum shopEnum = ShopEnum.淘宝;
                 Enum.TryParse(shop, out shopEnum);
                 var dbname = CrawlServices.Business.GetShopConfigByName(shopEnum);
-                string currdbname = string.Format("{0}.dbo.td_data_{1}", dbname, DateTime.Now.ToString("yyyyMMdd"));
+                string currdbname = string.Format("{0}.dbo.td_data{1}", dbname.DbTable, /*DateTime.Now.ToString("yyyyMMdd")*/"");
 
                 DateTime breaktime = CrawlServices.Business.GetBreakTimeByTaskName(DataAnalyzeModel.TaskName);
 
-                string sql = "select * from " + currdbname + " where updatetime>=@updatetime order by updatetime desc ";
+                string sql = "select top 20000 * from " + currdbname + " where updatetime>=@updatetime order by updatetime asc ";
                 var models = Db.QueryModels<TaoBaoProduct>(sql, new { updatetime = breaktime });
                 if (models != null)
                 {
@@ -67,10 +67,13 @@ namespace CrawlServices.BusinessTask
                     {
                         // 月数据
                         UpdateProductInfo(taoBaoProduct, shopEnum);
-                        Analyze(taoBaoProduct,shopEnum,"M");
-                        Analyze(taoBaoProduct,shopEnum,"Q");
-                        Analyze(taoBaoProduct,shopEnum,"HY");
-                        Analyze(taoBaoProduct,shopEnum,"Y");
+                        Analyze(taoBaoProduct, shopEnum, "M");
+                        Analyze(taoBaoProduct, shopEnum, "Q");
+                        Analyze(taoBaoProduct, shopEnum, "HY");
+                        Analyze(taoBaoProduct, shopEnum, "Y");
+                        string updatetimesql =
+                            "update db_crawlconfig.dbo.td_crawlconfig set currentkeyword=@currentkeyword where taskname=@taskname ";
+                        Db.ExecuteSql(updatetimesql, parameters: new { taskname = DataAnalyzeModel.TaskName, currentkeyword = taoBaoProduct.UpdateTime });
                     }
                 }
             }
@@ -101,7 +104,7 @@ namespace CrawlServices.BusinessTask
             Db.Upsert(productinfo, "db_analyze.dbo.td_productinfo");
         }
 
-        private void Analyze(TaoBaoProduct product, ShopEnum shopEnum,string type)
+        private void Analyze(TaoBaoProduct product, ShopEnum shopEnum, string type)
         {
             if (!product.Price.HasValue)
             {
@@ -111,7 +114,7 @@ namespace CrawlServices.BusinessTask
             // 查询出现有的数据
             var analyzemodel =
                 Db.QueryModel<AnalyzeModel>(
-                    "select * from db_analyze.dbo.td_data_"+type+" where productid=@productid and shop=@shop ",
+                    "select * from db_analyze.dbo.td_data_" + type + " where productid=@productid and shop=@shop ",
                     new { productid = product.ItemId, shop = shopEnum.ToString() });
 
             if (string.IsNullOrEmpty(analyzemodel?.ProductId) || string.IsNullOrEmpty(analyzemodel.Shop))
@@ -144,7 +147,9 @@ namespace CrawlServices.BusinessTask
     public class AnalyzeModel
     {
         public string Guid { get; set; }
+        [PrimaryKey]
         public string ProductId { get; set; }
+        [PrimaryKey]
         public string Shop { get; set; }
         public string Prices { get; set; }
         public decimal? MinPrice { get; set; }
@@ -157,7 +162,7 @@ namespace CrawlServices.BusinessTask
         {
             Guid = System.Guid.NewGuid().ToString();
             ProductId = productid;
-            Shop = Shop;
+            Shop = shop;
             MinPrice = minprice;
             MaxPrice = maxprice;
             AvgPrice = avgprice;
@@ -179,8 +184,9 @@ namespace CrawlServices.BusinessTask
     public class ProductInfoModel
     {
         public string Guid { get; set; }
+        [PrimaryKey]
         public string ProductId { get; set; }
-
+        [PrimaryKey]
         public string Shop { get; set; }
         public string ProductName { get; set; }
         public decimal? NowPrice { get; set; }
