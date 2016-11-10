@@ -1,5 +1,8 @@
 ﻿{
 	"DbConn":"Data Source=139.196.39.76;Initial Catalog=DB_Tmall;Persist Security Info=True;User ID=sa;Password=idefav20160523",
+	"DbTaoBao":"Data Source=139.196.39.76;Initial Catalog=DB_Taobao;Persist Security Info=True;User ID=sa;Password=idefav20160523",
+	"DbTmall":"Data Source=139.196.39.76;Initial Catalog=DB_Tmall;Persist Security Info=True;User ID=sa;Password=idefav20160523",
+	"DbAnalyze":"Data Source=139.196.39.76;Initial Catalog=DB_Analyze;Persist Security Info=True;User ID=sa;Password=idefav20160523",
   "LogPath": "Logs",
   "TaskCount": "5",
   "Interval": 10

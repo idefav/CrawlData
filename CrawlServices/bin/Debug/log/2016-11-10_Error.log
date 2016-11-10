@@ -1,0 +1,46 @@
+2016-11-10 18:02:18 Error System.Data.SqlClient.SqlException (0x80131904): '>' 附近有语法错误。
+   在 System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   在 System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   在 System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   在 System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   在 System.Data.SqlClient.SqlDataReader.get_MetaData()
+   在 System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   在 System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   在 System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean asyncWrite)
+   在 System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   在 System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   在 System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior)
+   在 Idefav.DbObjects.SQLServer.DbObject.QueryDataReader(String sql, Dictionary`2 parameters)
+   在 Idefav.DbObjects.SQLServer.DbObject.QueryModels[T](String sql, Dictionary`2 parameters)
+   在 Idefav.DbObjects.SQLServer.DbObject.QueryModels[T](String sql, Object parameters)
+   在 CrawlServices.BusinessTask.DataAnalyzeTask.Business() 位置 C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServices\BusinessTask\DataAnalyzeTask.cs:行号 63
+   在 CrawlServices.BusinessTask.DataAnalyzeTask.<Run>b__11_0() 位置 C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServices\BusinessTask\DataAnalyzeTask.cs:行号 35
+ClientConnectionId:b4e05504-8e4a-4a7a-bfca-e81e7987d8f6
+Error Number:102,State:1,Class:15
+2016-11-10 18:02:30 Error System.FormatException: 该字符串未被识别为有效的 DateTime。
+   在 System.DateTimeParse.Parse(String s, DateTimeFormatInfo dtfi, DateTimeStyles styles)
+   在 CrawlServices.Business.NeedAnalyze(String taskname) 位置 C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServices\Business.cs:行号 108
+   在 CrawlServices.TaskManager.<>c__DisplayClass10_0.<Run>b__0() 位置 C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServices\TaskManager.cs:行号 120
+2016-11-10 18:04:40 Error System.FormatException: 该字符串未被识别为有效的 DateTime。
+   在 System.DateTimeParse.Parse(String s, DateTimeFormatInfo dtfi, DateTimeStyles styles)
+   在 CrawlServices.Business.NeedAnalyze(String taskname) 位置 C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServices\Business.cs:行号 108
+   在 CrawlServices.TaskManager.<>c__DisplayClass10_0.<Run>b__0() 位置 C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServices\TaskManager.cs:行号 120
+2016-11-10 18:08:40 Error System.Data.SqlClient.SqlException (0x80131904): '>' 附近有语法错误。
+   在 System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   在 System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   在 System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   在 System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   在 System.Data.SqlClient.SqlDataReader.get_MetaData()
+   在 System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   在 System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   在 System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean asyncWrite)
+   在 System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   在 System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   在 System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior)
+   在 Idefav.DbObjects.SQLServer.DbObject.QueryDataReader(String sql, Dictionary`2 parameters)
+   在 Idefav.DbObjects.SQLServer.DbObject.QueryModels[T](String sql, Dictionary`2 parameters)
+   在 Idefav.DbObjects.SQLServer.DbObject.QueryModels[T](String sql, Object parameters)
+   在 CrawlServices.BusinessTask.DataAnalyzeTask.Business() 位置 C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServices\BusinessTask\DataAnalyzeTask.cs:行号 63
+   在 CrawlServices.BusinessTask.DataAnalyzeTask.<Run>b__11_0() 位置 C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServices\BusinessTask\DataAnalyzeTask.cs:行号 35
+ClientConnectionId:1b6d08bf-fa20-4cb7-bb32-2cceca001a64
+Error Number:102,State:1,Class:15

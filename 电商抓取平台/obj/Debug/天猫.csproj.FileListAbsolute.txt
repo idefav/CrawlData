@@ -56,3 +56,4 @@ C:\Users\Administrator\Documents\GitHub\CrawlData\电商抓取平台\bin\Debug\C
 C:\Users\Administrator\Documents\GitHub\CrawlData\电商抓取平台\bin\Debug\Newtonsoft.Json.dll
 C:\Sources\电商抓取平台\CrawlData\电商抓取平台\bin\Debug\Newtonsoft.Json.dll
 C:\Sources\电商抓取平台\CrawlData\电商抓取平台\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Administrator\Documents\GitHub\CrawlData\电商抓取平台\bin\Debug\Newtonsoft.Json.xml

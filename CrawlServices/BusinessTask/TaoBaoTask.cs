@@ -26,7 +26,7 @@ namespace CrawlServices.BusinessTask
 
         public TaoBaoTask(ITaskModel taskModel) : base(taskModel)
         {
-            Db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConn);
+            Db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbTaobao);
         }
 
         private void Business()
@@ -51,15 +51,15 @@ namespace CrawlServices.BusinessTask
                     }
 
                 }
-                index = index <=0 ? 0 : index;
+                index = index <= 0 ? 0 : index;
                 for (int i = index; i < TaoBaoTaskModel.KeyWords.Length; i++)
                 {
                     try
                     {
                         string keyWord = TaoBaoTaskModel.KeyWords.ToList()[i].Key;
                         string cat = TaoBaoTaskModel.KeyWords.ToList()[i].Value;
-                        Crawl.Common.Common.Log.LogInfo(string.Format("{0}-正在解析关键字:{1}", TaoBaoTaskModel.TaskName, keyWord+"_"+cat));
-                        ResolveKeyWord(keyWord,cat, ipage);
+                        Crawl.Common.Common.Log.LogInfo(string.Format("{0}-正在解析关键字:{1}", TaoBaoTaskModel.TaskName, keyWord + "_" + cat));
+                        ResolveKeyWord(keyWord, cat, ipage);
                         ipage = 0;
                         Crawl.Common.Common.Log.LogInfo(string.Format("{0}-解析关键字:{1} 完成", TaoBaoTaskModel.TaskName, keyWord + "_" + cat));
                     }
@@ -94,7 +94,7 @@ namespace CrawlServices.BusinessTask
             }
         }
 
-        private void ResolveKeyWord(string keyword,string cat, int page)
+        private void ResolveKeyWord(string keyword, string cat, int page)
         {
             int totalPage = 0;
             int iPage = page;
@@ -102,14 +102,14 @@ namespace CrawlServices.BusinessTask
             taoBaoSplider.sCookies = sCookies;
 
 
-            SaveDataToDb(taoBaoSplider.SearchProducts2(keyword, iPage,cat, out totalPage));
+            SaveDataToDb(taoBaoSplider.SearchProducts2(keyword, iPage, cat, out totalPage));
             CrawlServices.Business.UpdateCrawlBreakpoint(TaoBaoTaskModel.TaskName, keyword + "_" + cat, iPage);
             iPage++;
-            while (totalPage>=0 && iPage < TaoBaoTaskModel.CrawlPages)
+            while (totalPage >= 0 && iPage < TaoBaoTaskModel.CrawlPages)
             {
 
-                SaveDataToDb(taoBaoSplider.SearchProducts2(keyword, iPage,cat, out totalPage));
-                CrawlServices.Business.UpdateCrawlBreakpoint(TaoBaoTaskModel.TaskName, keyword+"_"+cat, iPage);
+                SaveDataToDb(taoBaoSplider.SearchProducts2(keyword, iPage, cat, out totalPage));
+                CrawlServices.Business.UpdateCrawlBreakpoint(TaoBaoTaskModel.TaskName, keyword + "_" + cat, iPage);
                 iPage++;
                 Thread.Sleep(AppSettings.COMMONSETTINGS.Interval);
             }
@@ -149,11 +149,11 @@ namespace CrawlServices.BusinessTask
                 {
                     var product = TaoBaoProduct.Create(typeProduct);
                     decimal? oldprice;
-                    if (CrawlServices.Business.IsCheapProduct(Shop, product.ItemId, product.Price,out oldprice))
+                    if (CrawlServices.Business.IsCheapProduct(Shop, product.ItemId, product.Price, out oldprice))
                     {
-                        Db.Upsert(CheapProduct.Create(Shop, product.ItemId, product.Title, product.Price,oldprice, typeProduct.PicUrl));
+                        Db.Upsert(CheapProduct.Create(Shop, product.ItemId, product.Title, product.Price, oldprice, typeProduct.PicUrl));
                     }
-                    var result = Db.Upsert(product);
+                    var result = SavetoDb(product);
                     Crawl.Common.Common.Log.LogInfo(result
                         ? string.Format("更新[{0}]{1} 成功", typeProduct.sItemID, typeProduct.sTitle)
                         : string.Format("更新[{0}]{1} 失败", typeProduct.sItemID, typeProduct.sTitle));
@@ -164,6 +164,63 @@ namespace CrawlServices.BusinessTask
                 }
             }
 
+        }
+
+        /// <summary>
+        /// 创建数据表
+        /// </summary>
+        /// <param name="tablename">表名称</param>
+        private void CreateDataTable(string tablename)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append(
+                @"CREATE TABLE [DB_TaoBao].[dbo].[" + tablename + @"](
+
+                [Guid][nvarchar](50) NOT NULL,
+
+                [ItemId][nvarchar](50) NOT NULL,
+
+                [Title][nvarchar](max) NULL,
+
+                [Price][decimal](18, 2) NULL,
+
+                [PriceAVG][decimal](18, 2) NULL,
+
+                [SellCount][int] NULL,
+
+                [PriceUnit][nvarchar](50) NULL,
+
+                [CountUnit][nvarchar](50) NULL,
+
+                [CountAVG][int] NULL,
+
+                [PDate][datetime] NOT NULL,
+
+                [UpdateTime][datetime] NOT NULL,
+
+                [CommentCount][int] NULL,
+
+                [PicUrl][nvarchar](max) NULL,
+                CONSTRAINT[PK_"+ tablename+@"] PRIMARY KEY CLUSTERED
+            (
+
+                [ItemId] ASC,
+
+                [PDate] ASC
+            )WITH(PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON[PRIMARY]
+            ) ON[PRIMARY] TEXTIMAGE_ON[PRIMARY]");
+            Db.ExecuteSql(stringBuilder.ToString());
+        }
+
+        private bool SavetoDb(TaoBaoProduct product)
+        {
+            string tablename = "td_data_" + DateTime.Now.ToString("yyyyMMdd");
+            if (!CrawlServices.Business.TableIsExist(tablename,AppSettings.COMMONSETTINGS.DbTaobao))
+            {
+                // 创建表
+                CreateDataTable(tablename);
+            }
+            return Db.Upsert(product, "db_taobao.dbo." + tablename);
         }
     }
 

@@ -1,7 +1,7 @@
 ﻿{
   "TmallTask": [
     {
-      "Enable": true,
+      "Enable": false,
       "Interval": 7200,
       "CrawlPages": 100,
       "TaskName": "TmallTask_T1",
@@ -61,7 +61,7 @@
       ]
     },
     {
-      "Enable": true,
+      "Enable": false,
       "Interval": 7200,
       "CrawlPages": 50,
       "TaskName": "TmallTask_T2",
@@ -246,7 +246,7 @@
       "Enable": false,
       "Interval": 7200,
       "CrawlPages": 100,
-      "TaskName": "TaoBaoTask_T1",
+      "TaskName": "TaoBaoTask_Test",
       "KeyWords": [
         {
           "Key": "%E6%AF%9B%E8%A1%A3",
@@ -1868,7 +1868,7 @@
       ]
     },
     {
-      "Enable": true,
+      "Enable": false,
       "Interval": 7200,
       "CrawlPages": 100,
       "TaskName": "TaoBaoTask_T2",
@@ -2858,6 +2858,14 @@
           "Value": "50097750"
         }
       ]
+    }
+  ],
+  "DataAnalyzeTask": [
+    {
+      "Enable": true,
+      "Interval": 0,
+      "TaskName": "AnalyzeTask_Test",
+      "Shops": [ "淘宝Test" ]
     }
   ]
 }

@@ -88,24 +88,52 @@ namespace CrawlServices
                             foreach (KeyValuePair<string, ITask<ITaskModel>> keyValuePair in Tasks)
                             {
                                 var task = keyValuePair.Value;
+                                
                                 if (task.Task != null)
                                 {
-                                    if (task.Task.IsCompleted &&
-                                        Business.NeedCrawl(task.Model.TaskName))
+                                    if (task is IAnalyzeTask)
                                     {
-                                        //task.NextStartTime = DateTime.MinValue;
-                                        Business.UpdateCrawlStart(task.Model.TaskName);
-                                        task.Run(taskScheduler, cancellationToken);
+                                        if (task.Task.IsCompleted &&
+                                        Business.NeedAnalyze(task.Model.TaskName))
+                                        {
+                                            //task.NextStartTime = DateTime.MinValue;
+                                            Business.UpdateAnalyzeStart(task.Model.TaskName);
+                                            task.Run(taskScheduler, cancellationToken);
+                                        }
                                     }
+                                    else
+                                    {
+                                        if (task.Task.IsCompleted &&
+                                        Business.NeedCrawl(task.Model.TaskName))
+                                        {
+                                            //task.NextStartTime = DateTime.MinValue;
+                                            Business.UpdateCrawlStart(task.Model.TaskName);
+                                            task.Run(taskScheduler, cancellationToken);
+                                        }
+                                    }
+                                    
                                 }
                                 else
                                 {
-                                    if (Business.NeedCrawl(task.Model.TaskName))
+                                    if (task is IAnalyzeTask)
                                     {
-                                        Business.UpdateCrawlStart(task.Model.TaskName);
-                                        //task.NextStartTime = DateTime.MinValue;
-                                        task.Run(taskScheduler, cancellationToken);
+                                        if (Business.NeedAnalyze(task.Model.TaskName))
+                                        {
+                                            Business.UpdateAnalyzeStart(task.Model.TaskName);
+                                            //task.NextStartTime = DateTime.MinValue;
+                                            task.Run(taskScheduler, cancellationToken);
+                                        }
                                     }
+                                    else
+                                    {
+                                        if (Business.NeedCrawl(task.Model.TaskName))
+                                        {
+                                            Business.UpdateCrawlStart(task.Model.TaskName);
+                                            //task.NextStartTime = DateTime.MinValue;
+                                            task.Run(taskScheduler, cancellationToken);
+                                        }
+                                    }
+                                        
                                    
                                 }
                             

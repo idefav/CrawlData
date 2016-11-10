@@ -152,6 +152,11 @@ namespace Crawl.Common
     public class CommonSettings
     {
         public string DbConn { get; set; }
+        public string DbTaobao { get; set; }
+
+        public string DbTmall { get; set; }
+
+        public string DbAnalyze { get; set; }
         public string LogPath { get; set; }
 
         private int _interval = 10;
@@ -169,9 +174,11 @@ namespace Crawl.Common
     {
         public FileConfigTaskModel[] FileConfigTask { get; set; }
 
-        //public TmallTaskModel[] TmallTask { get; set; }
+        public TmallTaskModel[] TmallTask { get; set; }
 
         public TaoBaoTaskModel[] TaoBaoTask { get; set; }
+
+        public DataAnalyzeModel[] DataAnalyzeTask { get; set; }
     }
 
     public class TmallTaskModel : ITaskModel
@@ -244,6 +251,16 @@ namespace Crawl.Common
         }
 
 
+    }
+
+    public class DataAnalyzeModel : ITaskModel
+    {
+
+        public bool Enable { get; set; }
+        public string TaskName { get; set; }
+        public string[] Shops { get; set; }
+
+        public int Interval { get; set; }
     }
 
     public class FileConfigTaskModel : ITaskModel

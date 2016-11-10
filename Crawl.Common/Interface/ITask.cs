@@ -35,4 +35,6 @@ namespace Crawl.Common.Interface
 
         void Run(TaskScheduler taskScheduler, CancellationToken token);
     }
+
+    public interface IAnalyzeTask { }
 }

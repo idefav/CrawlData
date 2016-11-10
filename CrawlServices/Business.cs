@@ -6,6 +6,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Crawl.Common;
 using Idefav.DbFactory;
@@ -44,6 +45,45 @@ namespace CrawlServices
             return false;
         }
 
+
+        /// <summary>
+        /// 获取正常表名
+        /// </summary>
+        /// <param name="tablename"></param>
+        /// <returns></returns>
+        public static string GetTableName(string tablename)
+        {
+            if (string.IsNullOrEmpty(tablename))
+            {
+                return tablename;
+            }
+            string[] tablenames = tablename.Split('.');
+            if (tablenames.Length > 1)
+            {
+                return tablenames.Last();
+            }
+            return tablename;
+        }
+
+        /// <summary>
+        /// 判断表是否存在
+        /// </summary>
+        /// <param name="tablename"></param>
+        /// <returns></returns>
+        public static bool TableIsExist(string tablename, string dbconn)
+        {
+            IDbObject db = DBOMaker.CreateDbObj(DBType.SQLServer, dbconn);
+
+            var table =
+                db.QueryDataTable(
+                    "SELECT * FROM dbo.SysObjects WHERE ID = object_id(N'[" + GetTableName(tablename) + "]') AND OBJECTPROPERTY(ID, 'IsTable') = 1");
+            if (table != null && table.Rows.Count > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public static bool NeedCrawl(string taskname)
         {
             IDbObject db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConn);
@@ -53,6 +93,19 @@ namespace CrawlServices
             if (model != null)
             {
                 return model.UpdatedDay < DateTime.Now.Date || !model.Status;
+            }
+            return true;
+        }
+
+        public static bool NeedAnalyze(string taskname)
+        {
+            IDbObject db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConn);
+            var model = db.QueryModel<CrawlConfig>(
+                 " select * from DB_CrawlConfig.dbo.td_crawlconfig where taskname=" + db.GetParameterName("taskname"),
+                 new { taskname = taskname });
+            if (model != null)
+            {
+                return (model.UpdatedDay.HasValue && (DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH")+":00:00") - model.UpdatedDay.Value).TotalHours > 2) || !model.Status;
             }
             return true;
         }
@@ -93,6 +146,29 @@ namespace CrawlServices
             db.Upsert(config);
         }
 
+        public static void UpdateAnalyzeStart(string taskname)
+        {
+            IDbObject db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConn);
+            CrawlConfig config = new CrawlConfig();
+            var config1 = db.QueryModel<CrawlConfig>("select * from db_crawlconfig.dbo.td_crawlconfig where taskname=@taskname",
+                    new { taskname = taskname });
+            if (config1 != null)
+            {
+                config = config1;
+            }
+            config.Guid = Guid.NewGuid().ToString();
+
+            config.TaskName = taskname;
+            config.TimeUsed = 0;
+            if (NewOfAnalyze(taskname))
+            {
+                config.Status = false;
+                config.UpdatedDay = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH")+":00:00");
+            }
+            config.UpdateTime = DateTime.Now;
+            db.Upsert(config);
+        }
+
         public static bool NewDayOfCrawl(string taskname)
         {
             IDbObject db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConn);
@@ -106,7 +182,35 @@ namespace CrawlServices
             return false;
         }
 
+        public static bool NewOfAnalyze(string taskname)
+        {
+            IDbObject db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConn);
+            var model = db.QueryModel<CrawlConfig>(
+                " select * from DB_CrawlConfig.dbo.td_crawlconfig where taskname=" + db.GetParameterName("taskname"),
+                new { taskname = taskname });
+            if (model != null)
+            {
+                return (model.UpdatedDay.HasValue && (DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH")+":00:00") - model.UpdatedDay.Value).TotalHours > 2 && model.Status) || !model.UpdatedDay.HasValue;
+            }
+            return false;
+        }
+
         public static void UpdateCrawlComplete(string taskname)
+        {
+            IDbObject db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConn);
+            CrawlConfig config = new CrawlConfig();
+            config.Guid = Guid.NewGuid().ToString();
+
+            config.TaskName = taskname;
+            config.TimeUsed = 0;
+            config.Status = true;
+            config.CurrentKeyWord = "";
+            config.CurrentPage = 0;
+            config.UpdateTime = DateTime.Now;
+            db.Upsert(config);
+        }
+
+        public static void UpdateAnalyzeComplete(string taskname)
         {
             IDbObject db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConn);
             CrawlConfig config = new CrawlConfig();
@@ -144,21 +248,13 @@ namespace CrawlServices
         public static bool IsCheapProduct(string shop, string productid, decimal? price, out decimal? oldprice)
         {
             IDbObject db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConn);
-            StringBuilder stringBuilder = new StringBuilder("select top 1 price from ");
-            //if (shop == GetShopConfigByName(ShopEnum.天猫))
-            //{
-            //    stringBuilder.Append("DB_Tmall.dbo.td_data ");
-            //}
-            //else if (shop == "淘宝")
-            //{
-            //    stringBuilder.Append("db_taobao.dbo.td_data ");
-            //}
-            ShopEnum shopEnum = ShopEnum.天猫;
-            Enum.TryParse(shop, out shopEnum);
-            stringBuilder.Append(GetShopConfigByName(shopEnum).DbTable);
-            stringBuilder.Append(" where itemid=@itemid ");
-            stringBuilder.Append(" order by updatetime desc ");
-            var table = db.QueryDataTable(stringBuilder.ToString(), new { itemid = productid });
+            StringBuilder stringBuilder = new StringBuilder(@"select nowprice from DB_Analyze.dbo.td_productinfo where shop = @shop and productid = @productid; ");
+            //ShopEnum shopEnum = ShopEnum.天猫;
+            //Enum.TryParse(shop, out shopEnum);
+            //stringBuilder.Append(GetShopConfigByName(shopEnum).DbTable);
+            //stringBuilder.Append(" where itemid=@itemid ");
+            //stringBuilder.Append(" order by updatetime desc ");
+            var table = db.QueryDataTable(stringBuilder.ToString(), new { shop = shop, productid = productid });
             if (table != null && table.Rows.Count > 0)
             {
                 oldprice = table.Rows[0][0] as decimal?;
@@ -197,6 +293,25 @@ namespace CrawlServices
                 return model;
             }, true, cacheTime: TimeSpan.FromMinutes(1));
 
+        }
+
+        /// <summary>
+        /// 获取断点时间
+        /// </summary>
+        /// <param name="taskname"></param>
+        /// <returns></returns>
+        public static DateTime GetBreakTimeByTaskName(string taskname)
+        {
+            DateTime result = DateTime.Parse("1990-01-01");
+            string sql = "select * from db_crawlconfig.dbo.td_crawlconfig where taskname=@taskname";
+            IDbObject Db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConn);
+            var model = Db.QueryModel<CrawlConfig>(sql, new { taskname = taskname });
+            if (string.IsNullOrEmpty(model.CurrentKeyWord))
+            {
+                return result;
+            }
+            DateTime.TryParse(model.CurrentKeyWord, out result);
+            return result;
         }
     }
 

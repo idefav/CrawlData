@@ -64,6 +64,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusinessTask\DataAnalyzeTask.cs" />
     <Compile Include="BusinessTask\MongoDbLowLogTask.cs" />
     <Compile Include="BusinessTask\TaoBaoTask.cs" />
     <Compile Include="BusinessTask\TmallTask.cs" />
