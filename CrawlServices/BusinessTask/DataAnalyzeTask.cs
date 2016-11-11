@@ -100,10 +100,10 @@ namespace CrawlServices.BusinessTask
                             continue;
                         }
                         UpdateProductInfo(taoBaoProduct, shopEnum);
-                        Analyze(taoBaoProduct, shopEnum, "M");
-                        Analyze(taoBaoProduct, shopEnum, "Q");
-                        Analyze(taoBaoProduct, shopEnum, "HY");
-                        Analyze(taoBaoProduct, shopEnum, "Y");
+                        Analyze(taoBaoProduct, shopEnum, "M",-1);
+                        Analyze(taoBaoProduct, shopEnum, "Q",-3);
+                        Analyze(taoBaoProduct, shopEnum, "HY",-6);
+                        Analyze(taoBaoProduct, shopEnum, "Y",-12);
                         string updatetimesql =
                             "update db_crawlconfig.dbo.td_crawlconfig set currentkeyword=@currentkeyword where taskname=@taskname ";
                         Db.ExecuteSql(updatetimesql,
@@ -181,7 +181,7 @@ namespace CrawlServices.BusinessTask
             Db.Upsert(productinfo, "db_analyze.dbo.td_productinfo");
         }
 
-        private void Analyze(TaoBaoProduct product, ShopEnum shopEnum, string type)
+        private void Analyze(TaoBaoProduct product, ShopEnum shopEnum, string type,int months)
         {
             if (!product.Price.HasValue)
             {
@@ -193,7 +193,8 @@ namespace CrawlServices.BusinessTask
                 Db.QueryModel<AnalyzeModel>(
                     "select * from db_analyze.dbo.td_data_" + type + " where productid=@productid and shop=@shop ",
                     new { productid = product.ItemId, shop = shopEnum.ToString() });
-
+            string starttime = DateTime.Now.AddMonths(months).ToString("yyyy-MM-dd");
+            
             if (string.IsNullOrEmpty(analyzemodel?.ProductId) || string.IsNullOrEmpty(analyzemodel.Shop))
             {
                 Dictionary<string, decimal> dictionary = new Dictionary<string, decimal> { { product.PDate.ToString("yyyy-MM-dd"), product.Price.Value } };
@@ -205,7 +206,10 @@ namespace CrawlServices.BusinessTask
             }
             else
             {
+
                 var prices = JsonConvert.DeserializeObject<Dictionary<string, decimal>>(analyzemodel.Prices);
+
+                
                 string updateday = product.PDate.ToString("yyyy-MM-dd");
                 if (prices.ContainsKey(updateday))
                 {
@@ -215,7 +219,8 @@ namespace CrawlServices.BusinessTask
                 {
                     prices.Add(updateday, product.Price.Value);
                 }
-                analyzemodel.Prices = JsonConvert.SerializeObject(prices);
+                var pricesnew = prices.Where(c => DateTime.Parse(c.Key) >= DateTime.Parse(starttime));
+                analyzemodel.Prices = JsonConvert.SerializeObject(pricesnew);
                 analyzemodel.MaxPrice = prices.Values.Max();
                 analyzemodel.AvgPrice = prices.Values.Average();
                 analyzemodel.MinPrice = prices.Values.Min();
