@@ -147,7 +147,7 @@ namespace CrawlServices.BusinessTask
                     {
                         Db.Upsert(CheapProduct.Create(Shop, product.ItemId, product.Title, product.Price, oldprice, typeProduct.PicUrl));
                     }
-                    var result = Db.Upsert(product);
+                    var result = SavetoDb(product);
                     Crawl.Common.Common.Log.LogInfo(result
                         ? string.Format("更新[{0}]{1} 成功", typeProduct.sItemID, typeProduct.sTitle)
                         : string.Format("更新[{0}]{1} 失败", typeProduct.sItemID, typeProduct.sTitle));
@@ -158,6 +158,63 @@ namespace CrawlServices.BusinessTask
                 }
             }
 
+        }
+
+        /// <summary>
+        /// 创建数据表
+        /// </summary>
+        /// <param name="tablename">表名称</param>
+        private void CreateDataTable(string tablename)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append(
+                @"CREATE TABLE [DB_Tmall].[dbo].[" + tablename + @"](
+
+                [Guid][nvarchar](50) NOT NULL,
+
+                [ItemId][nvarchar](50) NOT NULL,
+
+                [Title][nvarchar](max) NULL,
+
+                [Price][decimal](18, 2) NULL,
+
+                [PriceAVG][decimal](18, 2) NULL,
+
+                [SellCount][int] NULL,
+
+                [PriceUnit][nvarchar](50) NULL,
+
+                [CountUnit][nvarchar](50) NULL,
+
+                [CountAVG][int] NULL,
+
+                [PDate][datetime] NOT NULL,
+
+                [UpdateTime][datetime] NOT NULL,
+
+                [CommentCount][int] NULL,
+
+                [PicUrl][nvarchar](max) NULL,
+                CONSTRAINT[PK_" + tablename + @"] PRIMARY KEY CLUSTERED
+            (
+
+                [ItemId] ASC,
+
+                [PDate] ASC
+            )WITH(PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON[PRIMARY]
+            ) ON[PRIMARY] TEXTIMAGE_ON[PRIMARY]");
+            Db.ExecuteSql(stringBuilder.ToString());
+        }
+
+        private bool SavetoDb(Product product)
+        {
+            string tablename = "td_data_" + DateTime.Now.ToString("yyyyMMdd");
+            if (!CrawlServices.Business.TableIsExist(tablename, AppSettings.COMMONSETTINGS.DbTmall))
+            {
+                // 创建表
+                CreateDataTable(tablename);
+            }
+            return Db.Upsert(product, "db_tmall.dbo." + tablename);
         }
 
     }

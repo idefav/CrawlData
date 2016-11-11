@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -50,22 +52,53 @@ namespace CrawlServices.BusinessTask
 
         private void Business()
         {
-            foreach (string shop in DataAnalyzeModel.Shops)
+            string shopold = "";
+            DateTime breaktime = CrawlServices.Business.GetBreakTimeByTaskName(DataAnalyzeModel.TaskName,out shopold);
+            int index = 0;
+            if (!string.IsNullOrEmpty(shopold))
             {
+                index = DataAnalyzeModel.Shops.ToList().IndexOf(shopold.ToString());
+                index = index < 0 ? 0 : index;
+            }
+            
+            for (int j = index; j < DataAnalyzeModel.Shops.Length; j++)
+            {
+                string shop = DataAnalyzeModel.Shops[j];
+                Crawl.Common.Common.Log.LogInfo($"正在解析 {shop} ");
                 ShopEnum shopEnum = ShopEnum.淘宝;
                 Enum.TryParse(shop, out shopEnum);
                 var dbname = CrawlServices.Business.GetShopConfigByName(shopEnum);
                 string currdbname = string.Format("{0}.dbo.td_data{1}", dbname.DbTable, /*DateTime.Now.ToString("yyyyMMdd")*/"");
+                string sql = "select * from " + currdbname + " where updatetime>=@updatetime order by updatetime asc ";
 
-                DateTime breaktime = CrawlServices.Business.GetBreakTimeByTaskName(DataAnalyzeModel.TaskName);
-
-                string sql = "select top 20000 * from " + currdbname + " where updatetime>=@updatetime order by updatetime asc ";
-                var models = Db.QueryModels<TaoBaoProduct>(sql, new { updatetime = breaktime });
-                if (models != null)
+                //var models = Db.QueryModels<TaoBaoProduct>(sql, new { updatetime = breaktime });
+                //var data= Db.QueryDataReader(sql, new {updatetime = breaktime});
+                //List<TaoBaoProduct> models = new List<TaoBaoProduct>();
+                using (IDataReader dr = Db.QueryDataReader(sql, new { updatetime = breaktime }))
                 {
-                    foreach (TaoBaoProduct taoBaoProduct in models)
+                    while (dr.Read())
                     {
-                        // 月数据
+                        TaoBaoProduct taoBaoProduct = new TaoBaoProduct();
+                        for (int i = 0; i < dr.FieldCount; i++)
+                        {
+                            PropertyInfo pi = typeof(TaoBaoProduct).GetProperty(dr.GetName(i));
+                            if (pi != null)
+                            {
+                                var v = dr.GetValue(i);
+                                if (v == DBNull.Value)
+                                {
+                                    pi.SetValue(taoBaoProduct, null, null);
+                                }
+                                else
+                                {
+                                    pi.SetValue(taoBaoProduct, v, null);
+                                }
+                            }
+                        }
+                        if (string.IsNullOrEmpty(taoBaoProduct.ItemId))
+                        {
+                            continue;
+                        }
                         UpdateProductInfo(taoBaoProduct, shopEnum);
                         Analyze(taoBaoProduct, shopEnum, "M");
                         Analyze(taoBaoProduct, shopEnum, "Q");
@@ -73,10 +106,54 @@ namespace CrawlServices.BusinessTask
                         Analyze(taoBaoProduct, shopEnum, "Y");
                         string updatetimesql =
                             "update db_crawlconfig.dbo.td_crawlconfig set currentkeyword=@currentkeyword where taskname=@taskname ";
-                        Db.ExecuteSql(updatetimesql, parameters: new { taskname = DataAnalyzeModel.TaskName, currentkeyword = taoBaoProduct.UpdateTime });
+                        Db.ExecuteSql(updatetimesql,
+                            parameters:
+                                new
+                                {
+                                    taskname = DataAnalyzeModel.TaskName,
+                                    currentkeyword = taoBaoProduct.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "|" + shopEnum.ToString()
+                                });
+                        //models.Add(model);
                     }
                 }
+
+                Crawl.Common.Common.Log.LogInfo($"解析 {shop} 完成 ");
+
             }
+
+            //foreach (string shop in DataAnalyzeModel.Shops)
+            //{
+                
+
+            //    //if (models != null && models.Count > 0)
+            //    //{
+            //    //    foreach (TaoBaoProduct taoBaoProduct in models)
+            //    //    {
+            //    //        // 月数据
+            //    //        UpdateProductInfo(taoBaoProduct, shopEnum);
+            //    //        Analyze(taoBaoProduct, shopEnum, "M");
+            //    //        Analyze(taoBaoProduct, shopEnum, "Q");
+            //    //        Analyze(taoBaoProduct, shopEnum, "HY");
+            //    //        Analyze(taoBaoProduct, shopEnum, "Y");
+            //    //        string updatetimesql =
+            //    //            "update db_crawlconfig.dbo.td_crawlconfig set currentkeyword=@currentkeyword where taskname=@taskname ";
+            //    //        Db.ExecuteSql(updatetimesql,
+            //    //            parameters:
+            //    //                new
+            //    //                {
+            //    //                    taskname = DataAnalyzeModel.TaskName,
+            //    //                    currentkeyword = taoBaoProduct.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss fff")
+            //    //                });
+            //    //    }
+            //    //}
+            //    //else
+            //    //{
+            //    //    break;
+            //    //}
+
+
+
+            //}
         }
 
         private void UpdateProductInfo(TaoBaoProduct product, ShopEnum shopEnum)
@@ -122,6 +199,9 @@ namespace CrawlServices.BusinessTask
                 Dictionary<string, decimal> dictionary = new Dictionary<string, decimal> { { product.PDate.ToString("yyyy-MM-dd"), product.Price.Value } };
                 analyzemodel = AnalyzeModel.Create(product.ItemId, shopEnum.ToString(), dictionary,
                     product.Price.Value, product.Price.Value, product.Price.Value);
+                analyzemodel.MaxPrice = dictionary.Values.Max();
+                analyzemodel.AvgPrice = dictionary.Values.Average();
+                analyzemodel.MinPrice = dictionary.Values.Min();
             }
             else
             {
@@ -135,6 +215,10 @@ namespace CrawlServices.BusinessTask
                 {
                     prices.Add(updateday, product.Price.Value);
                 }
+                analyzemodel.Prices = JsonConvert.SerializeObject(prices);
+                analyzemodel.MaxPrice = prices.Values.Max();
+                analyzemodel.AvgPrice = prices.Values.Average();
+                analyzemodel.MinPrice = prices.Values.Min();
             }
 
 

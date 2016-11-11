@@ -300,7 +300,7 @@ namespace CrawlServices
         /// </summary>
         /// <param name="taskname"></param>
         /// <returns></returns>
-        public static DateTime GetBreakTimeByTaskName(string taskname)
+        public static DateTime GetBreakTimeByTaskName(string taskname,out string shopEnum)
         {
             DateTime result = DateTime.Parse("1990-01-01");
             string sql = "select * from db_crawlconfig.dbo.td_crawlconfig where taskname=@taskname";
@@ -308,9 +308,13 @@ namespace CrawlServices
             var model = Db.QueryModel<CrawlConfig>(sql, new { taskname = taskname });
             if (string.IsNullOrEmpty(model.CurrentKeyWord))
             {
+                shopEnum = "";
                 return result;
             }
-            DateTime.TryParse(model.CurrentKeyWord, out result);
+            //ShopEnum shopEnum;
+            string[] currKeyWord = model.CurrentKeyWord.Split('|');
+            DateTime.TryParse(currKeyWord[0], out result);
+            shopEnum = currKeyWord[1];
             return result;
         }
     }
