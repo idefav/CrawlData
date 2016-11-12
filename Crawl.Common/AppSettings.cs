@@ -157,6 +157,7 @@ namespace Crawl.Common
         public string DbTmall { get; set; }
 
         public string DbAnalyze { get; set; }
+        public string DbConfig { get; set; }
         public string LogPath { get; set; }
 
         private int _interval = 10;

@@ -34,7 +34,7 @@ namespace CrawlServices
 
         public static bool IsCrawlComplete(string taskname)
         {
-            IDbObject db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConn);
+            IDbObject db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConfig);
             var model = db.QueryModel<CrawlConfig>(
                  " select * from DB_CrawlConfig.dbo.td_crawlconfig where taskname=" + db.GetParameterName("taskname"),
                  new { taskname = taskname });
@@ -86,7 +86,7 @@ namespace CrawlServices
 
         public static bool NeedCrawl(string taskname)
         {
-            IDbObject db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConn);
+            IDbObject db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConfig);
             var model = db.QueryModel<CrawlConfig>(
                  " select * from DB_CrawlConfig.dbo.td_crawlconfig where taskname=" + db.GetParameterName("taskname"),
                  new { taskname = taskname });
@@ -99,7 +99,7 @@ namespace CrawlServices
 
         public static bool NeedAnalyze(string taskname)
         {
-            IDbObject db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConn);
+            IDbObject db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConfig);
             var model = db.QueryModel<CrawlConfig>(
                  " select * from DB_CrawlConfig.dbo.td_crawlconfig where taskname=" + db.GetParameterName("taskname"),
                  new { taskname = taskname });
@@ -112,7 +112,7 @@ namespace CrawlServices
 
         public static KeyValuePair<string, int?> GetCurrBreakpoint(string taskname)
         {
-            IDbObject db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConn);
+            IDbObject db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConfig);
             var model = db.QueryModel<CrawlConfig>(
                  " select * from DB_CrawlConfig.dbo.td_crawlconfig where taskname=" + db.GetParameterName("taskname"),
                  new { taskname = taskname });
@@ -125,7 +125,7 @@ namespace CrawlServices
 
         public static void UpdateCrawlStart(string taskname)
         {
-            IDbObject db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConn);
+            IDbObject db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConfig);
             CrawlConfig config = new CrawlConfig();
             var config1 = db.QueryModel<CrawlConfig>("select * from db_crawlconfig.dbo.td_crawlconfig where taskname=@taskname",
                     new { taskname = taskname });
@@ -148,7 +148,7 @@ namespace CrawlServices
 
         public static void UpdateAnalyzeStart(string taskname)
         {
-            IDbObject db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConn);
+            IDbObject db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConfig);
             CrawlConfig config = new CrawlConfig();
             var config1 = db.QueryModel<CrawlConfig>("select * from db_crawlconfig.dbo.td_crawlconfig where taskname=@taskname",
                     new { taskname = taskname });
@@ -171,7 +171,7 @@ namespace CrawlServices
 
         public static bool NewDayOfCrawl(string taskname)
         {
-            IDbObject db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConn);
+            IDbObject db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConfig);
             var model = db.QueryModel<CrawlConfig>(
                 " select * from DB_CrawlConfig.dbo.td_crawlconfig where taskname=" + db.GetParameterName("taskname"),
                 new { taskname = taskname });
@@ -184,7 +184,7 @@ namespace CrawlServices
 
         public static bool NewOfAnalyze(string taskname)
         {
-            IDbObject db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConn);
+            IDbObject db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConfig);
             var model = db.QueryModel<CrawlConfig>(
                 " select * from DB_CrawlConfig.dbo.td_crawlconfig where taskname=" + db.GetParameterName("taskname"),
                 new { taskname = taskname });
@@ -197,7 +197,7 @@ namespace CrawlServices
 
         public static void UpdateCrawlComplete(string taskname)
         {
-            IDbObject db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConn);
+            IDbObject db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConfig);
             CrawlConfig config = new CrawlConfig();
             config.Guid = Guid.NewGuid().ToString();
 
@@ -212,7 +212,7 @@ namespace CrawlServices
 
         public static void UpdateAnalyzeComplete(string taskname)
         {
-            IDbObject db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConn);
+            IDbObject db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConfig);
             CrawlConfig config = new CrawlConfig();
             config.Guid = Guid.NewGuid().ToString();
 
@@ -227,7 +227,7 @@ namespace CrawlServices
 
         public static void UpdateCrawlBreakpoint(string taskname, string keywords, int page)
         {
-            IDbObject db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConn);
+            IDbObject db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConfig);
             CrawlConfig config = new CrawlConfig();
             //config.UpdatedDay = DateTime.Now.Date;
             config.TaskName = taskname;
@@ -247,7 +247,7 @@ namespace CrawlServices
         /// <returns></returns>
         public static bool IsCheapProduct(string shop, string productid, decimal? price, out decimal? oldprice)
         {
-            IDbObject db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConn);
+            IDbObject db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbAnalyze);
             StringBuilder stringBuilder = new StringBuilder(@"select nowprice from DB_Analyze.dbo.td_productinfo where shop = @shop and productid = @productid; ");
             //ShopEnum shopEnum = ShopEnum.天猫;
             //Enum.TryParse(shop, out shopEnum);
@@ -287,7 +287,7 @@ namespace CrawlServices
             StringBuilder stringBuilder = new StringBuilder("select * from db_crawlconfig.dbo.td_shopconfig where shop=@shop ");
             return CacheFactory.Cache(stringBuilder.ToString() + shop.ToString(), () =>
             {
-                IDbObject Db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConn);
+                IDbObject Db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConfig);
 
                 var model = Db.QueryModel<ShopConfig>(stringBuilder.ToString(), new { shop = shop.ToString() });
                 return model;
@@ -304,7 +304,7 @@ namespace CrawlServices
         {
             DateTime result = DateTime.Parse("1990-01-01");
             string sql = "select * from db_crawlconfig.dbo.td_crawlconfig where taskname=@taskname";
-            IDbObject Db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConn);
+            IDbObject Db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConfig);
             var model = Db.QueryModel<CrawlConfig>(sql, new { taskname = taskname });
             if (string.IsNullOrEmpty(model.CurrentKeyWord))
             {
@@ -316,6 +316,20 @@ namespace CrawlServices
             DateTime.TryParse(currKeyWord[0], out result);
             shopEnum = currKeyWord[1];
             return result;
+        }
+
+        public static void UpdateBreakTimeByTaskName(string taskname,DateTime time,string shop)
+        {
+            IDbObject Db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConfig);
+            string updatetimesql =
+                           "update db_crawlconfig.dbo.td_crawlconfig set currentkeyword=@currentkeyword where taskname=@taskname ";
+            Db.ExecuteSql(updatetimesql,
+                parameters:
+                    new
+                    {
+                        taskname = taskname,
+                        currentkeyword = time.ToString("yyyy-MM-dd HH:mm:ss.fff") + "|" + shop
+                    });
         }
     }
 

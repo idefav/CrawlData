@@ -20,10 +20,14 @@ namespace CrawlServices.BusinessTask
     {
         public DataAnalyzeModel DataAnalyzeModel { get { return base.Model as DataAnalyzeModel; } }
         public IDbObject Db { get; set; }
+
+        public IDbObject DbData { get; set; }
+
         public CancellationToken CancellationToken { get; set; }
         public DataAnalyzeTask(ITaskModel taskModel) : base(taskModel)
         {
             Db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbAnalyze);
+            DbData = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConn);
         }
 
         public override void Run(TaskScheduler taskScheduler, CancellationToken token)
@@ -74,8 +78,9 @@ namespace CrawlServices.BusinessTask
                 //var models = Db.QueryModels<TaoBaoProduct>(sql, new { updatetime = breaktime });
                 //var data= Db.QueryDataReader(sql, new {updatetime = breaktime});
                 //List<TaoBaoProduct> models = new List<TaoBaoProduct>();
-                using (IDataReader dr = Db.QueryDataReader(sql, new { updatetime = breaktime }))
+                using (IDataReader dr = DbData.QueryDataReader(sql, new { updatetime = breaktime }))
                 {
+                   
                     while (dr.Read())
                     {
                         TaoBaoProduct taoBaoProduct = new TaoBaoProduct();
@@ -100,19 +105,20 @@ namespace CrawlServices.BusinessTask
                             continue;
                         }
                         UpdateProductInfo(taoBaoProduct, shopEnum);
-                        Analyze(taoBaoProduct, shopEnum, "M",-1);
-                        Analyze(taoBaoProduct, shopEnum, "Q",-3);
-                        Analyze(taoBaoProduct, shopEnum, "HY",-6);
-                        Analyze(taoBaoProduct, shopEnum, "Y",-12);
-                        string updatetimesql =
-                            "update db_crawlconfig.dbo.td_crawlconfig set currentkeyword=@currentkeyword where taskname=@taskname ";
-                        Db.ExecuteSql(updatetimesql,
-                            parameters:
-                                new
-                                {
-                                    taskname = DataAnalyzeModel.TaskName,
-                                    currentkeyword = taoBaoProduct.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "|" + shopEnum.ToString()
-                                });
+                        //Analyze(taoBaoProduct, shopEnum, "M",-1);
+                        //Analyze(taoBaoProduct, shopEnum, "Q",-3);
+                        //Analyze(taoBaoProduct, shopEnum, "HY",-6);
+                        Analyze(taoBaoProduct, shopEnum, "ALL",0);
+                        //string updatetimesql =
+                        //    "update db_crawlconfig.dbo.td_crawlconfig set currentkeyword=@currentkeyword where taskname=@taskname ";
+                        //Db.ExecuteSql(updatetimesql,
+                        //    parameters:
+                        //        new
+                        //        {
+                        //            taskname = DataAnalyzeModel.TaskName,
+                        //            currentkeyword = taoBaoProduct.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "|" + shopEnum.ToString()
+                        //        });
+                        CrawlServices.Business.UpdateBreakTimeByTaskName(DataAnalyzeModel.TaskName,taoBaoProduct.UpdateTime,shopEnum.ToString());
                         //models.Add(model);
                     }
                 }
@@ -193,7 +199,7 @@ namespace CrawlServices.BusinessTask
                 Db.QueryModel<AnalyzeModel>(
                     "select * from db_analyze.dbo.td_data_" + type + " where productid=@productid and shop=@shop ",
                     new { productid = product.ItemId, shop = shopEnum.ToString() });
-            string starttime = DateTime.Now.AddMonths(months).ToString("yyyy-MM-dd");
+            //string starttime = DateTime.Now.AddMonths(months).ToString("yyyy-MM-dd");
             
             if (string.IsNullOrEmpty(analyzemodel?.ProductId) || string.IsNullOrEmpty(analyzemodel.Shop))
             {
@@ -219,8 +225,8 @@ namespace CrawlServices.BusinessTask
                 {
                     prices.Add(updateday, product.Price.Value);
                 }
-                var pricesnew = prices.Where(c => DateTime.Parse(c.Key) >= DateTime.Parse(starttime));
-                analyzemodel.Prices = JsonConvert.SerializeObject(pricesnew);
+                //var pricesnew = prices.Where(c => DateTime.Parse(c.Key) >= DateTime.Parse(starttime));
+                analyzemodel.Prices = JsonConvert.SerializeObject(prices);
                 analyzemodel.MaxPrice = prices.Values.Max();
                 analyzemodel.AvgPrice = prices.Values.Average();
                 analyzemodel.MinPrice = prices.Values.Min();

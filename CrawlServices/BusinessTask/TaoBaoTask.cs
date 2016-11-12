@@ -21,12 +21,14 @@ namespace CrawlServices.BusinessTask
         public const string Shop = "淘宝";
 
         public IDbObject Db { get; set; }
+        public IDbObject DbData { get; set; }
 
         private const string sCookies = " thw=cn; ali_ab=114.221.152.238.1456796750675.0; lzstat_uv=26429925573013598357|3555462@2144678; uc3=sg2=B0T4xvKU3WRD5Hk2%2Fv%2B4Q9kggge1Dr3ExU5qweNLeH4%3D&nk2=AnWUh%2Bs%3D&id2=UNk1%2BrxWtNk%3D&vt3=F8dASmgq691MKE0n%2BJg%3D&lg2=UIHiLt3xD8xYTw%3D%3D; uss=UtJSnXzx31ekK4NBPk9D5ChUqQKCyM0Iw%2BMNDs7w1BQltILkn%2BmmiykAQw%3D%3D; lgc=adobo; tracknick=adobo; _cc_=VT5L2FSpdA%3D%3D; tg=0; cna=97ykDz7G2GYCAXVZmbuJZpdH; x=e%3D1%26p%3D*%26s%3D0%26c%3D0%26f%3D0%26g%3D0%26t%3D0%26__ll%3D-1; mt=ci=-1_0; v=0; cookie2=3c8fda0838e9f0f989dc5c427f4239e6; t=18fbd460625667ad4fc53c42619f98bf; _tb_token_=e5e15b5e9e591; l=ApWVxAvyiABLxfSmbBwWjTf4pZ9P0Uml; uc1=cookie14=UoWxM%2FY4orO16g%3D%3D; pnm_cku822=251UW5TcyMNYQwiAiwQRHhBfEF8QXtHcklnMWc%3D%7CUm5OcktwT3pOcEp%2BSnJKdiA%3D%7CU2xMHDJ7G2AHYg8hAS8RJQsrBVk4XjJVK1F%2FKX8%3D%7CVGhXd1llXGdYbVlnXWldZV1hVmtJdk50SnROck57QX9Ddkp2TXRaDA%3D%3D%7CVWldfS0QMA43Di4QMB4iHjsVQxU%3D%7CVmhIGC0ZOQA0FCgXKRc3CD0EJBgnEi8PMw4xCCgUKx4jAzcCO207%7CV25Tbk5zU2xMcEl1VWtTaUlwJg%3D%3D";
 
         public TaoBaoTask(ITaskModel taskModel) : base(taskModel)
         {
             Db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbTaobao);
+            DbData = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbAnalyze);
         }
 
         private void Business()
@@ -151,7 +153,7 @@ namespace CrawlServices.BusinessTask
                     decimal? oldprice;
                     if (CrawlServices.Business.IsCheapProduct(Shop, product.ItemId, product.Price, out oldprice))
                     {
-                        Db.Upsert(CheapProduct.Create(Shop, product.ItemId, product.Title, product.Price, oldprice, typeProduct.PicUrl));
+                        DbData.Upsert(CheapProduct.Create(Shop, product.ItemId, product.Title, product.Price, oldprice, typeProduct.PicUrl));
                     }
                     var result = SavetoDb(product);
                     Crawl.Common.Common.Log.LogInfo(result
