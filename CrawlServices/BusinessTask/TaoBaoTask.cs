@@ -174,44 +174,9 @@ namespace CrawlServices.BusinessTask
         /// <param name="tablename">表名称</param>
         private void CreateDataTable(string tablename)
         {
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.Append(
-                @"CREATE TABLE [DB_TaoBao].[dbo].[" + tablename + @"](
+            Db.ExecuteSql(string.Format(SQL.DB_CreateTable_Sql, tablename));
+            //Db.ExecuteSql(string.Format(SQL.DB_Taobao_data_createindex_updatetime, tablename));
 
-                [Guid][nvarchar](50) NOT NULL,
-
-                [ItemId][nvarchar](50) NOT NULL,
-
-                [Title][nvarchar](max) NULL,
-
-                [Price][decimal](18, 2) NULL,
-
-                [PriceAVG][decimal](18, 2) NULL,
-
-                [SellCount][int] NULL,
-
-                [PriceUnit][nvarchar](50) NULL,
-
-                [CountUnit][nvarchar](50) NULL,
-
-                [CountAVG][int] NULL,
-
-                [PDate][datetime] NOT NULL,
-
-                [UpdateTime][datetime] NOT NULL,
-
-                [CommentCount][int] NULL,
-
-                [PicUrl][nvarchar](max) NULL,
-                CONSTRAINT[PK_"+ tablename+@"] PRIMARY KEY CLUSTERED
-            (
-
-                [ItemId] ASC,
-
-                [PDate] ASC
-            )WITH(PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON[PRIMARY]
-            ) ON[PRIMARY] TEXTIMAGE_ON[PRIMARY]");
-            Db.ExecuteSql(stringBuilder.ToString());
         }
 
         private bool SavetoDb(TaoBaoProduct product)
@@ -237,7 +202,7 @@ namespace CrawlServices.BusinessTask
         public int? SellCount { get; set; }
         public string PriceUnit { get; set; }
         public string CountUnit { get; set; }
-        public string CountAVG { get; set; }
+        public int? CountAVG { get; set; }
         [PrimaryKey]
         public DateTime PDate { get; set; }
 
@@ -265,7 +230,12 @@ namespace CrawlServices.BusinessTask
             }
             PriceUnit = typeProduct.sPriceUnit;
             CountUnit = typeProduct.sCountUnit;
-            CountAVG = typeProduct.sCountAVG;
+            int countAvg = 0;
+            if (int.TryParse(typeProduct.sCountAVG, out countAvg))
+            {
+                CountAVG = countAvg;
+            }
+           
             PDate = DateTime.Now.Date;
             UpdateTime = DateTime.Now;
             int _commentCount = 0;

@@ -2864,7 +2864,7 @@
     {
       "Enable": true,
       "Interval": 0,
-      "TaskName": "AnalyzeTask_Test2",
+      "TaskName": "AnalyzeTask_Test3",
       "Shops": [ "天猫" ]
     }
   ]

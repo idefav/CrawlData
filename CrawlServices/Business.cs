@@ -84,6 +84,20 @@ namespace CrawlServices
             return false;
         }
 
+        /// <summary>
+        /// 判断索引是否存在
+        /// </summary>
+        /// <param name="indexname"></param>
+        /// <param name="dbconn"></param>
+        /// <returns></returns>
+        public static bool IndexIsExist(string indexname, string dbconn)
+        {
+            IDbObject db = DBOMaker.CreateDbObj(DBType.SQLServer, dbconn);
+            var val = db.ExecuteScalar(string.Format(SQL.Db_IndexIsExist, indexname));
+            int count = (int) val;
+            return count > 0;
+        }
+
         public static bool NeedCrawl(string taskname)
         {
             IDbObject db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConfig);
@@ -219,7 +233,7 @@ namespace CrawlServices
             config.TaskName = taskname;
             config.TimeUsed = 0;
             config.Status = true;
-            config.CurrentKeyWord = "";
+            //config.CurrentKeyWord = "";
             config.CurrentPage = 0;
             config.UpdateTime = DateTime.Now;
             db.Upsert(config);
