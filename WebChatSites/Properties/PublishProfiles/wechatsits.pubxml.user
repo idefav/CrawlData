@@ -19,7 +19,7 @@
       <publishTime>10/30/2016 11:29:30</publishTime>
     </File>
     <File Include="bin/Crawl.Common.dll">
-      <publishTime>11/05/2016 10:54:32</publishTime>
+      <publishTime>11/13/2016 22:51:23</publishTime>
     </File>
     <File Include="bin/HttpHelper.dll">
       <publishTime>07/11/2016 22:30:29</publishTime>
@@ -28,10 +28,10 @@
       <publishTime>10/29/2016 10:48:43</publishTime>
     </File>
     <File Include="bin/Idefav.DbObjects.dll">
-      <publishTime>11/05/2016 08:30:32</publishTime>
+      <publishTime>11/10/2016 19:56:10</publishTime>
     </File>
     <File Include="bin/Idefav.IDAL.dll">
-      <publishTime>11/05/2016 08:30:32</publishTime>
+      <publishTime>11/10/2016 19:56:10</publishTime>
     </File>
     <File Include="bin/Idefav.Utility.dll">
       <publishTime>11/05/2016 08:30:32</publishTime>
@@ -133,7 +133,7 @@
       <publishTime>01/28/2015 04:04:30</publishTime>
     </File>
     <File Include="bin/WebChatSites.dll">
-      <publishTime>11/05/2016 10:54:34</publishTime>
+      <publishTime>11/13/2016 22:51:25</publishTime>
     </File>
     <File Include="bin/WebGrease.dll">
       <publishTime>11/02/2016 22:26:20</publishTime>
@@ -307,7 +307,7 @@
       <publishTime>10/30/2016 11:29:18</publishTime>
     </File>
     <File Include="Views/WeChat/Index.cshtml">
-      <publishTime>11/05/2016 10:45:59</publishTime>
+      <publishTime>11/13/2016 22:43:00</publishTime>
     </File>
     <File Include="Views/WeChat/QueryProduct.cshtml">
       <publishTime>10/30/2016 12:52:10</publishTime>
@@ -316,7 +316,7 @@
       <publishTime>10/30/2016 11:29:18</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>11/05/2016 10:54:35</publishTime>
+      <publishTime>11/13/2016 22:51:26</publishTime>
     </File>
   </ItemGroup>
 </Project>

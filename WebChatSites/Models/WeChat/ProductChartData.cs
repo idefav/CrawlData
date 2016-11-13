@@ -21,6 +21,16 @@ namespace WebChatSites.Models.WeChat
         [PrimaryKey]
         public DateTime PDate { get; set; }
 
+        public string Shop { get; set; }
+
+        public string Prices { get; set; }
+
+        public decimal? MinPrice { get; set; }
+
+        public decimal? MaxPrice { get; set; }
+
+        public decimal? AvgPrice { get; set; }
+
         /// <summary>
         /// 商品名称
         /// </summary>

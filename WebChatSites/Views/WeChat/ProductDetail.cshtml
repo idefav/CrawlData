@@ -1,0 +1,64 @@
+﻿@using WebChatSites.Models.WeChat
+@model System.Collections.Specialized.HybridDictionary
+
+@{
+    ViewBag.Title = "title";
+    Layout = "~/Views/Shared/WeChatLayout.cshtml";
+}
+
+<div class="container" style="width: 100%; overflow: hidden;">
+   
+
+    <div class="row">
+        <div class="col-md-12">
+            @*<div id="divNone" style="display: none;">
+                <div class="divNoneImg" style=""></div>
+                <div class="divNoneText" style="">Sorry，没有你要找的内容，换个其他的吧</div>
+            </div>*@
+            <div id="divInfo">
+                <div id="divTitle" style=""><a target='_blank' href='@(Model["DetailLink"])&rd=@DateTime.Now.ToString("yyyyMMddHHmmssfff")' title='@Model["Title"]'>【@Model["Shop"]】@Model["Title"]</a></div>
+                <div id="divMinPrice" style="">最低价:@(Model["MinPrice"])元</div>
+            </div>
+
+            <canvas id="myChart" style="width: 100%; height: 15em;"></canvas>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+        $(function () {
+            var ctx = document.getElementById("myChart").getContext("2d");
+            var myNewChart;
+            var txt = "@Model["ChartLabels"].ToString()";
+            var chartLabels = eval("(" + txt.replace(/&quot;/g, "'") + ")");
+            var chartDatas = eval("(" + "@Model["ChartDatas"]" + ")");
+            if (chartDatas.length > 0) {
+                //$("#divMinPrice").text("最低价：" + json.MinPrice + "元");
+                $("#myChart").show();
+                $("#divNone").hide();
+                $("#divInfo").show();
+                var dataj = {
+                    labels: chartLabels,
+                    datasets: [
+                        { data: chartDatas }
+                    ]
+                };
+
+                myNewChart = new Chart(ctx).Line(dataj,
+                {
+                    scaleShowGridLines: true,
+                    scaleGridLineColor: "rgba(0,0,0,.05)",
+                    bezierCurve: true,
+                    datasetFill: false
+                });
+            } else {
+                $("#divTitle").hide();
+                $("#divNone").show();
+            }
+
+        });
+    </script>
+   
+}

@@ -66,7 +66,7 @@
                 $.getJSON("/WeChat/QueryProduct", { productlink: productlink }, function (json) {
                     json = eval("(" + json + ")");
 
-
+                    $("#divTitle").show().html("<a target='_blank' href='"+json.DetailLink + "&rd=" + new Date().getMilliseconds() + "' title='" + json.Title + "'>【" + json.Shop + "】" + json.Title + "</a>");
                     //加载图表内容
                     if (json.ChartData.length > 0) {
                         $("#divMinPrice").text("最低价：" + json.MinPrice + "元");
@@ -77,9 +77,9 @@
                         var datas = [];
                         for (var i = 0; i < json.ChartData.length; i++) {
                             var obj = json.ChartData[i];
-                            $("#divTitle").html("<a target='_blank' href='https://detail.tmall.com/item.htm?id="+obj.ItemId+"&rd="+new Date().getMilliseconds()+"' title='"+obj.Title+"'>【"+json.Shop+"】" + obj.Title + "</a>");
-                            labels.push(obj.PDate.replace("T00:00:00", ""));
-                            datas.push(obj.Price);
+                            
+                            labels.push(obj.Key.replace("T00:00:00", ""));
+                            datas.push(obj.Value);
                         }
                         var dataj = {
                             labels: labels,
@@ -96,6 +96,7 @@
                         });
 
                     } else {
+                        $("#divTitle").hide();
                         $("#divNone").show();
                     }
                     $("#btnQuery").text("查询历史价格").attr("disabled",false);

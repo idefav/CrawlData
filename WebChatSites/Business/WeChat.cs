@@ -50,7 +50,8 @@ namespace WebChatSites.Business
             return ualist[d];
         }
 
-        private IDbObject Db = DBOMaker.CreateDbObj(DBType.SQLServer, CommSettings.DbConn);
+        private IDbObject DbAnalyze = DBOMaker.CreateDbObj(DBType.SQLServer, CommSettings.DbAnalyze);
+        private IDbObject DbConfig = DBOMaker.CreateDbObj(DBType.SQLServer, CommSettings.DbConfig);
 
         private static string DownloadProduct(string url, string sTCookies, string filter)
         {
@@ -72,10 +73,16 @@ namespace WebChatSites.Business
 
         public static HybridDictionary GetProductId(string input)
         {
-            var shopconfigs = GetShopConfigs();
-            ShopEnum shop = ShopEnum.天猫;
+
+
             string productId = "";
+
+
             string dbtable = "db_tmall.dbo.td_data";
+            ShopEnum shop = ShopEnum.天猫;
+            string productid = "";
+            ShopConfig currShopConfig=null;
+            var shopconfigs = GetShopConfigs();
             foreach (ShopConfig shopconfig in shopconfigs)
             {
                 var shopFilter = JsonConvert.DeserializeObject<List<ShopFilter>>(shopconfig.Regex);
@@ -87,7 +94,8 @@ namespace WebChatSites.Business
                         {
                             case ProductLinkMode.PcLink:
                                 {
-                                    Regex regex = new Regex(filter.value, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                                    Regex regex = new Regex(filter.value,
+                                      RegexOptions.Compiled | RegexOptions.IgnoreCase);
                                     var match = regex.Match(input);
                                     if (match.Success)
                                     {
@@ -100,7 +108,8 @@ namespace WebChatSites.Business
                             case ProductLinkMode.AppShareToken:
                             case ProductLinkMode.AppShareLink:
                                 {
-                                    Regex regex = new Regex(filter.value, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                                    Regex regex = new Regex(filter.value,
+                                      RegexOptions.Compiled | RegexOptions.IgnoreCase);
                                     var match = regex.Match(input);
                                     string url = match.Success ? match.Groups[1].Value : input;
                                     productId = DownloadProduct(url, shopconfig.Cookies, filter.regex);
@@ -109,7 +118,8 @@ namespace WebChatSites.Business
                                 }
                             case ProductLinkMode.ItemId:
                                 {
-                                    Regex regex = new Regex(filter.value, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                                    Regex regex = new Regex(filter.value,
+                                      RegexOptions.Compiled | RegexOptions.IgnoreCase);
                                     var match = regex.Match(input);
                                     if (match.Success)
                                     {
@@ -122,7 +132,7 @@ namespace WebChatSites.Business
                         if (!string.IsNullOrEmpty(productId))
                         {
                             Enum.TryParse(shopconfig.Shop, true, out shop);
-
+                            currShopConfig = shopconfig;
                             break;
                         }
                     }
@@ -134,6 +144,7 @@ namespace WebChatSites.Business
                     break;
                 }
             }
+
             //    string[] filters = shopconfig.Regex.Split('');
             //    foreach (string filter in filters)
             //    {
@@ -185,7 +196,7 @@ namespace WebChatSites.Business
             //    }
             //}
 
-            return new HybridDictionary { { "itemid", productId }, { "shopname", shop.ToString() }, { "table", dbtable } };
+            return new HybridDictionary { { "itemid", productId }, { "shopname", shop.ToString() }, { "table", dbtable }, {"shopconfig",currShopConfig} };
         }
 
         /// <summary>
@@ -198,10 +209,21 @@ namespace WebChatSites.Business
             return CacheFactory.Cache(sql, () =>
              {
                  StringBuilder stringBuilder = new StringBuilder(sql);
-                 IDbObject Db = DBOMaker.CreateDbObj(DBType.SQLServer, CommSettings.DbConn);
+                 IDbObject Db = DBOMaker.CreateDbObj(DBType.SQLServer, CommSettings.DbConfig);
                  return Db.QueryModels<ShopConfig>(stringBuilder.ToString());
              }, true, cacheTime: TimeSpan.FromMinutes(1));
 
+        }
+
+        public static ShopConfig GetShopConfigByName(string shop)
+        {
+            string sql = "select * from db_crawlconfig.dbo.td_shopconfig where shop=@shop order by [order] asc";
+            return CacheFactory.Cache(sql+shop, () =>
+            {
+                StringBuilder stringBuilder = new StringBuilder(sql);
+                IDbObject Db = DBOMaker.CreateDbObj(DBType.SQLServer, CommSettings.DbConfig);
+                return Db.QueryModel<ShopConfig>(stringBuilder.ToString(),new {shop=shop});
+            }, true, cacheTime: TimeSpan.FromMinutes(1));
         }
 
         /// <summary>
@@ -210,11 +232,15 @@ namespace WebChatSites.Business
         /// <param name="itemid">商品编号</param>
         /// <param name="table">数据库表名</param>
         /// <returns></returns>
-        public List<ProductChartData> GetData(string itemid, string table)
+        public ProductChartData GetData(string itemid, string shop)
         {
 
-            StringBuilder stringBuilder = new StringBuilder("SELECT [ItemId],[Price],[Title],[PDate]FROM " + table + " where  itemid=@itemid order by updatetime");
-            var data = Db.QueryModels<ProductChartData>(stringBuilder.ToString(), new { itemid = itemid });
+            StringBuilder stringBuilder = new StringBuilder(@"SELECT  a.*,a.ProductId ItemId,b.ProductName Title,b.NowPrice Price
+  FROM[DB_Analyze].[dbo].[td_data_ALL] a
+  left join DB_Analyze.dbo.td_productinfo b on a.ProductId = b.ProductId and a.Shop = b.shop
+  where a.ProductId = @productid and a.Shop = @shop");
+            var data = DbAnalyze.QueryModel<ProductChartData>(stringBuilder.ToString(), new { ProductId = itemid, shop = shop });
+
             return data;
         }
 
@@ -223,7 +249,7 @@ namespace WebChatSites.Business
         /// </summary>
         /// <param name="shop"></param>
         /// <returns></returns>
-        public  ShopConfig GetShopConfigByName(ShopEnum shop)
+        public static ShopConfig GetShopConfigByName(ShopEnum shop)
         {
             StringBuilder stringBuilder = new StringBuilder("select * from db_crawlconfig.dbo.td_shopconfig where shop=@shop ");
             return CacheFactory.Cache(stringBuilder.ToString() + shop.ToString(), () =>
@@ -240,11 +266,11 @@ namespace WebChatSites.Business
         /// </summary>
         /// <param name="itemid">商品编号</param>
         /// <returns></returns>
-        public decimal? GetMinPrice(string itemid,string dbtable)
+        public decimal? GetMinPrice(string itemid, string dbtable)
         {
             //var shopconfig=GetShopConfigByName()
-            StringBuilder stringBuilder = new StringBuilder(" SELECT MIN(Price) minprice FROM "+dbtable+" where ItemId=@itemid");
-            var dataset = Db.Query(stringBuilder.ToString(), new { itemid = itemid });
+            StringBuilder stringBuilder = new StringBuilder(" SELECT MIN(Price) minprice FROM " + dbtable + " where ItemId=@itemid");
+            var dataset = DbAnalyze.Query(stringBuilder.ToString(), new { itemid = itemid });
             if (dataset != null && dataset.Tables.Count > 0 && dataset.Tables[0].Rows.Count > 0)
             {
                 decimal v = 0;
@@ -269,7 +295,7 @@ namespace WebChatSites.Business
                                     where a.updatetime > @updatetime
                                     order by updatetime desc");
 
-            var datas = Db.QueryModels<CheapProductData>(stringBuilder.ToString(), new { updatetime = updatetime });
+            var datas = DbAnalyze.QueryModels<CheapProductData>(stringBuilder.ToString(), new { updatetime = updatetime });
             return datas;
         }
 

@@ -160,6 +160,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Business\SQL.cs" />
     <Compile Include="Business\WeChat.cs" />
     <Compile Include="CommSettings.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -231,6 +232,7 @@
     <Content Include="Views\WeChat\Index.cshtml" />
     <Content Include="Views\Shared\WeChatLayout.cshtml" />
     <None Include="Views\WeChat\CheapProduct.cshtml" />
+    <None Include="Views\WeChat\ProductDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
