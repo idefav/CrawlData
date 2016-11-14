@@ -316,7 +316,7 @@ namespace CrawlServices
         /// <returns></returns>
         public static DateTime GetBreakTimeByTaskName(string taskname,out string shopEnum)
         {
-            DateTime result = DateTime.Parse("1990-01-01");
+            DateTime result = DateTime.Now.AddDays(-1);
             string sql = "select * from db_crawlconfig.dbo.td_crawlconfig where taskname=@taskname";
             IDbObject Db = DBOMaker.CreateDbObj(DBType.SQLServer, AppSettings.COMMONSETTINGS.DbConfig);
             var model = Db.QueryModel<CrawlConfig>(sql, new { taskname = taskname });

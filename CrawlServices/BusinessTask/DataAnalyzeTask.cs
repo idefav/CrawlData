@@ -72,75 +72,91 @@ namespace CrawlServices.BusinessTask
                 ShopEnum shopEnum = ShopEnum.淘宝;
                 Enum.TryParse(shop, out shopEnum);
                 var dbname = CrawlServices.Business.GetShopConfigByName(shopEnum);
-                string tablename = "td_data" /*+"_"+DateTime.Now.ToString("yyyyMMdd")*/;
-                string currdbname = string.Format("{0}.dbo.{1}", dbname.DbTable,tablename);
-                string conn = shopEnum == ShopEnum.天猫
-                    ? AppSettings.COMMONSETTINGS.DbTmall
-                    : AppSettings.COMMONSETTINGS.DbTaobao;
-                string indexname = "ix_" + tablename + "_updatetime";
-                // 判断该表是否存在updatetime索引
-                if (!CrawlServices.Business.IndexIsExist(indexname,
-                    conn))
+                DateTime whileTime = breaktime;
+                while (whileTime.Date<=DateTime.Now.AddDays(-1))
                 {
-                    IDbObject tmpdb = DBOMaker.CreateDbObj(DBType.SQLServer, conn);
-                    tmpdb.ExecuteSql(string.Format(SQL.DB_Taobao_data_createindex_updatetime, indexname,tablename));
-                }
+                    
+                    string tablename = "td_data" + "_" + whileTime.ToString("yyyyMMdd");
+                    string currdbname = string.Format("{0}.dbo.{1}", dbname.DbTable, tablename);
+                    string conn = shopEnum == ShopEnum.天猫
+                        ? AppSettings.COMMONSETTINGS.DbTmall
+                        : AppSettings.COMMONSETTINGS.DbTaobao;
 
-
-                string sql = "select * from " + currdbname + " where updatetime>=@updatetime order by updatetime asc ";
-
-                //var models = Db.QueryModels<TaoBaoProduct>(sql, new { updatetime = breaktime });
-                //var data= Db.QueryDataReader(sql, new {updatetime = breaktime});
-                //List<TaoBaoProduct> models = new List<TaoBaoProduct>();
-                using (IDataReader dr = DbData.QueryDataReader(sql, new { updatetime = breaktime }))
-                {
-                   
-                    while (dr.Read())
+                    if (!CrawlServices.Business.TableIsExist(tablename, conn))
                     {
-                        try
+                        whileTime = breaktime.AddDays(1);
+                        continue;
+                    }
+
+                    string indexname = "ix_" + tablename + "_updatetime";
+                    // 判断该表是否存在updatetime索引
+                    if (!CrawlServices.Business.IndexIsExist(indexname,
+                        conn))
+                    {
+                        IDbObject tmpdb = DBOMaker.CreateDbObj(DBType.SQLServer, conn);
+                        tmpdb.ExecuteSql(string.Format(SQL.DB_Taobao_data_createindex_updatetime, indexname, tablename));
+                    }
+
+
+                    string sql = "select * from " + currdbname + " where updatetime>=@updatetime order by updatetime asc ";
+
+                    //var models = Db.QueryModels<TaoBaoProduct>(sql, new { updatetime = breaktime });
+                    //var data= Db.QueryDataReader(sql, new {updatetime = breaktime});
+                    //List<TaoBaoProduct> models = new List<TaoBaoProduct>();
+                    using (IDataReader dr = DbData.QueryDataReader(sql, new { updatetime = breaktime }))
+                    {
+
+                        while (dr.Read())
                         {
-                            TaoBaoProduct taoBaoProduct = new TaoBaoProduct();
-                            for (int i = 0; i < dr.FieldCount; i++)
+                            try
                             {
-                                PropertyInfo pi = typeof(TaoBaoProduct).GetProperty(dr.GetName(i));
-                                if (pi != null)
+                                TaoBaoProduct taoBaoProduct = new TaoBaoProduct();
+                                for (int i = 0; i < dr.FieldCount; i++)
                                 {
-                                    var v = dr.GetValue(i);
-                                    if (v == DBNull.Value)
+                                    PropertyInfo pi = typeof(TaoBaoProduct).GetProperty(dr.GetName(i));
+                                    if (pi != null)
                                     {
-                                        pi.SetValue(taoBaoProduct, null, null);
-                                    }
-                                    else
-                                    {
-                                        pi.SetValue(taoBaoProduct, v, null);
+                                        var v = dr.GetValue(i);
+                                        if (v == DBNull.Value)
+                                        {
+                                            pi.SetValue(taoBaoProduct, null, null);
+                                        }
+                                        else
+                                        {
+                                            pi.SetValue(taoBaoProduct, v, null);
+                                        }
                                     }
                                 }
+                                if (string.IsNullOrEmpty(taoBaoProduct.ItemId))
+                                {
+                                    continue;
+                                }
+                                UpdateProductInfo(taoBaoProduct, shopEnum);
+                                //Analyze(taoBaoProduct, shopEnum, "M",-1);
+                                //Analyze(taoBaoProduct, shopEnum, "Q",-3);
+                                //Analyze(taoBaoProduct, shopEnum, "HY",-6);
+                                Analyze(taoBaoProduct, shopEnum, "ALL", 0);
+                                //string updatetimesql =
+                                //    "update db_crawlconfig.dbo.td_crawlconfig set currentkeyword=@currentkeyword where taskname=@taskname ";
+                                //Db.ExecuteSql(updatetimesql,
+                                //    parameters:
+                                //        new
+                                //        {
+                                //            taskname = DataAnalyzeModel.TaskName,
+                                //            currentkeyword = taoBaoProduct.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "|" + shopEnum.ToString()
+                                //        });
+                                CrawlServices.Business.UpdateBreakTimeByTaskName(DataAnalyzeModel.TaskName, taoBaoProduct.UpdateTime, shopEnum.ToString());
+                                //models.Add(model);
                             }
-                            if (string.IsNullOrEmpty(taoBaoProduct.ItemId))
+                            catch (Exception exception)
                             {
-                                continue;
+                                Crawl.Common.Common.Log.LogError(exception.ToString());
                             }
-                            UpdateProductInfo(taoBaoProduct, shopEnum);
-                            //Analyze(taoBaoProduct, shopEnum, "M",-1);
-                            //Analyze(taoBaoProduct, shopEnum, "Q",-3);
-                            //Analyze(taoBaoProduct, shopEnum, "HY",-6);
-                            Analyze(taoBaoProduct, shopEnum, "ALL",0);
-                            //string updatetimesql =
-                            //    "update db_crawlconfig.dbo.td_crawlconfig set currentkeyword=@currentkeyword where taskname=@taskname ";
-                            //Db.ExecuteSql(updatetimesql,
-                            //    parameters:
-                            //        new
-                            //        {
-                            //            taskname = DataAnalyzeModel.TaskName,
-                            //            currentkeyword = taoBaoProduct.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "|" + shopEnum.ToString()
-                            //        });
-                            CrawlServices.Business.UpdateBreakTimeByTaskName(DataAnalyzeModel.TaskName,taoBaoProduct.UpdateTime,shopEnum.ToString());
-                            //models.Add(model);
-                        } catch (Exception exception) {
-                           Crawl.Common.Common.Log.LogError(exception.ToString());
                         }
                     }
+                    whileTime = breaktime.AddDays(1);
                 }
+                
 
                 Crawl.Common.Common.Log.LogInfo($"解析 {shop} 完成 ");
 

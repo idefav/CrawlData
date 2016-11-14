@@ -2862,10 +2862,23 @@
   ],
   "DataAnalyzeTask": [
     {
+      "Enable": false,
+      "Interval": 0,
+      "TaskName": "AnalyzeTask_Test",
+      "Shops": [ "淘宝" ]
+    },
+    {
+      "Enable": false,
+      "Interval": 0,
+      "TaskName": "AnalyzeTask_Test2",
+      "Shops": [ "天猫" ]
+    },
+    {
       "Enable": true,
       "Interval": 0,
       "TaskName": "AnalyzeTask_Test3",
       "Shops": [ "天猫" ]
     }
   ]
+
 }

@@ -1,0 +1,27 @@
+2016-11-14 10:36:19 Error Newtonsoft.Json.JsonReaderException: Invalid property identifier character: {. Path 'DataAnalyzeTask', line 2877, position 2.
+   在 Newtonsoft.Json.JsonTextReader.ParseProperty()
+   在 Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateObject(Object newObject, JsonReader reader, JsonObjectContract contract, JsonProperty member, String id)
+   在 Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)
+   在 Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   在 Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   在 Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   在 Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+   在 Crawl.Common.AppSettings.GetSettings[T](String fileanme) 位置 C:\Users\Administrator\Documents\GitHub\CrawlData\Crawl.Common\AppSettings.cs:行号 61
+2016-11-14 10:36:56 Error Newtonsoft.Json.JsonReaderException: Invalid property identifier character: {. Path 'DataAnalyzeTask', line 2877, position 2.
+   在 Newtonsoft.Json.JsonTextReader.ParseProperty()
+   在 Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateObject(Object newObject, JsonReader reader, JsonObjectContract contract, JsonProperty member, String id)
+   在 Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)
+   在 Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   在 Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   在 Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   在 Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+   在 Crawl.Common.AppSettings.GetSettings[T](String fileanme) 位置 C:\Users\Administrator\Documents\GitHub\CrawlData\Crawl.Common\AppSettings.cs:行号 61
+2016-11-14 10:37:10 Error Newtonsoft.Json.JsonReaderException: Invalid property identifier character: {. Path 'DataAnalyzeTask', line 2877, position 2.
+   在 Newtonsoft.Json.JsonTextReader.ParseProperty()
+   在 Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateObject(Object newObject, JsonReader reader, JsonObjectContract contract, JsonProperty member, String id)
+   在 Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)
+   在 Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   在 Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   在 Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   在 Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+   在 Crawl.Common.AppSettings.GetSettings[T](String fileanme) 位置 C:\Users\Administrator\Documents\GitHub\CrawlData\Crawl.Common\AppSettings.cs:行号 61
