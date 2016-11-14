@@ -57,14 +57,14 @@ namespace CrawlServices.BusinessTask
         private void Business()
         {
             string shopold = "";
-            DateTime breaktime = CrawlServices.Business.GetBreakTimeByTaskName(DataAnalyzeModel.TaskName,out shopold);
+            DateTime breaktime = CrawlServices.Business.GetBreakTimeByTaskName(DataAnalyzeModel.TaskName, out shopold);
             int index = 0;
             if (!string.IsNullOrEmpty(shopold))
             {
                 index = DataAnalyzeModel.Shops.ToList().IndexOf(shopold.ToString());
                 index = index < 0 ? 0 : index;
             }
-            
+
             for (int j = index; j < DataAnalyzeModel.Shops.Length; j++)
             {
                 string shop = DataAnalyzeModel.Shops[j];
@@ -73,9 +73,9 @@ namespace CrawlServices.BusinessTask
                 Enum.TryParse(shop, out shopEnum);
                 var dbname = CrawlServices.Business.GetShopConfigByName(shopEnum);
                 DateTime whileTime = breaktime;
-                while (whileTime.Date<=DateTime.Now.AddDays(-1))
+                while (whileTime.Date <= DateTime.Now.AddDays(-1))
                 {
-                    
+
                     string tablename = "td_data" + "_" + whileTime.ToString("yyyyMMdd");
                     string currdbname = string.Format("{0}.dbo.{1}", dbname.DbTable, tablename);
                     string conn = shopEnum == ShopEnum.天猫
@@ -93,8 +93,15 @@ namespace CrawlServices.BusinessTask
                     if (!CrawlServices.Business.IndexIsExist(indexname,
                         conn))
                     {
-                        IDbObject tmpdb = DBOMaker.CreateDbObj(DBType.SQLServer, conn);
-                        tmpdb.ExecuteSql(string.Format(SQL.DB_Taobao_data_createindex_updatetime, indexname, tablename));
+                        try
+                        {
+                            IDbObject tmpdb = DBOMaker.CreateDbObj(DBType.SQLServer, conn);
+                            tmpdb.ExecuteSql(string.Format(SQL.DB_Taobao_data_createindex_updatetime, indexname, tablename));
+                        }
+                        catch (Exception e)
+                        {
+                            Crawl.Common.Common.Log.LogError(e.ToString());
+                        }
                     }
 
 
@@ -156,7 +163,7 @@ namespace CrawlServices.BusinessTask
                     }
                     whileTime = breaktime.AddDays(1);
                 }
-                
+
 
                 Crawl.Common.Common.Log.LogInfo($"解析 {shop} 完成 ");
 
@@ -164,7 +171,7 @@ namespace CrawlServices.BusinessTask
 
             //foreach (string shop in DataAnalyzeModel.Shops)
             //{
-                
+
 
             //    //if (models != null && models.Count > 0)
             //    //{
@@ -214,15 +221,21 @@ namespace CrawlServices.BusinessTask
             }
             else
             {
+                if (productinfo.NowPrice == product.Price && productinfo.SellCount == product.SellCount &&
+                    productinfo.CommentCount == product.CommentCount)
+                {
+                    return;
+                }
                 productinfo.PicUrl = product.PicUrl;
                 productinfo.NowPrice = product.Price;
                 productinfo.SellCount = product.SellCount;
                 productinfo.CommentCount = product.CommentCount;
+                productinfo.UpdateTime = DateTime.Now;
             }
             Db.Upsert(productinfo, "db_analyze.dbo.td_productinfo");
         }
 
-        private void Analyze(TaoBaoProduct product, ShopEnum shopEnum, string type,int months)
+        private void Analyze(TaoBaoProduct product, ShopEnum shopEnum, string type, int months)
         {
             if (!product.Price.HasValue)
             {
@@ -235,7 +248,7 @@ namespace CrawlServices.BusinessTask
                     "select * from db_analyze.dbo.td_data_" + type + " where productid=@productid and shop=@shop ",
                     new { productid = product.ItemId, shop = shopEnum.ToString() });
             //string starttime = DateTime.Now.AddMonths(months).ToString("yyyy-MM-dd");
-            
+
             if (string.IsNullOrEmpty(analyzemodel?.ProductId) || string.IsNullOrEmpty(analyzemodel.Shop))
             {
                 Dictionary<string, decimal> dictionary = new Dictionary<string, decimal> { { product.PDate.ToString("yyyy-MM-dd"), product.Price.Value } };
@@ -250,10 +263,14 @@ namespace CrawlServices.BusinessTask
 
                 var prices = JsonConvert.DeserializeObject<Dictionary<string, decimal>>(analyzemodel.Prices);
 
-                
+
                 string updateday = product.PDate.ToString("yyyy-MM-dd");
                 if (prices.ContainsKey(updateday))
                 {
+                    if (prices[updateday] == product.Price.Value)
+                    {
+                        return;
+                    }
                     prices[updateday] = product.Price.Value;
                 }
                 else
@@ -265,6 +282,7 @@ namespace CrawlServices.BusinessTask
                 analyzemodel.MaxPrice = prices.Values.Max();
                 analyzemodel.AvgPrice = prices.Values.Average();
                 analyzemodel.MinPrice = prices.Values.Min();
+                analyzemodel.UpdateTime = DateTime.Now;
             }
 
 

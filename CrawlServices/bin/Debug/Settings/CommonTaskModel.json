@@ -2862,9 +2862,9 @@
   ],
   "DataAnalyzeTask": [
     {
-      "Enable": false,
+      "Enable": true,
       "Interval": 0,
-      "TaskName": "AnalyzeTask_Test",
+      "TaskName": "AnalyzeTask_1",
       "Shops": [ "淘宝" ]
     },
     {
@@ -2874,7 +2874,7 @@
       "Shops": [ "天猫" ]
     },
     {
-      "Enable": true,
+      "Enable": false,
       "Interval": 0,
       "TaskName": "AnalyzeTask_Test3",
       "Shops": [ "天猫" ]

@@ -25,3 +25,19 @@
    在 Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
    在 Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
    在 Crawl.Common.AppSettings.GetSettings[T](String fileanme) 位置 C:\Users\Administrator\Documents\GitHub\CrawlData\Crawl.Common\AppSettings.cs:行号 61
+2016-11-14 13:17:02 Error System.Data.SqlClient.SqlException (0x80131904): Timeout 时间已到。在操作完成之前超时时间已过或服务器未响应。 ---> System.ComponentModel.Win32Exception (0x80004005): 等待的操作过时。
+   在 System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   在 System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   在 System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   在 System.Data.SqlClient.SqlCommand.RunExecuteNonQueryTds(String methodName, Boolean async, Int32 timeout, Boolean asyncWrite)
+   在 System.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, String methodName, Boolean sendToPipe, Int32 timeout, Boolean asyncWrite)
+   在 System.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   在 Idefav.DbObjects.SQLServer.DbObject.<>c__DisplayClass9_0.<ExecuteSql>b__0(IDbCommand cmd)
+   在 Idefav.DbObjects.SQLServer.DbObject.<>c__DisplayClass13_0`1.<DbExecute>b__0(IDbConnection conn)
+   在 Idefav.DbObjects.SQLServer.DbObject.DbConnect[T](Func`2 proc)
+   在 Idefav.DbObjects.SQLServer.DbObject.DbExecute[T](Func`2 proc, IDbTransaction transaction)
+   在 Idefav.DbObjects.SQLServer.DbObject.ExecuteSql(String sql, IDbTransaction transaction, Dictionary`2 parameters)
+   在 Idefav.DbObjects.SQLServer.DbObject.ExecuteSql(String sql, IDbTransaction transaction, Object parameters)
+   在 CrawlServices.BusinessTask.DataAnalyzeTask.Business() 位置 C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServices\BusinessTask\DataAnalyzeTask.cs:行号 99
+ClientConnectionId:3c23a6d1-c8be-4c3c-8b11-ae167e7e8685
+Error Number:-2,State:0,Class:11
