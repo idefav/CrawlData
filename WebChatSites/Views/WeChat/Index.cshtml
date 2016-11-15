@@ -56,8 +56,16 @@
                 }
             });
 
+            function a_click(o) {
+                var obj = $(this);
+                var href = obj.attr("href");
+                window.location.href = href;
+                return false;
+
+            }
+
             // 查询按钮
-            $("#btnQuery").bind("click", function () {
+            $("#btnQuery").unbind('click').bind("click", function () {
                 var productlink = $("#txtSearch").val();
                 if (productlink.length <= 0) {
                     return;
@@ -66,7 +74,7 @@
                 $.getJSON("/WeChat/QueryProduct", { productlink: productlink }, function (json) {
                     json = eval("(" + json + ")");
 
-                    $("#divTitle").show().html("<a target='_blank' href='"+json.DetailLink + "&rd=" + new Date().getMilliseconds() + "' title='" + json.Title + "'>【" + json.Shop + "】" + json.Title + "</a>");
+                    $("#divTitle").show().html("<a target='_blank' onclick='a_click(this)' href='"+json.DetailLink + "&rd=" + new Date().getMilliseconds() + "' title='" + json.Title + "'>【" + json.Shop + "】" + json.Title + "</a>");
                     //加载图表内容
                     if (json.ChartData.length > 0) {
                         $("#divMinPrice").text("最低价：" + json.MinPrice + "元");
@@ -101,6 +109,7 @@
                     }
                     $("#btnQuery").text("查询历史价格").attr("disabled",false);
                 });
+
             });
 
             // 清除按钮

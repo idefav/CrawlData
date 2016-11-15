@@ -236,10 +236,11 @@ namespace WebChatSites.Business
         {
 
             StringBuilder stringBuilder = new StringBuilder(@"SELECT  a.*,a.ProductId ItemId,b.ProductName Title,b.NowPrice Price
-  FROM[DB_Analyze].[dbo].[td_data_ALL] a
+  FROM [DB_Analyze].[dbo].[td_data_ALL] a
   left join DB_Analyze.dbo.td_productinfo b on a.ProductId = b.ProductId and a.Shop = b.shop
   where a.ProductId = @productid and a.Shop = @shop");
-            var data = DbAnalyze.QueryModel<ProductChartData>(stringBuilder.ToString(), new { ProductId = itemid, shop = shop });
+           
+            var data = DbAnalyze.QueryModel<ProductChartData>(stringBuilder.ToString(), new { productid = itemid, shop = shop });
 
             return data;
         }
