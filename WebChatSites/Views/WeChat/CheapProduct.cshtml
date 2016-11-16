@@ -20,19 +20,22 @@
     {
         var m = Model[i];
         <div class="row datarow" style="height: 5em; border-bottom: #ccc 1px solid; cursor: pointer;" data-id="@m.ProductId" data-shop="@m.Shop">
-            <div class="col-xs-12" style="margin-top: 0.3em;">
+            <div class="col-xs-2">
+                <img src="@m.PicUrl" style=" width: 3em; margin: 0 auto;"/>
+            </div>
+            <div class="col-xs-10" style="margin-top: 0.3em;">
                 <div class="row" style="height: 3em;">
                     <div class="col-xs-9">
                         <div style="overflow: hidden; text-overflow: ellipsis; height: 3em;" title="@m.ProductName">@m.ProductName</div>
                     </div>
                     <div class="col-xs-3" style="text-align: right; text-align: right; line-height: 3em;">@m.Price</div>
                 </div>
-                <div class="row" style="font-size: 12px;">
-                    <div class="col-xs-6">
+                <div class="row" style="font-size: 10px;">
+                    <div class="col-xs-5">
                         <div style="">@m.Shop</div>
 
                     </div>
-                    <div class="col-xs-6" style="text-align: right;">
+                    <div class="col-xs-5" style="text-align: right;">
                         <div>@m.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss")</div>
                     </div>
                 </div>

@@ -56,12 +56,9 @@
                 }
             });
 
-            function a_click(o) {
-                var obj = $(this);
-                var href = obj.attr("href");
+            function a_click(obj) {
+                var href = $(obj).attr("href");
                 window.location.href = href;
-                return false;
-
             }
 
             // 查询按钮
@@ -74,7 +71,7 @@
                 $.getJSON("/WeChat/QueryProduct", { productlink: productlink }, function (json) {
                     json = eval("(" + json + ")");
 
-                    $("#divTitle").show().html("<a target='_blank' onclick='a_click(this)' href='"+json.DetailLink + "&rd=" + new Date().getMilliseconds() + "' title='" + json.Title + "'>【" + json.Shop + "】" + json.Title + "</a>");
+                    $("#divTitle").show().html("<a target='_blank' onclick='a_click(this);return false;' href='" + json.DetailLink + "&rd=" + new Date().getMilliseconds() + "' title='" + json.Title + "'>【" + json.Shop + "】" + json.Title + "</a>");
                     //加载图表内容
                     if (json.ChartData.length > 0) {
                         $("#divMinPrice").text("最低价：" + json.MinPrice + "元");
@@ -92,16 +89,27 @@
                         var dataj = {
                             labels: labels,
                             datasets: [
-                                { data: datas }
+                                {
+                                    strokeColor: "rgba(226,137,100,1)",
+                                    pointColor: "rgba(226,137,100,1)",
+                                    scaleLineWidth : 2,
+                                    data: datas
+                                    
+                                }
+
                             ]
                         };
+                        ctx.clearRect(0, 0, $("#myChart").width(), $("#myChart").height());
                         myNewChart = new Chart(ctx).Line(dataj,
                         {
                             scaleShowGridLines: true,
                             scaleGridLineColor: "rgba(0,0,0,.05)",
+                            scaleGridLineWidth: 1,
                             bezierCurve: true,
+                            scaleLineColor: "rgba(226,137,100,1)",
                             datasetFill: false
-                        });
+                           
+                    });
 
                     } else {
                         $("#divTitle").hide();

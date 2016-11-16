@@ -144,57 +144,7 @@ namespace WebChatSites.Business
                     break;
                 }
             }
-
-            //    string[] filters = shopconfig.Regex.Split('');
-            //    foreach (string filter in filters)
-            //    {
-            //        if (filter.Contains("\n"))
-            //        {
-            //            var files2 = filter.Split('\n');
-            //            string url = "";
-            //            Regex regex = new Regex(files2[0]);
-            //            Match match = regex.Match(input);
-            //            url = match.Success ? match.Groups[1].Value : input;
-            //            productId = DownloadProduct(url, shopconfig.Cookies, files2[1]);
-
-            //        }
-            //        else
-            //        {
-            //            Regex regex=new Regex(filter);
-            //            var match = regex.Match(input);
-            //            if (match.Success)
-            //            {
-            //                productId = match.Groups[1].Value;
-            //            }
-            //        }
-            //    }
-
-            //}
-            //Regex regex = new Regex("//detail.tmall.com/item.htm\\?.*?id=([^&]*)&*");
-            //var match = regex.Match(input);
-            //if (match.Success)
-            //{
-            //    productId = match.Groups[1].Value;
-            //}
-            //else
-            //{
-            //    regex = new Regex("复制整段信息，打开.*】\\(未安装App点这里：(.*?)\\)");
-            //    match = regex.Match(input);
-            //    if (match.Success)
-            //    {
-            //        string url = match.Groups[1].Value;
-            //        productId = DownloadProduct(url, sCookies);
-            //    }
-            //    else
-            //    {
-            //        regex = new Regex("http://sjtm.me/s/.*?\\?tm=.*", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-            //        match = regex.Match(input);
-            //        if (match.Success)
-            //        {
-            //            productId = DownloadProduct(input, sCookies);
-            //        }
-            //    }
-            //}
+            
 
             return new HybridDictionary { { "itemid", productId }, { "shopname", shop.ToString() }, { "table", dbtable }, {"shopconfig",currShopConfig} };
         }
@@ -232,7 +182,7 @@ namespace WebChatSites.Business
         /// <param name="itemid">商品编号</param>
         /// <param name="table">数据库表名</param>
         /// <returns></returns>
-        public ProductChartData GetData(string itemid, string shop)
+        public ProductChartData GetData(string itemid, string shop,out bool match)
         {
 
             StringBuilder stringBuilder = new StringBuilder(@"SELECT  a.*,a.ProductId ItemId,b.ProductName Title,b.NowPrice Price
@@ -241,7 +191,19 @@ namespace WebChatSites.Business
   where a.ProductId = @productid and a.Shop = @shop");
            
             var data = DbAnalyze.QueryModel<ProductChartData>(stringBuilder.ToString(), new { productid = itemid, shop = shop });
-
+            if (string.IsNullOrEmpty(data.Prices))
+            {
+                stringBuilder = new StringBuilder(@"SELECT  a.*,a.ProductId ItemId,b.ProductName Title,b.NowPrice Price
+  FROM [DB_Analyze].[dbo].[td_data_ALL] a
+  left join DB_Analyze.dbo.td_productinfo b on a.ProductId = b.ProductId and a.Shop = b.shop
+  where a.ProductId = @productid ");
+                data = DbAnalyze.QueryModel<ProductChartData>(stringBuilder.ToString(), new {productid = itemid});
+                match = false;
+            }
+            else
+            {
+                match = true;
+            }
             return data;
         }
 
@@ -289,15 +251,23 @@ namespace WebChatSites.Business
         /// <returns></returns>
         public List<CheapProductData> GetCheapProductDatas(DateTime updatetime, int count = 20)
         {
-            StringBuilder stringBuilder = new StringBuilder(@"SELECT TOP 20 ");
+            StringBuilder stringBuilder = new StringBuilder(@" ");
             stringBuilder.Append(
-                                  @" *
-                                    FROM[DB_CrawlConfig].[dbo].[td_cheapproduct] a
+                                  @" SELECT TOP 20 *
+                                    FROM [DB_CrawlConfig].[dbo].[td_cheapproduct] a
                                     where a.updatetime > @updatetime
                                     order by updatetime desc");
 
             var datas = DbAnalyze.QueryModels<CheapProductData>(stringBuilder.ToString(), new { updatetime = updatetime });
             return datas;
+        }
+
+        public CheapProductData GetCheapProductData(string productid, string shop)
+        {
+            StringBuilder stringBuilder=new StringBuilder("select * from [DB_CrawlConfig].[dbo].[td_cheapproduct] a where a.productid=@productid and a.shop=@shop ");
+            var data = DbAnalyze.QueryModel<CheapProductData>(stringBuilder.ToString(),
+                new {productid = productid, shop = shop});
+            return data;
         }
 
     }

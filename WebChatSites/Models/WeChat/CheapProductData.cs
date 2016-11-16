@@ -43,5 +43,7 @@ namespace WebChatSites.Models.WeChat
         /// 更新时间
         /// </summary>
         public DateTime UpdateTime { get; set; }
+
+        public string PicUrl { get; set; }
     }
 }

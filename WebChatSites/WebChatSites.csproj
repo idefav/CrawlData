@@ -232,6 +232,7 @@
     <Content Include="Views\WeChat\Index.cshtml" />
     <Content Include="Views\Shared\WeChatLayout.cshtml" />
     <None Include="Views\WeChat\CheapProduct.cshtml" />
+    <Content Include="Views\WeChat\GotoShop.cshtml" />
     <None Include="Views\WeChat\ProductDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>

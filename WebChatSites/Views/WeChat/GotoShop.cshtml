@@ -1,0 +1,9 @@
+﻿
+
+@{
+    string url =HttpUtility.UrlDecode(ViewBag.url);
+    ViewBag.Title = ViewBag.productname;
+    Layout = "~/Views/Shared/WeChatLayout.cshtml";
+}
+
+<iframe src="@url" scrolling="auto" width="100%"></iframe>

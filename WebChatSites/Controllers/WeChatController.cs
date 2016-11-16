@@ -33,12 +33,13 @@ namespace WebChatSites.Controllers
         {
             // PC链接解析
             var data = WeChat.GetProductId(productlink);
-            ShopConfig shopconfig = data["shopconfig"] != null ? data["shopconfig"] as ShopConfig: null;
+            ShopConfig shopconfig = data["shopconfig"] != null ? data["shopconfig"] as ShopConfig : null;
             WeChat weChat = new WeChat();
             string itemid = data["itemid"].ToString();
             string shopname = data["shopname"].ToString();
             string dbtable = data["table"].ToString();
-            var model = weChat.GetData(itemid, shopname);
+            bool match;
+            var model = weChat.GetData(itemid, shopname, out match);
             var minModel = model.MinPrice;
             HybridDictionary hybrid = new HybridDictionary { { "ChartData", string.IsNullOrEmpty(model.Prices) ? new List<KeyValuePair<string, decimal?>>() : JsonConvert.DeserializeObject<Dictionary<string, decimal?>>(model.Prices).ToList() }, { "MinPrice", minModel }
                 , { "Shop", shopname }, {"Title",model.Title}, {"ItemId",model.ItemId}, {"DetailLink",shopconfig!=null?string.Format(shopconfig.DetailLink,itemid):""} };
@@ -46,22 +47,34 @@ namespace WebChatSites.Controllers
 
         }
 
-        public ActionResult ProductDetail(string shop,string id)
+        public ActionResult ProductDetail(string shop, string id)
         {
             ShopConfig shopconfig = WeChat.GetShopConfigByName(shop);
             WeChat weChat = new WeChat();
-            var model = weChat.GetData(id, shop);
-            List<string> labels=new List<string>();
-            List<decimal?> datas=new List<decimal?>();
+            bool match;
+            var model = weChat.GetData(id, shop, out match);
+            var m_cheap = weChat.GetCheapProductData(model.ItemId, model.Shop);
+            List<string> labels = new List<string>();
+            List<decimal?> datas = new List<decimal?>();
+            
             if (!string.IsNullOrEmpty(model.Prices))
             {
                 var data = JsonConvert.DeserializeObject<Dictionary<string, decimal?>>(model.Prices);
                 labels = data.Keys.ToList();
                 datas = data.Values.ToList();
             }
+            labels.Add("Now");
+            datas.Add(m_cheap.Price);
             HybridDictionary hybrid = new HybridDictionary { { "ChartLabels",JsonConvert.SerializeObject(labels)},{ "ChartDatas",JsonConvert.SerializeObject(datas)}, { "MinPrice", model.MinPrice }
                 , { "Shop", shop }, {"Title",model.Title}, {"ItemId",model.ItemId}, {"DetailLink",shopconfig!=null?string.Format(shopconfig.DetailLink,id):""} };
             return View(hybrid);
+        }
+
+        public ActionResult GotoShop(string url,string title)
+        {
+            ViewBag.productname = title;
+            ViewBag.url = url;
+            return View();
         }
 
     }

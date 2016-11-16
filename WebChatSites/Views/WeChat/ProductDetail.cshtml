@@ -2,7 +2,7 @@
 @model System.Collections.Specialized.HybridDictionary
 
 @{
-    ViewBag.Title = "title";
+    ViewBag.Title = Model["Title"];
     Layout = "~/Views/Shared/WeChatLayout.cshtml";
 }
 
@@ -16,7 +16,7 @@
                 <div class="divNoneText" style="">Sorry，没有你要找的内容，换个其他的吧</div>
             </div>*@
             <div id="divInfo">
-                <div id="divTitle" style=""><a target='_blank' href='@(Model["DetailLink"])&rd=@DateTime.Now.ToString("yyyyMMddHHmmssfff")' title='@Model["Title"]'>【@Model["Shop"]】@Model["Title"]</a></div>
+                <div id="divTitle" style=""><a target='_blank' onclick="a_click(this); return false;" href='@(Model["DetailLink"])&rd=@DateTime.Now.ToString("yyyyMMddHHmmssfff")' title='@Model["Title"]'>【@Model["Shop"]】@Model["Title"]</a></div>
                 <div id="divMinPrice" style="">最低价:@(Model["MinPrice"])元</div>
             </div>
 
@@ -28,6 +28,12 @@
 @section scripts
 {
     <script>
+        function a_click(obj) {
+            var href = $(obj).attr("href");
+            var title = $(obj).attr("title");
+            window.location.href = href;
+        }
+
         $(function () {
             var ctx = document.getElementById("myChart").getContext("2d");
             var myNewChart;
@@ -42,7 +48,12 @@
                 var dataj = {
                     labels: chartLabels,
                     datasets: [
-                        { data: chartDatas }
+                        {
+                            strokeColor: "rgba(226,137,100,1)",
+                            pointColor: "rgba(226,137,100,1)",
+                            scaleLineWidth: 2,
+                             data: chartDatas
+                        }
                     ]
                 };
 
