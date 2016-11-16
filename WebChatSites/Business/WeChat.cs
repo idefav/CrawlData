@@ -253,7 +253,7 @@ namespace WebChatSites.Business
         {
             StringBuilder stringBuilder = new StringBuilder(@" ");
             stringBuilder.Append(
-                                  @" SELECT TOP 20 a.*,convert(decimal(18,2),a.Price/a.OldPrice) Discount
+                                  @" SELECT TOP 20 a.*,convert(decimal(18,2),a.Price/a.OldPrice*10) Discount
                                     FROM [DB_CrawlConfig].[dbo].[td_cheapproduct] a
                                     where a.updatetime > @updatetime
                                     order by updatetime desc");
