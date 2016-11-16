@@ -45,5 +45,10 @@ namespace WebChatSites.Models.WeChat
         public DateTime UpdateTime { get; set; }
 
         public string PicUrl { get; set; }
+
+        /// <summary>
+        /// 折扣
+        /// </summary>
+        public decimal? Discount { get; set; }
     }
 }

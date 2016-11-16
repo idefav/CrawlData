@@ -253,7 +253,7 @@ namespace WebChatSites.Business
         {
             StringBuilder stringBuilder = new StringBuilder(@" ");
             stringBuilder.Append(
-                                  @" SELECT TOP 20 *
+                                  @" SELECT TOP 20 a.*,convert(decimal(18,2),a.Price/a.OldPrice) Discount
                                     FROM [DB_CrawlConfig].[dbo].[td_cheapproduct] a
                                     where a.updatetime > @updatetime
                                     order by updatetime desc");
@@ -269,6 +269,14 @@ namespace WebChatSites.Business
                 new {productid = productid, shop = shop});
             return data;
         }
+
+        //public static string GetTimeStr(DateTime date)
+        //{
+        //    if (DateTime.Now-date > TimeSpan.FromMinutes(0))
+        //    {
+        //        return "1分钟";
+        //    }
+        //}
 
     }
 }
