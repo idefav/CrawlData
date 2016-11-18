@@ -1,46 +1,53 @@
 ﻿.btn-active {
-            background-color: rgb(102, 204, 204);
-            color: rgb(255, 255, 255);
-        }
+    background-color: rgb(102, 204, 204);
+    color: rgb(255, 255, 255);
+}
 
-        .btn-disabled {
-            background-color: rgb(215, 215, 215);
-            color: rgb(2, 2, 2);
-        }
+.btn-disabled {
+    background-color: rgb(215, 215, 215);
+    color: rgb(2, 2, 2);
+}
 
-        .search-input {
-            width: 20em;
-            margin: 0 auto;
-        }
+.search-input {
+    width: 20em;
+    margin: 0 auto;
+}
 
-        .search-ctl-group {
-            margin-top: 2em;
-            text-align: center;
-        }
+.search-ctl-group {
+    margin-top: 2em;
+    text-align: center;
+}
 
-        .divNoneImg {
-            background: url(../../Content/images/20161030164801.png) no-repeat;
-            width: 6em;
-            height: 6em;
-            margin: 0 auto;
-            margin-top: 2em;
-        }
+.divNoneImg {
+    background: url(../../Content/images/20161030164801.png) no-repeat;
+    width: 6em;
+    height: 6em;
+    margin: 0 auto;
+    margin-top: 2em;
+}
 
-        .divNoneText {
-            margin: 0 auto;
-            text-align: center;
-        }
+.divNoneText {
+    margin: 0 auto;
+    text-align: center;
+}
 
-        #divTitle {
-            text-align: center;
-            margin: 2em 0 0.2em 0;
-            font-size: 1em;
-            font-weight: bold;
-            font-family: 微软雅黑;
-        }
+#divTitle {
+    text-align: center;
+    margin: 2em 0 0.2em 0;
+    font-size: 1em;
+    font-weight: bold;
+    font-family: 微软雅黑;
+}
 
-        #divMinPrice {
-            text-align: center;
-            font-size: 0.7em;
-            font-family: 微软雅黑;
-        }
+#divMinPrice {
+    text-align: center;
+    font-size: 0.7em;
+    font-family: 微软雅黑;
+}
+
+.img-list {
+    border-radius: 200px;
+    -webkit-box-shadow: -1px 1px 18px 1px rgba(0,0,0,0.62);
+    -moz-box-shadow: -1px 1px 18px 1px rgba(0,0,0,0.62);
+    box-shadow: -1px 1px 18px 1px rgba(0,0,0,0.62);
+}

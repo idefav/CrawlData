@@ -13,6 +13,7 @@ using Idefav.DbFactory;
 using Idefav.IDAL;
 using Idefav.Utility;
 using Newtonsoft.Json;
+using Common = Crawl.Common.Common;
 
 namespace CrawlServices.BusinessTask
 {
@@ -76,92 +77,99 @@ namespace CrawlServices.BusinessTask
                 while (whileTime.Date <= DateTime.Now.AddDays(-1))
                 {
 
-                    string tablename = "td_data" + "_" + whileTime.ToString("yyyyMMdd");
-                    string currdbname = string.Format("{0}.dbo.{1}", dbname.DbTable, tablename);
-                    string conn = shopEnum == ShopEnum.天猫
-                        ? AppSettings.COMMONSETTINGS.DbTmall
-                        : AppSettings.COMMONSETTINGS.DbTaobao;
-
-                    if (!CrawlServices.Business.TableIsExist(tablename, conn))
+                    try
                     {
-                        whileTime = breaktime.AddDays(1);
-                        continue;
-                    }
+                        string tablename = "td_data" + "_" + whileTime.ToString("yyyyMMdd");
+                        string currdbname = string.Format("{0}.dbo.{1}", dbname.DbTable, tablename);
+                        string conn = shopEnum == ShopEnum.天猫
+                            ? AppSettings.COMMONSETTINGS.DbTmall
+                            : AppSettings.COMMONSETTINGS.DbTaobao;
 
-                    string indexname = "ix_" + tablename + "_updatetime";
-                    // 判断该表是否存在updatetime索引
-                    if (!CrawlServices.Business.IndexIsExist(indexname,
-                        conn))
-                    {
-                        try
+                        if (!CrawlServices.Business.TableIsExist(tablename, conn))
                         {
-                            IDbObject tmpdb = DBOMaker.CreateDbObj(DBType.SQLServer, conn);
-                            tmpdb.ExecuteSql(string.Format(SQL.DB_Taobao_data_createindex_updatetime, indexname, tablename));
+                            whileTime = breaktime.AddDays(1);
+                            continue;
                         }
-                        catch (Exception e)
-                        {
-                            Crawl.Common.Common.Log.LogError(e.ToString());
-                        }
-                    }
 
-
-                    string sql = "select * from " + currdbname + " where updatetime>=@updatetime order by updatetime asc ";
-
-                    //var models = Db.QueryModels<TaoBaoProduct>(sql, new { updatetime = breaktime });
-                    //var data= Db.QueryDataReader(sql, new {updatetime = breaktime});
-                    //List<TaoBaoProduct> models = new List<TaoBaoProduct>();
-                    using (IDataReader dr = DbData.QueryDataReader(sql, new { updatetime = breaktime }))
-                    {
-
-                        while (dr.Read())
+                        string indexname = "ix_" + tablename + "_updatetime";
+                        // 判断该表是否存在updatetime索引
+                        if (!CrawlServices.Business.IndexIsExist(indexname,
+                            conn))
                         {
                             try
                             {
-                                TaoBaoProduct taoBaoProduct = new TaoBaoProduct();
-                                for (int i = 0; i < dr.FieldCount; i++)
-                                {
-                                    PropertyInfo pi = typeof(TaoBaoProduct).GetProperty(dr.GetName(i));
-                                    if (pi != null)
-                                    {
-                                        var v = dr.GetValue(i);
-                                        if (v == DBNull.Value)
-                                        {
-                                            pi.SetValue(taoBaoProduct, null, null);
-                                        }
-                                        else
-                                        {
-                                            pi.SetValue(taoBaoProduct, v, null);
-                                        }
-                                    }
-                                }
-                                if (string.IsNullOrEmpty(taoBaoProduct.ItemId))
-                                {
-                                    continue;
-                                }
-                                UpdateProductInfo(taoBaoProduct, shopEnum);
-                                //Analyze(taoBaoProduct, shopEnum, "M",-1);
-                                //Analyze(taoBaoProduct, shopEnum, "Q",-3);
-                                //Analyze(taoBaoProduct, shopEnum, "HY",-6);
-                                Analyze(taoBaoProduct, shopEnum, "ALL", 0);
-                                //string updatetimesql =
-                                //    "update db_crawlconfig.dbo.td_crawlconfig set currentkeyword=@currentkeyword where taskname=@taskname ";
-                                //Db.ExecuteSql(updatetimesql,
-                                //    parameters:
-                                //        new
-                                //        {
-                                //            taskname = DataAnalyzeModel.TaskName,
-                                //            currentkeyword = taoBaoProduct.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "|" + shopEnum.ToString()
-                                //        });
-                                CrawlServices.Business.UpdateBreakTimeByTaskName(DataAnalyzeModel.TaskName, taoBaoProduct.UpdateTime, shopEnum.ToString());
-                                //models.Add(model);
+                                IDbObject tmpdb = DBOMaker.CreateDbObj(DBType.SQLServer, conn);
+                                tmpdb.ExecuteSql(string.Format(SQL.DB_Taobao_data_createindex_updatetime, indexname, tablename));
                             }
-                            catch (Exception exception)
+                            catch (Exception e)
                             {
-                                Crawl.Common.Common.Log.LogError(exception.ToString());
+                                Common.Log.LogError(e.ToString());
                             }
                         }
+
+
+                        string sql = "select * from " + currdbname + " where updatetime>=@updatetime order by updatetime asc ";
+
+                        //var models = Db.QueryModels<TaoBaoProduct>(sql, new { updatetime = breaktime });
+                        //var data= Db.QueryDataReader(sql, new {updatetime = breaktime});
+                        //List<TaoBaoProduct> models = new List<TaoBaoProduct>();
+                        using (IDataReader dr = DbData.QueryDataReader(sql, new { updatetime = breaktime }))
+                        {
+
+                            while (dr.Read())
+                            {
+                                try
+                                {
+                                    TaoBaoProduct taoBaoProduct = new TaoBaoProduct();
+                                    for (int i = 0; i < dr.FieldCount; i++)
+                                    {
+                                        PropertyInfo pi = typeof(TaoBaoProduct).GetProperty(dr.GetName(i));
+                                        if (pi != null)
+                                        {
+                                            var v = dr.GetValue(i);
+                                            if (v == DBNull.Value)
+                                            {
+                                                pi.SetValue(taoBaoProduct, null, null);
+                                            }
+                                            else
+                                            {
+                                                pi.SetValue(taoBaoProduct, v, null);
+                                            }
+                                        }
+                                    }
+                                    if (string.IsNullOrEmpty(taoBaoProduct.ItemId))
+                                    {
+                                        continue;
+                                    }
+                                    UpdateProductInfo(taoBaoProduct, shopEnum);
+                                    //Analyze(taoBaoProduct, shopEnum, "M",-1);
+                                    //Analyze(taoBaoProduct, shopEnum, "Q",-3);
+                                    //Analyze(taoBaoProduct, shopEnum, "HY",-6);
+                                    Analyze(taoBaoProduct, shopEnum, "ALL", 0);
+                                    //string updatetimesql =
+                                    //    "update db_crawlconfig.dbo.td_crawlconfig set currentkeyword=@currentkeyword where taskname=@taskname ";
+                                    //Db.ExecuteSql(updatetimesql,
+                                    //    parameters:
+                                    //        new
+                                    //        {
+                                    //            taskname = DataAnalyzeModel.TaskName,
+                                    //            currentkeyword = taoBaoProduct.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "|" + shopEnum.ToString()
+                                    //        });
+                                    CrawlServices.Business.UpdateBreakTimeByTaskName(DataAnalyzeModel.TaskName, taoBaoProduct.UpdateTime, shopEnum.ToString());
+                                    //models.Add(model);
+                                }
+                                catch (Exception exception)
+                                {
+                                    Common.Log.LogError(exception.ToString());
+                                }
+                            }
+                        }
+                        whileTime = breaktime.AddDays(1);
                     }
-                    whileTime = breaktime.AddDays(1);
+                    catch (Exception e)
+                    {
+                        Crawl.Common.Common.Log.LogError(e.ToString());
+                    }
                 }
 
 

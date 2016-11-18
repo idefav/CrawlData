@@ -20,6 +20,8 @@ namespace WebChatSites.Models.WeChat
         public bool IsDel { get; set; }
         public string DbTable { get; set; }
         public string DetailLink { get; set; }
+
+        public string DefaultIcon { get; set; }
     }
 
     public class ShopFilter

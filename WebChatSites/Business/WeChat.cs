@@ -255,7 +255,7 @@ namespace WebChatSites.Business
             stringBuilder.Append(
                                   @" SELECT TOP 20 a.*,convert(decimal(18,2),a.Price/a.OldPrice*10) Discount
                                     FROM [DB_CrawlConfig].[dbo].[td_cheapproduct] a
-                                    where a.updatetime > @updatetime
+                                    where a.updatetime > @updatetime and convert(decimal(18,2),a.Price/a.OldPrice*10) <1.0
                                     order by updatetime desc");
 
             var datas = DbAnalyze.QueryModels<CheapProductData>(stringBuilder.ToString(), new { updatetime = updatetime });

@@ -19,9 +19,19 @@
     @for (int i = 0; i < @Model.Count; i++)
     {
         var m = Model[i];
+        var img = "/Content/Images/taobao.jpg";
+        if (m.Shop == "淘宝")
+        {
+            img = "/Content/Images/taobao.jpg";
+
+        }
+        if (m.Shop == "天猫")
+        {
+            img = "/Content/Images/tmall.jpg";
+        }
         <div class="row datarow" style="height: 5em; border-bottom: #ccc 1px solid; cursor: pointer;" data-id="@m.ProductId" data-shop="@m.Shop">
             <div class="col-xs-2">
-                <img src="@m.PicUrl" style="width: auto; margin: 1em auto; height: 3em;" />
+                <img class="lazy" data-original="@m.PicUrl" src="@img" style="width: 3em; margin: 1em auto; height: 3em;" />
             </div>
             <div class="col-xs-10" style="margin-top: 0.3em;">
                 <div class="row" style="height: 3em;">
@@ -61,6 +71,9 @@
                 var shop = $(this).data("shop");
                 var id = $(this).data("id");
                 window.location.href = "/WeChat/ProductDetail?shop=" + shop + "&id=" + id;
+            });
+            $("img.lazy").lazyload({
+                effect: "fadeIn"
             });
         })
     </script>
