@@ -77,5 +77,11 @@ namespace WebChatSites.Controllers
             return View();
         }
 
+        public PartialViewResult GetCheapData(DateTime datetime)
+        {
+            WeChat weChat = new WeChat();
+            var datas = weChat.GetCheapProductDatas2(datetime,10);
+            return PartialView(datas);
+        }
     }
 }

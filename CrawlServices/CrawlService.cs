@@ -24,9 +24,6 @@ namespace CrawlServices
         {
             TaskManager mgr=new TaskManager();
             mgr.Init();
-
-            
-
             mgr.Run(cancellationTokenSource.Token);
         }
 

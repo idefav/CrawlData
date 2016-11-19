@@ -81,7 +81,7 @@ namespace WebChatSites.Business
             string dbtable = "db_tmall.dbo.td_data";
             ShopEnum shop = ShopEnum.天猫;
             string productid = "";
-            ShopConfig currShopConfig=null;
+            ShopConfig currShopConfig = null;
             var shopconfigs = GetShopConfigs();
             foreach (ShopConfig shopconfig in shopconfigs)
             {
@@ -144,9 +144,9 @@ namespace WebChatSites.Business
                     break;
                 }
             }
-            
 
-            return new HybridDictionary { { "itemid", productId }, { "shopname", shop.ToString() }, { "table", dbtable }, {"shopconfig",currShopConfig} };
+
+            return new HybridDictionary { { "itemid", productId }, { "shopname", shop.ToString() }, { "table", dbtable }, { "shopconfig", currShopConfig } };
         }
 
         /// <summary>
@@ -168,12 +168,12 @@ namespace WebChatSites.Business
         public static ShopConfig GetShopConfigByName(string shop)
         {
             string sql = "select * from db_crawlconfig.dbo.td_shopconfig where shop=@shop order by [order] asc";
-            return CacheFactory.Cache(sql+shop, () =>
-            {
-                StringBuilder stringBuilder = new StringBuilder(sql);
-                IDbObject Db = DBOMaker.CreateDbObj(DBType.SQLServer, CommSettings.DbConfig);
-                return Db.QueryModel<ShopConfig>(stringBuilder.ToString(),new {shop=shop});
-            }, true, cacheTime: TimeSpan.FromMinutes(1));
+            return CacheFactory.Cache(sql + shop, () =>
+              {
+                  StringBuilder stringBuilder = new StringBuilder(sql);
+                  IDbObject Db = DBOMaker.CreateDbObj(DBType.SQLServer, CommSettings.DbConfig);
+                  return Db.QueryModel<ShopConfig>(stringBuilder.ToString(), new { shop = shop });
+              }, true, cacheTime: TimeSpan.FromMinutes(1));
         }
 
         /// <summary>
@@ -182,14 +182,14 @@ namespace WebChatSites.Business
         /// <param name="itemid">商品编号</param>
         /// <param name="table">数据库表名</param>
         /// <returns></returns>
-        public ProductChartData GetData(string itemid, string shop,out bool match)
+        public ProductChartData GetData(string itemid, string shop, out bool match)
         {
 
             StringBuilder stringBuilder = new StringBuilder(@"SELECT  a.*,a.ProductId ItemId,b.ProductName Title,b.NowPrice Price
   FROM [DB_Analyze].[dbo].[td_data_ALL] a
   left join DB_Analyze.dbo.td_productinfo b on a.ProductId = b.ProductId and a.Shop = b.shop
   where a.ProductId = @productid and a.Shop = @shop");
-           
+
             var data = DbAnalyze.QueryModel<ProductChartData>(stringBuilder.ToString(), new { productid = itemid, shop = shop });
             if (string.IsNullOrEmpty(data.Prices))
             {
@@ -197,7 +197,7 @@ namespace WebChatSites.Business
   FROM [DB_Analyze].[dbo].[td_data_ALL] a
   left join DB_Analyze.dbo.td_productinfo b on a.ProductId = b.ProductId and a.Shop = b.shop
   where a.ProductId = @productid ");
-                data = DbAnalyze.QueryModel<ProductChartData>(stringBuilder.ToString(), new {productid = itemid});
+                data = DbAnalyze.QueryModel<ProductChartData>(stringBuilder.ToString(), new { productid = itemid });
                 match = false;
             }
             else
@@ -253,20 +253,34 @@ namespace WebChatSites.Business
         {
             StringBuilder stringBuilder = new StringBuilder(@" ");
             stringBuilder.Append(
-                                  @" SELECT TOP 20 a.*,convert(decimal(18,2),a.Price/a.OldPrice*10) Discount
+                                  @" SELECT TOP " + count + @"a.*,convert(decimal(18,2),a.Price/a.OldPrice*10) Discount
                                     FROM [DB_CrawlConfig].[dbo].[td_cheapproduct] a
-                                    where a.updatetime > @updatetime and convert(decimal(18,2),a.Price/a.OldPrice*10) <1.0
+                                    where a.updatetime > @updatetime and convert(decimal(18,2),a.Price/a.OldPrice*10) <10.0
                                     order by updatetime desc");
 
             var datas = DbAnalyze.QueryModels<CheapProductData>(stringBuilder.ToString(), new { updatetime = updatetime });
             return datas;
         }
 
+        public List<CheapProductData> GetCheapProductDatas2(DateTime updatetime, int count = 20)
+        {
+            StringBuilder stringBuilder = new StringBuilder(@" ");
+            stringBuilder.Append(
+                                  @" SELECT TOP " + count + @"a.*,convert(decimal(18,2),a.Price/a.OldPrice*10) Discount
+                                    FROM [DB_CrawlConfig].[dbo].[td_cheapproduct] a
+                                    where a.updatetime < @updatetime and convert(decimal(18,2),a.Price/a.OldPrice*10) <10.0
+                                    order by updatetime desc");
+
+            var datas = DbAnalyze.QueryModels<CheapProductData>(stringBuilder.ToString(), new { updatetime = updatetime });
+            return datas;
+        }
+
+
         public CheapProductData GetCheapProductData(string productid, string shop)
         {
-            StringBuilder stringBuilder=new StringBuilder("select * from [DB_CrawlConfig].[dbo].[td_cheapproduct] a where a.productid=@productid and a.shop=@shop ");
+            StringBuilder stringBuilder = new StringBuilder("select * from [DB_CrawlConfig].[dbo].[td_cheapproduct] a where a.productid=@productid and a.shop=@shop ");
             var data = DbAnalyze.QueryModel<CheapProductData>(stringBuilder.ToString(),
-                new {productid = productid, shop = shop});
+                new { productid = productid, shop = shop });
             return data;
         }
 

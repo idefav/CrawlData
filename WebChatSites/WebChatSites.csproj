@@ -182,6 +182,8 @@
     <Content Include="Content\echarts.min.js" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\images\20161030164801.png" />
+    <Content Include="Content\images\notfund.png" />
+    <Content Include="Content\images\refresh.png" />
     <Content Include="Content\images\taobao.jpg" />
     <Content Include="Content\images\timg.jpg" />
     <Content Include="Content\images\tmall.jpg" />
@@ -206,6 +208,7 @@
     <Content Include="Content\css\bootstrap.css.map" />
     <None Include="Properties\PublishProfiles\wechatsits.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\iscroll.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -218,6 +221,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\scrollpagination.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -240,6 +244,7 @@
     <Content Include="Views\Shared\WeChatLayout.cshtml" />
     <None Include="Views\WeChat\CheapProduct.cshtml" />
     <Content Include="Views\WeChat\GotoShop.cshtml" />
+    <None Include="Views\WeChat\GetCheapData.cshtml" />
     <None Include="Views\WeChat\ProductDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>

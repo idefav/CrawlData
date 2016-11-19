@@ -87,7 +87,7 @@ namespace CrawlServices.BusinessTask
 
                         if (!CrawlServices.Business.TableIsExist(tablename, conn))
                         {
-                            whileTime = breaktime.AddDays(1);
+                            whileTime = whileTime.AddDays(1);
                             continue;
                         }
 
@@ -155,7 +155,8 @@ namespace CrawlServices.BusinessTask
                                     //            taskname = DataAnalyzeModel.TaskName,
                                     //            currentkeyword = taoBaoProduct.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "|" + shopEnum.ToString()
                                     //        });
-                                    CrawlServices.Business.UpdateBreakTimeByTaskName(DataAnalyzeModel.TaskName, taoBaoProduct.UpdateTime, shopEnum.ToString());
+                                    breaktime = taoBaoProduct.UpdateTime;
+                                    CrawlServices.Business.UpdateBreakTimeByTaskName(DataAnalyzeModel.TaskName, breaktime, shopEnum.ToString());
                                     //models.Add(model);
                                 }
                                 catch (Exception exception)
@@ -164,7 +165,7 @@ namespace CrawlServices.BusinessTask
                                 }
                             }
                         }
-                        whileTime = breaktime.AddDays(1);
+                        whileTime = whileTime.AddDays(1);
                     }
                     catch (Exception e)
                     {

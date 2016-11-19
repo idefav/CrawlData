@@ -139,6 +139,8 @@ namespace CrawlServices.BusinessTask
             }, token);
             Task.Start(taskScheduler);
 
+            
+
             //System.Threading.Tasks.Task.WaitAll(Task);
         }
 
