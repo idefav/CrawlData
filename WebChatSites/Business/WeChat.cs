@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.Data;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -282,6 +283,18 @@ namespace WebChatSites.Business
             var data = DbAnalyze.QueryModel<CheapProductData>(stringBuilder.ToString(),
                 new { productid = productid, shop = shop });
             return data;
+        }
+
+        public static string EncryptToSHA1(string str)
+        {
+            SHA1 algorithm = SHA1.Create();
+            byte[] data = algorithm.ComputeHash(Encoding.UTF8.GetBytes(str));
+            string sh1 = "";
+            for (int i = 0; i < data.Length; i++)
+            {
+                sh1 += data[i].ToString("x2").ToUpperInvariant();
+            }
+            return sh1;
         }
 
         //public static string GetTimeStr(DateTime date)

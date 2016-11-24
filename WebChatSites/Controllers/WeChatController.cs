@@ -29,6 +29,25 @@ namespace WebChatSites.Controllers
             return View(datas);
         }
 
+        public ContentResult checkSignature(string signature,string timestamp,string nonce,string echostr)
+        {
+            string[] tmpArr=new string[] {CommSettings.Token,timestamp,nonce};
+             Array.Sort(tmpArr);
+            string tmpstr = string.Join("", tmpArr);
+            string sha1 = WeChat.EncryptToSHA1(tmpstr);
+            if (sha1.Equals(signature,StringComparison.CurrentCultureIgnoreCase))
+            {
+                return Content(echostr);
+            }
+            return Content("");
+        }
+
+        public ContentResult ResponseCommonMsg(string msg)
+        {
+            Crawl.Common.Common.Log.LogInfo(msg);
+            return base.Content("Success");
+        }
+
         public JsonResult QueryProduct(string productlink)
         {
             // PC链接解析

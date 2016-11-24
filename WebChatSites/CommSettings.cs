@@ -14,12 +14,14 @@ namespace WebChatSites
         public static string DbConn { get; set; }
         public static string DbAnalyze { get; set; }
         public static string DbConfig { get; set; }
+        public static string Token { get; set; }
 
         static CommSettings()
         {
             DbConn = ConfigurationManager.AppSettings["DbConn"];
             DbAnalyze = ConfigurationManager.AppSettings["DbAnalyze"];
             DbConfig = ConfigurationManager.AppSettings["DbConfig"];
+            Token = ConfigurationManager.AppSettings["Token"];
         }
 
         
