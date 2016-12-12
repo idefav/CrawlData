@@ -6,6 +6,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Crawl.Common;
+using Ivony.Html;
+using Ivony.Html.Parser;
 
 namespace Ebend.DataSplider
 {
@@ -84,7 +86,7 @@ namespace Ebend.DataSplider
             return ualist[d];
         }
 
-        public SpliderType.TypeProduct[] SearchProduct2(string sKeyWord, int iPage, out int iTotalPage)
+        public SpliderType.TypeProduct[] SearchProduct3(string sKeyWord, int iPage, out int iTotalPage)
         {
 
             HtmlHttpHelper HHH = new HtmlHttpHelper();
@@ -105,6 +107,57 @@ namespace Ebend.DataSplider
             //    iTotalPage = 0;
             //    return (SpliderType.TypeProduct[])new ArrayList().ToArray(typeof(SpliderType.TypeProduct));
             //}
+        }
+        public SpliderType.TypeProduct[] SearchProduct2(string sKeyWord, int iPage, out int iTotalPage)
+        {
+            HtmlHttpHelper HHH = new HtmlHttpHelper();
+            HHH.sCookies = sTCookies;
+            HHH.UserAgent = GetUserAgent();
+            HHH.Referer = "https://www.tmall.com/";
+            string sUrl = "https://list.tmall.com/search_product.htm?spm=" + DateTime.Now.ToFileTime().ToString() + "&s=" + Convert.ToString(60 * iPage) + "&q=" + sKeyWord + "&sort=s&style=w&from=mallfp..pc_1_searchbutton&tmhkmain=0&type=pc#J_Filter";
+            sUrl =
+                "https://list.tmall.com/search_product.htm?spm=" + DateTime.Now.ToFileTime().ToString() + "&s=" + Convert.ToString(60 * iPage) + "&q=" + sKeyWord + "&sort=s&style=g&from=.list.pc_1_searchbutton&smAreaId=310100&type=pc#J_Filter";
+            string sHtmlCode = HHH.Get(sUrl, "");
+            var htmlSources = new JumonyParser().Parse(sHtmlCode);
+            iTotalPage = 100;
+            var products = htmlSources.Find("div.product").ToList();
+            ArrayList ALTypeProduct = new ArrayList();
+            foreach (IHtmlElement htmlElement in products)
+            {
+                try
+                {
+                    if (htmlElement.Attribute("data-id") != null)
+                    {
+                        SpliderType.TypeProduct TS = new SpliderType.TypeProduct();
+                        // sItemID
+                        TS.sItemID = htmlElement.Attribute("data-id").AttributeValue;
+
+                        // sPrice
+                        TS.sPrice = htmlElement.Find(".productPrice").FirstOrDefault().Find("em").FirstOrDefault().Attribute("title").AttributeValue;
+
+                        // sSellCount
+                        TS.sSellCount = htmlElement.FindSingle(".productStatus em").InnerText().Replace("笔", "");
+
+                        // sTitle
+                        TS.sTitle = htmlElement.FindSingle(".productTitle a").Attribute("title").AttributeValue;
+
+                        //
+                        TS.PicUrl = htmlElement.FindSingle(".productImg-wrap img").Attribute("src")?.AttributeValue?? htmlElement.FindSingle(".productImg-wrap img").Attribute("data-ks-lazyload")?.AttributeValue;
+
+                        // sPDate
+                        TS.PDate = DateTime.Now.Date;
+
+                        ALTypeProduct.Add(TS);
+                    }
+                    
+                }
+                catch (Exception e)
+                {
+                    Common.Log.LogError(e.ToString());
+                }
+            }
+
+            return (SpliderType.TypeProduct[])ALTypeProduct.ToArray(typeof(SpliderType.TypeProduct));
         }
 
         private ArrayList DecodeStore(string sHtmlCode)

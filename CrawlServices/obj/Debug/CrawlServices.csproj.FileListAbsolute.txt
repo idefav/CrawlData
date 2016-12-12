@@ -40,8 +40,6 @@ C:\Sources\电商抓取平台\CrawlData\CrawlServices\bin\Debug\Idefav.Utility.d
 C:\Sources\电商抓取平台\CrawlData\CrawlServices\bin\Debug\Newtonsoft.Json.dll
 C:\Sources\电商抓取平台\CrawlData\CrawlServices\bin\Debug\ParallelExtensionsExtras.dll
 C:\Sources\电商抓取平台\CrawlData\CrawlServices\bin\Debug\HttpHelper.dll
-C:\Sources\电商抓取平台\CrawlData\CrawlServices\bin\Debug\System.Data.SQLite.dll
-C:\Sources\电商抓取平台\CrawlData\CrawlServices\bin\Debug\Oracle.DataAccess.dll
 C:\Sources\电商抓取平台\CrawlData\CrawlServices\bin\Debug\MySql.Data.dll
 C:\Sources\电商抓取平台\CrawlData\CrawlServices\bin\Debug\Ebend.DataSplider.pdb
 C:\Sources\电商抓取平台\CrawlData\CrawlServices\obj\Debug\CrawlServices.csprojResolveAssemblyReference.cache
@@ -53,3 +51,6 @@ C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServices\bin\Debug\Crawl.
 C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServices\bin\Debug\Crawl.Common.pdb
 C:\Users\Administrator\Documents\GitHub\CrawlData\CrawlServices\bin\Debug\Newtonsoft.Json.xml
 C:\Sources\电商抓取平台\CrawlData\CrawlServices\bin\Debug\Newtonsoft.Json.xml
+C:\Sources\电商抓取平台\CrawlData\CrawlServices\bin\Debug\Ivony.Html.dll
+C:\Sources\电商抓取平台\CrawlData\CrawlServices\bin\Debug\Ivony.Html.Parser.dll
+C:\Sources\电商抓取平台\CrawlData\CrawlServices\bin\Debug\Ivony.Core.dll

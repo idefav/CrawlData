@@ -17,7 +17,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Reference", "Reference", "{
 		Reference\Idefav.Utility.dll = Reference\Idefav.Utility.dll
 		Reference\MySql.Data.dll = Reference\MySql.Data.dll
 		Reference\Newtonsoft.Json.dll = Reference\Newtonsoft.Json.dll
-		Reference\Oracle.DataAccess.dll = Reference\Oracle.DataAccess.dll
 		Reference\ParallelExtensionsExtras.dll = Reference\ParallelExtensionsExtras.dll
 		Reference\System.Data.SQLite.dll = Reference\System.Data.SQLite.dll
 	EndProjectSection

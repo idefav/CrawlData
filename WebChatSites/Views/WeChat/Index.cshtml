@@ -2,48 +2,53 @@
     Layout = "~/Views/Shared/WeChatLayout.cshtml";
     ViewBag.Title = "历史价格查询";
 }
-    <div class="container" style="width: 100%; overflow: hidden;">
+<div class="container" style="width: 100%; overflow: hidden;">
+    <div class="row">
         <div class="row">
-            <div class="row">
-                <div class="col-xs-12" style="height: 5em;">
+            <div class="col-xs-12" style="height: 5em;">
 
-                </div>
             </div>
-            <div class="col-xs-12">
-                <input id="txtSearch" type="text" style="" class="form-control search-input" placeholder="请输入商品链接">
-            </div>
-
         </div>
-        <div class="row search-ctl-group" style="">
-            <div class="col-xs-1"></div>
-            <div class="col-xs-10" style="">
-                <!-- Standard button -->
-                <button type="button" id="btnQuery" class="btn btn-default btn-disabled" disabled="disabled">查询历史价格</button>
-                <button type="button" id="btnClear" class="btn btn-default btn-disabled" disabled="disabled">清空</button>
-            </div>
-            <div class="col-xs-1"></div>
+        <div class="col-xs-12">
+            <input id="txtSearch" type="text" style="" class="form-control search-input" placeholder="请输入商品链接">
         </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div id="divNone" style="display: none;">
-                    <div class="divNoneImg" style=""></div>
-                    <div class="divNoneText" style="">Sorry，没有你要找的内容，换个其他的吧</div>
-                </div>
-                <div id="divInfo">
-                    <div id="divTitle" style=""></div>
-                    <div id="divMinPrice" style=""></div>
-                </div>
 
-                <canvas id="myChart" style="width: 100%; height: 15em;"></canvas>
+    </div>
+    <div class="row search-ctl-group" style="">
+        <div class="col-xs-1"></div>
+        <div class="col-xs-10" style="">
+            <!-- Standard button -->
+            <button type="button" id="btnQuery" class="btn btn-default btn-disabled" disabled="disabled">查询历史价格</button>
+            <button type="button" id="btnClear" class="btn btn-default btn-disabled" disabled="disabled">清空</button>
+        </div>
+        <div class="col-xs-1"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12" id="divContext">
+            <div id="divNone" style="display: none;">
+                <div class="divNoneImg" style=""></div>
+                <div class="divNoneText" style="">Sorry，没有你要找的内容，换个其他的吧</div>
             </div>
+            <div id="divInfo">
+                <div id="divTitle" style=""></div>
+                <div id="divMinPrice" style=""></div>
+            </div>
+
+            <canvas id="myChart" style="width: 100%; height: 15em;"></canvas>
         </div>
     </div>
+</div>
 
 @section scripts
 {
     <script>
+	function addConvas(){
+	$("#myChart").remove();
+	var html=$("#divContext").html();
+	$("#divContext").html(html+'<canvas id="myChart" style="width: 100%; height: 15em;"></canvas>');
+	}
         $(function () {
-            var ctx = document.getElementById("myChart").getContext("2d");
+            //var ctx = document.getElementById("myChart").getContext("2d");
             var myNewChart;
             // 查询框
             $("#txtSearch").bind("input propertychange", function () {
@@ -67,7 +72,7 @@
                 if (productlink.length <= 0) {
                     return;
                 }
-                $("#btnQuery").text("正在查询...").attr("disabled",true).addClass("btn-active");
+                $("#btnQuery").text("正在查询...").attr("disabled", true).addClass("btn-active");
                 $.getJSON("/WeChat/QueryProduct", { productlink: productlink }, function (json) {
                     json = eval("(" + json + ")");
 
@@ -82,40 +87,67 @@
                         var datas = [];
                         for (var i = 0; i < json.ChartData.length; i++) {
                             var obj = json.ChartData[i];
-                            
+                            //if (i===0||i % 4 === 0 || json.ChartData.length === i - 1) {
+                            //    labels.push(obj.Key.replace("T00:00:00", ""));
+                            //} else {
+                            //    labels.push("");
+                            //}
                             labels.push(obj.Key.replace("T00:00:00", ""));
                             datas.push(obj.Value);
                         }
-                        var dataj = {
-                            labels: labels,
-                            datasets: [
-                                {
-                                    strokeColor: "rgba(226,137,100,1)",
-                                    pointColor: "rgba(226,137,100,1)",
-                                    scaleLineWidth : 2,
-                                    data: datas
-                                    
-                                }
+                        //var dataj = {
+                        //    labels: labels,
+                        //    datasets: [
+                        //        {
+                        //            label: "价格",
+                        //            fill: false,
+                        //            data: datas,
+                        //            pointRadius: 1,
+                        //            borderWidth: 2,
+                        //            borderColor: "rgba(226,137,100,1)"
+                        //        }
 
-                            ]
-                        };
-                        ctx.clearRect(0, 0, $("#myChart").width(), $("#myChart").height());
-                        myNewChart = new Chart(ctx).Line(dataj,
-                        {
-                            scaleShowGridLines: true,
-                            scaleGridLineColor: "rgba(0,0,0,.05)",
-                            scaleGridLineWidth: 1,
-                            bezierCurve: true,
-                            scaleLineColor: "rgba(226,137,100,1)",
-                            datasetFill: false
-                           
-                    });
+                        //    ]
+                        //};
+                        //var options = {
+                        //    legend: {
+                        //        display:false,
+                        //        labels: {
+                                    
+                        //        }
+                        //    },
+                        //    hover: {
+                        //        mode: 'label',
+                        //        intersect:false
+                        //    },
+                        //    tooltips: {
+                        //        intersect: false
+                        //    },
+                        //    scales: {
+                               
+                        //        xAxes: [{
+                        //            type: 'time',
+                        //            time: {
+                        //                unit: 'week',
+                        //                month:'',
+                        //                displayFormats: {
+                        //                    month:'YYYY-MM',
+                        //                    week: 'MM-DD',
+                        //                    day:'MM-DD'
+                        //                }
+                        //            }
+                        //        }]
+                        //    }
+                        //};
+                        //myNewChart = new Chart(ctx, { type: 'line', data: dataj, options: options });
+						addConvas();
+                        $("#myChart").myChart( labels, datas);
 
                     } else {
                         $("#divTitle").hide();
                         $("#divNone").show();
                     }
-                    $("#btnQuery").text("查询历史价格").attr("disabled",false);
+                    $("#btnQuery").text("查询历史价格").attr("disabled", false);
                 });
 
             });
@@ -128,11 +160,12 @@
                 $("#btnQuery").removeClass("btn-active").addClass("btn-disabled");
                 $("#btnClear").removeClass("btn-active").addClass("btn-disabled");
                 $("#txtSearch").val("");
-                $("#myChart").hide();
+                //$("#myChart").hide();
+				addConvas();
                 $("#divInfo").hide();
             });
         });
-</script>
+    </script>
 }
 
 

@@ -86,6 +86,10 @@ namespace Crawl.Common
 
             public static void LogInfo(string msg)
             {
+                if (!AppSettings.COMMONSETTINGS.Debug)
+                {
+                    return;
+                }
                 Monitor.Enter(MsgQueue);
                 MsgQueue.Enqueue(new LogModel(LogType.Info,
                     string.Format("{0} {1} {2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:sss"), LogType.Info, msg)));
@@ -94,6 +98,10 @@ namespace Crawl.Common
 
             public static void LogInfo(string msg,string filename)
             {
+                if (!AppSettings.COMMONSETTINGS.Debug)
+                {
+                    return;
+                }
                 Monitor.Enter(MsgQueue);
                 MsgQueue.Enqueue(new LogModel(LogType.Info,
                     string.Format("{0} {1} {2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:sss"), LogType.Info, msg),filename));
@@ -102,6 +110,7 @@ namespace Crawl.Common
 
             public static void LogError(string msg)
             {
+               
                 Monitor.Enter(MsgQueue);
                 MsgQueue.Enqueue(new LogModel(LogType.Error,
                     string.Format("{0} {1} {2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:sss"), LogType.Error, msg)));
@@ -110,6 +119,7 @@ namespace Crawl.Common
 
             public static void LogError(string msg,string filename)
             {
+                
                 Monitor.Enter(MsgQueue);
                 MsgQueue.Enqueue(new LogModel(LogType.Error,
                     string.Format("{0} {1} {2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:sss"), LogType.Error, msg),filename));
@@ -118,6 +128,7 @@ namespace Crawl.Common
 
             public static void LogWarn(string msg)
             {
+               
                 Monitor.Enter(MsgQueue);
                 MsgQueue.Enqueue(new LogModel(LogType.Warn,
                     string.Format("{0} {1} {2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:sss"), LogType.Warn, msg)));
@@ -126,6 +137,7 @@ namespace Crawl.Common
 
             public static void LogWarn(string msg,string filename)
             {
+                
                 Monitor.Enter(MsgQueue);
                 MsgQueue.Enqueue(new LogModel(LogType.Warn,
                     string.Format("{0} {1} {2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:sss"), LogType.Warn, msg),filename));

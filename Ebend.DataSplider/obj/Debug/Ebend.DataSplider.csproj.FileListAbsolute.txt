@@ -18,3 +18,6 @@ C:\Users\Administrator\Documents\GitHub\CrawlData\Ebend.DataSplider\obj\Debug\Eb
 C:\Users\Administrator\Documents\GitHub\CrawlData\Ebend.DataSplider\bin\Debug\Newtonsoft.Json.dll
 C:\Users\Administrator\Documents\GitHub\CrawlData\Ebend.DataSplider\bin\Debug\Newtonsoft.Json.xml
 C:\Sources\电商抓取平台\CrawlData\Ebend.DataSplider\bin\Debug\Newtonsoft.Json.xml
+C:\Sources\电商抓取平台\CrawlData\Ebend.DataSplider\bin\Debug\Ivony.Html.dll
+C:\Sources\电商抓取平台\CrawlData\Ebend.DataSplider\bin\Debug\Ivony.Html.Parser.dll
+C:\Sources\电商抓取平台\CrawlData\Ebend.DataSplider\bin\Debug\Ivony.Core.dll

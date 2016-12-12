@@ -64,8 +64,6 @@ C:\Sources\电商抓取平台\CrawlData\WebChatSites\bin\Idefav.DbObjects.dll
 C:\Sources\电商抓取平台\CrawlData\WebChatSites\bin\Idefav.IDAL.dll
 C:\Sources\电商抓取平台\CrawlData\WebChatSites\bin\Idefav.Utility.dll
 C:\Sources\电商抓取平台\CrawlData\WebChatSites\bin\HttpHelper.dll
-C:\Sources\电商抓取平台\CrawlData\WebChatSites\bin\System.Data.SQLite.dll
-C:\Sources\电商抓取平台\CrawlData\WebChatSites\bin\Oracle.DataAccess.dll
 C:\Sources\电商抓取平台\CrawlData\WebChatSites\bin\MySql.Data.dll
 C:\Sources\电商抓取平台\CrawlData\WebChatSites\bin\Crawl.Common.pdb
 C:\Users\Administrator\Documents\GitHub\CrawlData\WebChatSites\bin\ApplicationInsights.config
@@ -138,3 +136,9 @@ C:\Users\Administrator\Documents\GitHub\CrawlData\WebChatSites\bin\zh-Hans\Syste
 C:\Users\Administrator\Documents\GitHub\CrawlData\WebChatSites\obj\Debug\WebChatSites.csprojResolveAssemblyReference.cache
 C:\Users\Administrator\Documents\GitHub\CrawlData\WebChatSites\obj\Debug\WebChatSites.dll
 C:\Users\Administrator\Documents\GitHub\CrawlData\WebChatSites\obj\Debug\WebChatSites.pdb
+C:\Sources\电商抓取平台\CrawlData\WebChatSites\bin\System.Net.Http.Formatting.dll
+C:\Sources\电商抓取平台\CrawlData\WebChatSites\bin\System.Web.Http.dll
+C:\Sources\电商抓取平台\CrawlData\WebChatSites\bin\System.Web.Http.WebHost.dll
+C:\Sources\电商抓取平台\CrawlData\WebChatSites\bin\System.Net.Http.Formatting.xml
+C:\Sources\电商抓取平台\CrawlData\WebChatSites\bin\System.Web.Http.xml
+C:\Sources\电商抓取平台\CrawlData\WebChatSites\bin\System.Web.Http.WebHost.xml

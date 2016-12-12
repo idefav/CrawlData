@@ -22,12 +22,13 @@ namespace WebChatSites
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Content/js/bootstrap.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/Chart").Include("~/Content/Chart.min.js"));
+            bundles.Add(new ScriptBundle("~/bundles/Chart").Include("~/Content/moment.min.js", "~/Content/Chart.min.js"));
             bundles.Add(new ScriptBundle("~/bundles/lazyload").Include("~/Scripts/jquery.lazyload.js", "~/Scripts/jquery.lazyload.min.js"));
             bundles.Add(new StyleBundle("~/Content/bootstrap").Include("~/Content/css/bootstrap.css", "~/Content/css/bootstrap-theme.css"));
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/WeChat.css"
                       ));
+            bundles.Add(new ScriptBundle("~/bundles/contentjs").Include("~/Content/WeChat.js"));
             
 
         }

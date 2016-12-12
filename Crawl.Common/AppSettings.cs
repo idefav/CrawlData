@@ -170,6 +170,9 @@ namespace Crawl.Common
 
         public List<string> FileRegex { get; set; }
         public int AnalyzeInterval { get; set; }
+
+        private bool _debug = true;
+        public bool Debug { get { return _debug; } set { _debug = value; } }
     }
 
     public class CommonTaskModel

@@ -1,0 +1,64 @@
+2016-12-12 22:51:00 Error System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Ebend.DataSplider.TMallSplider.SearchProduct2(String sKeyWord, Int32 iPage, Int32& iTotalPage) 位置 C:\Sources\电商抓取平台\CrawlData\Ebend.DataSplider\TMallSplider.cs:行号 129
+   在 CrawlServices.BusinessTask.TmallTask.ResolveKeyWord(String keyword, Int32 page) 位置 C:\Sources\电商抓取平台\CrawlData\CrawlServices\BusinessTask\TmallTask.cs:行号 126
+   在 CrawlServices.BusinessTask.TmallTask.Business() 位置 C:\Sources\电商抓取平台\CrawlData\CrawlServices\BusinessTask\TmallTask.cs:行号 83
+2016-12-12 22:51:09 Error System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Ebend.DataSplider.TMallSplider.SearchProduct2(String sKeyWord, Int32 iPage, Int32& iTotalPage) 位置 C:\Sources\电商抓取平台\CrawlData\Ebend.DataSplider\TMallSplider.cs:行号 129
+   在 CrawlServices.BusinessTask.TmallTask.ResolveKeyWord(String keyword, Int32 page) 位置 C:\Sources\电商抓取平台\CrawlData\CrawlServices\BusinessTask\TmallTask.cs:行号 126
+   在 CrawlServices.BusinessTask.TmallTask.Business() 位置 C:\Sources\电商抓取平台\CrawlData\CrawlServices\BusinessTask\TmallTask.cs:行号 83
+2016-12-12 22:51:30 Error System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Ebend.DataSplider.TMallSplider.SearchProduct2(String sKeyWord, Int32 iPage, Int32& iTotalPage) 位置 C:\Sources\电商抓取平台\CrawlData\Ebend.DataSplider\TMallSplider.cs:行号 129
+   在 CrawlServices.BusinessTask.TmallTask.ResolveKeyWord(String keyword, Int32 page) 位置 C:\Sources\电商抓取平台\CrawlData\CrawlServices\BusinessTask\TmallTask.cs:行号 126
+   在 CrawlServices.BusinessTask.TmallTask.Business() 位置 C:\Sources\电商抓取平台\CrawlData\CrawlServices\BusinessTask\TmallTask.cs:行号 83
+2016-12-12 22:51:44 Error System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Ebend.DataSplider.TMallSplider.SearchProduct2(String sKeyWord, Int32 iPage, Int32& iTotalPage) 位置 C:\Sources\电商抓取平台\CrawlData\Ebend.DataSplider\TMallSplider.cs:行号 129
+   在 CrawlServices.BusinessTask.TmallTask.ResolveKeyWord(String keyword, Int32 page) 位置 C:\Sources\电商抓取平台\CrawlData\CrawlServices\BusinessTask\TmallTask.cs:行号 126
+   在 CrawlServices.BusinessTask.TmallTask.Business() 位置 C:\Sources\电商抓取平台\CrawlData\CrawlServices\BusinessTask\TmallTask.cs:行号 83
+2016-12-12 22:51:45 Error System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Ebend.DataSplider.TMallSplider.SearchProduct2(String sKeyWord, Int32 iPage, Int32& iTotalPage) 位置 C:\Sources\电商抓取平台\CrawlData\Ebend.DataSplider\TMallSplider.cs:行号 129
+   在 CrawlServices.BusinessTask.TmallTask.ResolveKeyWord(String keyword, Int32 page) 位置 C:\Sources\电商抓取平台\CrawlData\CrawlServices\BusinessTask\TmallTask.cs:行号 126
+   在 CrawlServices.BusinessTask.TmallTask.Business() 位置 C:\Sources\电商抓取平台\CrawlData\CrawlServices\BusinessTask\TmallTask.cs:行号 83
+2016-12-12 22:51:46 Error System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Ebend.DataSplider.TMallSplider.SearchProduct2(String sKeyWord, Int32 iPage, Int32& iTotalPage) 位置 C:\Sources\电商抓取平台\CrawlData\Ebend.DataSplider\TMallSplider.cs:行号 129
+   在 CrawlServices.BusinessTask.TmallTask.ResolveKeyWord(String keyword, Int32 page) 位置 C:\Sources\电商抓取平台\CrawlData\CrawlServices\BusinessTask\TmallTask.cs:行号 126
+   在 CrawlServices.BusinessTask.TmallTask.Business() 位置 C:\Sources\电商抓取平台\CrawlData\CrawlServices\BusinessTask\TmallTask.cs:行号 83
+2016-12-12 22:51:47 Error System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Ebend.DataSplider.TMallSplider.SearchProduct2(String sKeyWord, Int32 iPage, Int32& iTotalPage) 位置 C:\Sources\电商抓取平台\CrawlData\Ebend.DataSplider\TMallSplider.cs:行号 129
+   在 CrawlServices.BusinessTask.TmallTask.ResolveKeyWord(String keyword, Int32 page) 位置 C:\Sources\电商抓取平台\CrawlData\CrawlServices\BusinessTask\TmallTask.cs:行号 126
+   在 CrawlServices.BusinessTask.TmallTask.Business() 位置 C:\Sources\电商抓取平台\CrawlData\CrawlServices\BusinessTask\TmallTask.cs:行号 83
+2016-12-12 22:51:47 Error System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Ebend.DataSplider.TMallSplider.SearchProduct2(String sKeyWord, Int32 iPage, Int32& iTotalPage) 位置 C:\Sources\电商抓取平台\CrawlData\Ebend.DataSplider\TMallSplider.cs:行号 129
+   在 CrawlServices.BusinessTask.TmallTask.ResolveKeyWord(String keyword, Int32 page) 位置 C:\Sources\电商抓取平台\CrawlData\CrawlServices\BusinessTask\TmallTask.cs:行号 126
+   在 CrawlServices.BusinessTask.TmallTask.Business() 位置 C:\Sources\电商抓取平台\CrawlData\CrawlServices\BusinessTask\TmallTask.cs:行号 83
+2016-12-12 22:51:48 Error System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Ebend.DataSplider.TMallSplider.SearchProduct2(String sKeyWord, Int32 iPage, Int32& iTotalPage) 位置 C:\Sources\电商抓取平台\CrawlData\Ebend.DataSplider\TMallSplider.cs:行号 141
+   在 CrawlServices.BusinessTask.TmallTask.ResolveKeyWord(String keyword, Int32 page) 位置 C:\Sources\电商抓取平台\CrawlData\CrawlServices\BusinessTask\TmallTask.cs:行号 126
+   在 CrawlServices.BusinessTask.TmallTask.Business() 位置 C:\Sources\电商抓取平台\CrawlData\CrawlServices\BusinessTask\TmallTask.cs:行号 83
+2016-12-12 22:51:48 Error System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Ebend.DataSplider.TMallSplider.SearchProduct2(String sKeyWord, Int32 iPage, Int32& iTotalPage) 位置 C:\Sources\电商抓取平台\CrawlData\Ebend.DataSplider\TMallSplider.cs:行号 129
+   在 CrawlServices.BusinessTask.TmallTask.ResolveKeyWord(String keyword, Int32 page) 位置 C:\Sources\电商抓取平台\CrawlData\CrawlServices\BusinessTask\TmallTask.cs:行号 126
+   在 CrawlServices.BusinessTask.TmallTask.Business() 位置 C:\Sources\电商抓取平台\CrawlData\CrawlServices\BusinessTask\TmallTask.cs:行号 83
+2016-12-12 22:51:49 Error System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Ebend.DataSplider.TMallSplider.SearchProduct2(String sKeyWord, Int32 iPage, Int32& iTotalPage) 位置 C:\Sources\电商抓取平台\CrawlData\Ebend.DataSplider\TMallSplider.cs:行号 141
+   在 CrawlServices.BusinessTask.TmallTask.ResolveKeyWord(String keyword, Int32 page) 位置 C:\Sources\电商抓取平台\CrawlData\CrawlServices\BusinessTask\TmallTask.cs:行号 126
+   在 CrawlServices.BusinessTask.TmallTask.Business() 位置 C:\Sources\电商抓取平台\CrawlData\CrawlServices\BusinessTask\TmallTask.cs:行号 83
+2016-12-12 22:51:49 Error System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Ebend.DataSplider.TMallSplider.SearchProduct2(String sKeyWord, Int32 iPage, Int32& iTotalPage) 位置 C:\Sources\电商抓取平台\CrawlData\Ebend.DataSplider\TMallSplider.cs:行号 129
+   在 CrawlServices.BusinessTask.TmallTask.ResolveKeyWord(String keyword, Int32 page) 位置 C:\Sources\电商抓取平台\CrawlData\CrawlServices\BusinessTask\TmallTask.cs:行号 126
+   在 CrawlServices.BusinessTask.TmallTask.Business() 位置 C:\Sources\电商抓取平台\CrawlData\CrawlServices\BusinessTask\TmallTask.cs:行号 83
+2016-12-12 22:51:50 Error System.InvalidOperationException: 未找到符合选择器 ".productTitle a" 的元素或结果集不唯一 ---> System.InvalidOperationException: 序列包含一个以上的元素
+   在 System.Linq.Enumerable.Single[TSource](IEnumerable`1 source)
+   在 Ivony.Html.NavigateExtensions.FindSingle(IHtmlContainer container, String expression)
+   --- 内部异常堆栈跟踪的结尾 ---
+   在 Ivony.Html.NavigateExtensions.FindSingle(IHtmlContainer container, String expression)
+   在 Ebend.DataSplider.TMallSplider.SearchProduct2(String sKeyWord, Int32 iPage, Int32& iTotalPage) 位置 C:\Sources\电商抓取平台\CrawlData\Ebend.DataSplider\TMallSplider.cs:行号 138
+   在 CrawlServices.BusinessTask.TmallTask.ResolveKeyWord(String keyword, Int32 page) 位置 C:\Sources\电商抓取平台\CrawlData\CrawlServices\BusinessTask\TmallTask.cs:行号 126
+   在 CrawlServices.BusinessTask.TmallTask.Business() 位置 C:\Sources\电商抓取平台\CrawlData\CrawlServices\BusinessTask\TmallTask.cs:行号 83
+2016-12-12 22:52:22 Error System.InvalidOperationException: 未找到符合选择器 ".productTitle a" 的元素或结果集不唯一 ---> System.InvalidOperationException: 序列包含一个以上的元素
+   在 System.Linq.Enumerable.Single[TSource](IEnumerable`1 source)
+   在 Ivony.Html.NavigateExtensions.FindSingle(IHtmlContainer container, String expression)
+   --- 内部异常堆栈跟踪的结尾 ---
+   在 Ivony.Html.NavigateExtensions.FindSingle(IHtmlContainer container, String expression)
+   在 Ebend.DataSplider.TMallSplider.SearchProduct2(String sKeyWord, Int32 iPage, Int32& iTotalPage) 位置 C:\Sources\电商抓取平台\CrawlData\Ebend.DataSplider\TMallSplider.cs:行号 138
+   在 CrawlServices.BusinessTask.TmallTask.ResolveKeyWord(String keyword, Int32 page) 位置 C:\Sources\电商抓取平台\CrawlData\CrawlServices\BusinessTask\TmallTask.cs:行号 126
+   在 CrawlServices.BusinessTask.TmallTask.Business() 位置 C:\Sources\电商抓取平台\CrawlData\CrawlServices\BusinessTask\TmallTask.cs:行号 83

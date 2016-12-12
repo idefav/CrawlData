@@ -37,7 +37,7 @@
         $(function () {
             var ctx = document.getElementById("myChart").getContext("2d");
             var myNewChart;
-            var txt = "@Model["ChartLabels"].ToString()";
+            var txt = "@Model["ChartLabels"].ToString()"
             var chartLabels = eval("(" + txt.replace(/&quot;/g, "'") + ")");
             var chartDatas = eval("(" + "@Model["ChartDatas"]" + ")");
             if (chartDatas.length > 0) {
@@ -45,25 +45,28 @@
                 $("#myChart").show();
                 $("#divNone").hide();
                 $("#divInfo").show();
-                var dataj = {
-                    labels: chartLabels,
-                    datasets: [
-                        {
-                            strokeColor: "rgba(226,137,100,1)",
-                            pointColor: "rgba(226,137,100,1)",
-                            scaleLineWidth: 2,
-                             data: chartDatas
-                        }
-                    ]
-                };
+                //var dataj = {
+                //    labels: chartLabels,
+                //    datasets: [
+                //        {
+                //            label: "价格",
+                //            fill: false,
+                //            data: chartDatas,
+                //            pointRadius: 0,
+                //            borderWidth: 2,
+                //            borderColor: "rgba(226,137,100,1)"
 
-                myNewChart = new Chart(ctx).Line(dataj,
-                {
-                    scaleShowGridLines: true,
-                    scaleGridLineColor: "rgba(0,0,0,.05)",
-                    bezierCurve: true,
-                    datasetFill: false
-                });
+
+                //        }
+
+                //    ]
+                //};
+                //ctx.clearRect(0, 0, $("#myChart").width(), $("#myChart").height());
+                //var options = {
+
+                //};
+                //myNewChart = new Chart(ctx, { type: 'line', data: dataj, options: options });
+                $("#myChart").myChart(chartLabels, chartDatas);
             } else {
                 $("#divTitle").hide();
                 $("#divNone").show();

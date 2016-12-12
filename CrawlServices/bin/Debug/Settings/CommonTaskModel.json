@@ -1,10 +1,10 @@
 ﻿{
   "TmallTask": [
     {
-      "Enable": false,
+      "Enable": true,
       "Interval": 7200,
       "CrawlPages": 100,
-      "TaskName": "TmallTask_T1",
+      "TaskName": "TmallTask_T3",
       "KeyWords": [
         "女装",
         "内衣",
@@ -2874,7 +2874,7 @@
       "Shops": [ "天猫" ]
     },
     {
-      "Enable": true,
+      "Enable": false,
       "Interval": 0,
       "TaskName": "AnalyzeTask_Test3",
       "Shops": [ "天猫" ]
